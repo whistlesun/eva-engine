@@ -15,7 +15,7 @@ function userface($email, $size = 60,$default = '/skins/images/noface_male.gif')
             <h2><a href="<?=$this->uri('/p/' . $this->post['id'])?>" rel="nofollow"><?=$this->post['title'] ?></a></h2>
         </div>
         <p class="copyright">日志未经声明，均为原创。版权采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/cn/" target="_blank">『 知识共享署名-非商业性使用 2.5 许可协议』</a>进行许可。</p>
-        <article class="blog <?=$this->post['codeType'] == 'wiki' ? 'wiki' : ''?> post">
+        <article class="typo">
         <?=$this->post['Text']['contentHtml']?>
         </article>
 

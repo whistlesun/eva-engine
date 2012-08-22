@@ -1,41 +1,44 @@
+<?
+$this->headTitle('Life of AlloVince', 'SET');
+?>
 <div id="stories" class="page_content">
-	<?if($this->feed):?>
-	<div class="stories_wrap">
-		<div class="stories">
-		<?foreach($this->feed as $key => $entry):?>
-		<div class="item type_<?=$entry['type']?>">
-			<header>
-				<?if($entry['type'] == 'tweet'):?>
-				<span class="icon icon_font icon_font_big icon-comments"></span>
-				<h2><time datetime="<?=$this->datetime()->isoTime($entry['dateModified'])?>" data-jstime="<?=$this->datetime()->jsTime($entry['dateModified'])?>" class="agotime"><?=$this->DateTime($entry['dateModified'])?></time>在<a href="<?=$entry['link']?>"><?=$entry['source']?></a>说</h2>
-				<?elseif($entry['type'] == 'movie'):?>
-				<span class="icon icon_font icon_font_big icon-facetime-video"></span>
-				<h2><time datetime="<?=$this->datetime()->isoTime($entry['dateModified'])?>" data-jstime="<?=$this->datetime()->jsTime($entry['dateModified'])?>" class="agotime"><?=$this->DateTime($entry['dateModified'])?></time>在<?=$entry['source']?><?=$entry['title']?></h2>
-				<?elseif($entry['type'] == 'music'):?>
-				<span class="icon icon_font icon_font_big icon-music"></span>
-				<h2>在<time datetime="<?=$this->datetime()->isoTime($entry['dateModified'])?>" data-jstime="<?=$this->datetime()->jsTime($entry['dateModified'])?>" class="agotime"><?=$this->DateTime($entry['dateModified'])?></time>喜欢听：<a href="<?=$entry['link']?>"><?=$entry['title']?></a></h2>
-				<?elseif($entry['type'] == 'memo'):?>
-				<span class="icon icon_font icon_font_big icon-pencil"></span>
-				<h2>在<time datetime="<?=$this->datetime()->isoTime($entry['dateModified'])?>" data-jstime="<?=$this->datetime()->jsTime($entry['dateModified'])?>" class="agotime"><?=$this->DateTime($entry['dateModified'])?></time>记录：<a href="<?=$entry['link']?>"><?=$entry['title']?></a></h2>
-				<?else:?>
-				<span class="icon icon_font icon_font_big icon-book"></span>
-				<h2>在<time datetime="<?=$this->datetime()->isoTime($entry['dateModified'])?>" data-jstime="<?=$this->datetime()->jsTime($entry['dateModified'])?>" class="agotime"><?=$this->DateTime($entry['dateModified'])?></time>收藏了：<a href="<?=$entry['link']?>"><?=$entry['title']?></a></h2>
-				<?endif?>
-			</header>
-				<div class="content post" >
-					<?=$entry['content']?>
-				</div>
-			<footer>
-				
-			</footer>
-		</div>
-		<?endforeach;?>
-		</div>
-		<?if($this->nextpage):?>
-		<div class="pager">
+    <?if($this->feed):?>
+    <div class="stories_wrap">
+        <div class="stories">
+            <?foreach($this->feed as $key => $entry):?>
+            <div class="item type_<?=$entry['type']?>">
+                <header>
+                <?if($entry['type'] == 'tweet'):?>
+                <span class="icon icon_font icon_font_big icon-comments"></span>
+                <h2><time datetime="<?=$this->datetime()->isoTime($entry['dateModified'])?>" data-jstime="<?=$this->datetime()->jsTime($entry['dateModified'])?>" class="agotime"><?=$this->DateTime($entry['dateModified'])?></time>在<a href="<?=$entry['link']?>"><?=$entry['source']?></a>说</h2>
+                <?elseif($entry['type'] == 'movie'):?>
+                <span class="icon icon_font icon_font_big icon-facetime-video"></span>
+                <h2><time datetime="<?=$this->datetime()->isoTime($entry['dateModified'])?>" data-jstime="<?=$this->datetime()->jsTime($entry['dateModified'])?>" class="agotime"><?=$this->DateTime($entry['dateModified'])?></time>在<?=$entry['source']?><?=$entry['title']?></h2>
+                <?elseif($entry['type'] == 'music'):?>
+                <span class="icon icon_font icon_font_big icon-music"></span>
+                <h2>在<time datetime="<?=$this->datetime()->isoTime($entry['dateModified'])?>" data-jstime="<?=$this->datetime()->jsTime($entry['dateModified'])?>" class="agotime"><?=$this->DateTime($entry['dateModified'])?></time>喜欢听：<a href="<?=$entry['link']?>"><?=$entry['title']?></a></h2>
+                <?elseif($entry['type'] == 'memo'):?>
+                <span class="icon icon_font icon_font_big icon-pencil"></span>
+                <h2>在<time datetime="<?=$this->datetime()->isoTime($entry['dateModified'])?>" data-jstime="<?=$this->datetime()->jsTime($entry['dateModified'])?>" class="agotime"><?=$this->DateTime($entry['dateModified'])?></time>记录：<a href="<?=$entry['link']?>"><?=$entry['title']?></a></h2>
+                <?else:?>
+                <span class="icon icon_font icon_font_big icon-book"></span>
+                <h2>在<time datetime="<?=$this->datetime()->isoTime($entry['dateModified'])?>" data-jstime="<?=$this->datetime()->jsTime($entry['dateModified'])?>" class="agotime"><?=$this->DateTime($entry['dateModified'])?></time>收藏了：<a href="<?=$entry['link']?>"><?=$entry['title']?></a></h2>
+                <?endif?>
+                </header>
+                <div class="content post" >
+                    <?=$entry['content']?>
+                </div>
+                <footer>
+
+                </footer>
+            </div>
+            <?endforeach;?>
+        </div>
+        <?if($this->nextpage):?>
+        <div class="pager">
             <a href="<?=$this->uri('/life/' . $this->nextpage)?>" class="btn load_story">更多</a>
-		</div>
-		<?endif?>
-	</div>
-	<?endif;?>
+        </div>
+        <?endif?>
+    </div>
+    <?endif;?>
 </div>

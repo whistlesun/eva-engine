@@ -13,6 +13,8 @@ class LifeController extends ActionController
     protected $addResources = array(
     );
 
+    protected $_lastfmCache = array();
+
     public function indexAction()
     {
 		$url = 'https://www.google.com/reader/public/atom/user%2F06943440676883415375%2Flabel%2FLife?r=n&n=30';
@@ -211,8 +213,10 @@ class LifeController extends ActionController
 		list($artist, $title) = explode("– ", $title);
 
 		if(!$this->_lastfmCache) {
-			$cacheFile = APPLICATION_PATH . '/../public/tmp/lastfm.php';
-			$this->_lastfmCache = unserialize(file_get_contents($cacheFile));
+            $cacheFile = EVA_ROOT_PATH . '/data/cache/other/lastfm.php';
+            if(file_exists($cacheFile)){
+			    $this->_lastfmCache = unserialize(file_get_contents($cacheFile));
+            }
 		}
 
 		$artist = trim($artist);

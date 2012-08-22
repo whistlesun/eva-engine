@@ -24,8 +24,15 @@ class PagesController extends ActionController
                 "id > {$postinfo['id']}"
             ))->order('id ASC')->find('one');
         }
+
+        $comments = array();
+        if($postinfo){
+            $commentsTable = Api::_()->getDbTable('Blog\DbTable\Comments');
+            $comments = $commentsTable->where(array("post_id = {$postinfo['id']}"))->find('all');
+        }
         $view = new ViewModel(array(
             'post' => $postinfo,
+            'comments' => $comments,
         ));
         $view->setTemplate('avnpc/pages/get');
         return $view;

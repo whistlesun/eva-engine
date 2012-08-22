@@ -1,5 +1,13 @@
 <?
 $this->headTitle($this->post['title'], 'SET');
+function userface($email, $size = 60,$default = '/skins/images/noface_male.gif')
+{
+    $gravUrl = "http://www.gravatar.com/avatar.php?".
+    "gravatar_id=".md5( strtolower($email) ).
+    "&amp;size=".$size."&amp;";
+
+    return $gravUrl;
+}
 ?>
 <div class="page_content">
     <div id="blog">
@@ -14,18 +22,18 @@ $this->headTitle($this->post['title'], 'SET');
         <?if($this->post['Prev'] || $this->post['Next']):?>
         <div class="neighbors">
             <?if($this->post['Prev']):?>
-            <a href="<?=$this->uri('/pages/' . $this->post['Prev']['urlName'])?>" class="prev" title="<?=htmlspecialchars($this->post['Prev']['title'], ENT_QUOTES, 'UTF-8')?>"><span class="icon icon_font icon_font_extra icon-arrow-left"></span></a>
+            <a href="<?=$this->uri('/pages/' . $this->post['Prev']['urlName'])?>" class="prev" title="<?=$this->escapeHtmlAttr($this->post['Prev']['title'])?>"><span class="icon icon_font icon_font_extra icon-arrow-left"></span></a>
             <?else:?>
             <a href="#" class="prev" title="没有了"><span class="icon icon_font icon_font_extra icon-arrow-left"></a>
                 <?endif;?>
                 <div class="postdate">
-                    <abbr class="gmtdate" title="本篇日志发布于：<?=$this->DateTime($this->post['createTime']);?>">
-                        <span class="month"><?=$this->DateTime($this->post['createTime'], null, 'M');?></span>
-                        <span class="day"><?=$this->DateTime($this->post['createTime'], null, 'd');?></span>
+                    <abbr class="gmtdate" title="本篇日志发布于：<?=$this->datetime($this->post['createTime']);?>">
+                        <span class="month"><?=$this->datetime($this->post['createTime'], null, 'M');?></span>
+                        <span class="day"><?=$this->datetime($this->post['createTime'], null, 'd');?></span>
                     </abbr>
                 </div>
                 <?if($this->post['Next']):?>
-                <a href="<?=$this->uri('/pages/' . $this->post['Next']['urlName'])?>" class="next" title="<?=htmlspecialchars($this->post['Next']['title'], ENT_QUOTES, 'UTF-8')?>"><span class="icon icon_font icon_font_extra icon-arrow-right"></span></a>
+                <a href="<?=$this->uri('/pages/' . $this->post['Next']['urlName'])?>" class="next" title="<?=$this->escapeHtmlAttr($this->post['Next']['title'])?>"><span class="icon icon_font icon_font_extra icon-arrow-right"></span></a>
                 <?endif;?>
             </div>
             <?endif;?>
@@ -38,7 +46,7 @@ $this->headTitle($this->post['title'], 'SET');
                 <div class="vlist texts img50">
                     <?foreach($this->comments as $key => $comment):?>
                     <div id="comment<?=$comment['id']?>" class="item <?=$key%2 !== 0 ? 'right' : ''?>">
-                        <a class="item-absolute imgdelay figure userface" title="" href=""><img class="thumbnail" alt="<?=$comment['user_name']?>" src="<?=$this->uri()->userface($comment['email'], 50)?>" /></a>
+                        <a class="item-absolute imgdelay figure userface" title="" href=""><img class="thumbnail" alt="<?=$comment['user_name']?>" src="<?=userface($comment['email'], 50)?>" /></a>
                         <div class="item-inline item_text">
                             <div class="well">
                                 <div class="text_content">
@@ -47,7 +55,7 @@ $this->headTitle($this->post['title'], 'SET');
                             </div>
                             <div class="item-absolute item_action">
                                 <p class="margin15h leftfloat">
-                                <time datetime="<?=$this->DateTime()->isoTime($comment['createTime'])?>" data-jstime="<?=$this->DateTime()->jsTime($comment['createTime'])?>" class="agotime"><?=$this->DateTime($comment['createTime'])?></time>
+                                <time datetime="<?=$this->datetime()->isoTime($comment['createTime'])?>" data-jstime="<?=$this->datetime()->jsTime($comment['createTime'])?>" class="agotime"><?=$this->datetime($comment['createTime'])?></time>
                                 </p>
                                 <p class="margin15h rightfloat">
                                 <?=$comment['user_name']?>

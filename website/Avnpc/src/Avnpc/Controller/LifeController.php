@@ -57,7 +57,6 @@ class LifeController extends ActionController
         $view = new ViewModel(array(
             'feed' => $data,
             'nextpage' => $continuation,
-            'rss' => 'https://www.google.com/reader/public/atom/user%2F06943440676883415375%2Flabel%2FLife',
         ));
         $view->setTemplate('avnpc/life/index');
         return $view;

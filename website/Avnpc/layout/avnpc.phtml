@@ -4,15 +4,19 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta charset="utf-8" />
     <?=$this->headTitle()?>
+
 	<!--[if lt IE 9]>
 	<meta http-equiv="PRAGMA" content="NO-CACHE" />
     <script src="<?=$this->link('/lib/js/html5shiv/html5shiv.min.js')?>"></script>
     <![endif]-->
-
-    <?=$this->headMeta()?>
+	<link href="<?=$this->link('/src/avnpc/favicon.ico')?>" type="image/x-icon" rel="icon" />
+	<link href="<?=$this->link('/src/avnpc/favicon.ico')?>" type="image/x-icon" rel="shortcut icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="<?=$this->link('/src/avnpc/css/avnpc.css')?>" media="all" rel="stylesheet" type="text/css" />
     <?=$this->evajs()?>
+
+    <?=$this->headMeta()?>
+
     <script src="<?=$this->link('/lib/js/labjs/labjs.min.js')?>"></script>
     <script src="<?=$this->link('/lib/js/jquery/jquery.min.js')?>"></script>
     <script src="<?=$this->link('/lib/js/moment/moment.min.js')?>"></script>
@@ -20,6 +24,9 @@
     <script src="<?=$this->link('/src/avnpc/js/init.js')?>"></script>
 
 	<link href='http://fonts.googleapis.com/css?family=Sarina|Great+Vibes' rel='stylesheet' type='text/css'>
+    <link rel="alternate" type="application/rss+xml" title="Just Fine - Story of AlloVince" href="<?=$this->uri('/feed');?>" />
+    <?=$this->headlink()?>
+
 </head>
 <body>
     <div id="page">

@@ -55,8 +55,9 @@ class LifeController extends ActionController
         $data = \Eva\Stdlib\Arraylib\Sort::multiSortArray($data, 'dateModified', 'SORT_DESC');
 
         $view = new ViewModel(array(
-            'feed' => $data,
+            'feeds' => $data,
             'nextpage' => $continuation,
+            'nextId' => $id,
         ));
         $view->setTemplate('avnpc/life/index');
         return $view;
@@ -125,7 +126,7 @@ class LifeController extends ActionController
 			$entry['largeImage'] = true;
 		}
 		foreach($links as $key => $link){
-			$link->innertext = '<img src="' . $link->href .'" width="100%" />';
+            $link->innertext = '<img src="' . $link->href .'" width="100%"  itemprop="photo" />';
 		}
 		
 
@@ -142,6 +143,7 @@ class LifeController extends ActionController
 		foreach($imgs as $key => $img){
 			$img->src = str_replace('thumbnail', 'bmiddle', $img->src);
 			$img->width = '100%';
+            $img->itemprop = 'photo';
 		}
 		$retweet = $html->find('span', 0);
 		if($retweet){
@@ -165,7 +167,7 @@ class LifeController extends ActionController
 		}
 		foreach($links as $key => $link){
 			$img = $link->find('img[src*=douban.com]', 0);
-			$link->innertext = '<img src="' . str_replace('spic', 'lpic', $img->src) .'" width="100%" />';
+            $link->innertext = '<img src="' . str_replace('spic', 'lpic', $img->src) .'" width="100%"  itemprop="photo" />';
 		}
 
 		$tds = $html->find('td');
@@ -227,7 +229,7 @@ class LifeController extends ActionController
 		}
 
 		if($img){
-			$img = '<div class="centeralign"><img src=' . $img . ' class="thumbnail" alt="' . $artist . '" /></div>';
+            $img = '<div class="centeralign"><img src=' . $img . ' class="thumbnail" alt="' . $artist . '"  itemprop="photo" /></div>';
 		}
 
 		$entry['title'] = $title;

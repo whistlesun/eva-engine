@@ -14,7 +14,7 @@ function userface($email, $size = 60,$default = '/skins/images/noface_male.gif')
         <div class="page_header large">
             <h2><a href="<?=$this->uri('/p/' . $this->post['id'])?>" rel="nofollow"><?=$this->post['title'] ?></a></h2>
         </div>
-        <p class="copyright">日志未经声明，均为原创。版权采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/cn/" target="_blank">『 知识共享署名-非商业性使用 2.5 许可协议』</a>进行许可。</p>
+        <p class="copyright">日志未经声明，均为<a href="https://plus.google.com/104171418568283484752?rel=author">AlloVince</a>原创。版权采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/cn/" target="_blank">『 知识共享署名-非商业性使用 2.5 许可协议』</a>进行许可。</p>
         <article class="typo">
         <?=$this->post['Text']['contentHtml']?>
         </article>
@@ -38,7 +38,7 @@ function userface($email, $size = 60,$default = '/skins/images/noface_male.gif')
             </div>
             <?endif;?>
 
-            <?if($this->comments):?>
+            <?if(count($this->comments) > 0):?>
             <div class="page_header large bordered">
                 <h4>评论</h4>
             </div>
@@ -54,10 +54,10 @@ function userface($email, $size = 60,$default = '/skins/images/noface_male.gif')
                                 </div>
                             </div>
                             <div class="item-absolute item_action">
-                                <p class="margin15h leftfloat">
+                                <p class="margin15h pull-right">
                                 <time datetime="<?=$this->datetime()->isoTime($comment['createTime'])?>" data-jstime="<?=$this->datetime()->jsTime($comment['createTime'])?>" class="agotime"><?=$this->datetime($comment['createTime'])?></time>
                                 </p>
-                                <p class="margin15h rightfloat">
+                                <p class="margin15h pull-left">
                                 <?=$comment['user_name']?>
                                 </p>
                             </div>

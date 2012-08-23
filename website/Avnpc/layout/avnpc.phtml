@@ -10,41 +10,34 @@
     <![endif]-->
 
     <?=$this->headMeta()?>
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="<?=$this->link('/src/avnpc/css/avnpc.css')?>" media="all" rel="stylesheet" type="text/css" />
+    <?=$this->evajs()?>
     <script src="<?=$this->link('/lib/js/labjs/labjs.min.js')?>"></script>
     <script src="<?=$this->link('/lib/js/jquery/jquery.min.js')?>"></script>
     <script src="<?=$this->link('/lib/js/moment/moment.min.js')?>"></script>
+    <script src="<?=$this->link('/eva/js/core.min.js')?>"></script>
+    <script src="<?=$this->link('/src/avnpc/js/init.js')?>"></script>
 
 	<link href='http://fonts.googleapis.com/css?family=Sarina|Great+Vibes' rel='stylesheet' type='text/css'>
-
 </head>
 <body>
-
-<div id="page">
-
-<!-- #header start-->
-<header id="header" class="header">
-	<h1><a href="<?=$this->uri('/');?>">Just Fine</a></h1>
-	<p>— Story of AlloVince</p>
-
-
-<nav id="menu">
-	<ul class="submenu">
-		<li><a href="<?=$this->uri('/'); ?>">Thinking</a></li>
-		<li><a href="<?=$this->uri('/life'); ?>">Life</a></li>
-		<li><a href="<?=$this->uri('/pages/projects'); ?>">Projects</a></li>
-		<li><a href="<?=$this->uri('/pages/about'); ?>">About</a></li>
-	</ul>
-</nav>
-
-<!-- #header end -->
-</header>
-
-<?=$this->content;?>
-
-</div>
+    <div id="page">
+        <!-- #header start-->
+        <header id="header" class="header">
+        <h1><a href="<?=$this->uri('/');?>">Just Fine</a></h1>
+        <p>— Story of AlloVince</p>
+        <nav id="menu">
+        <ul class="submenu">
+            <li><a href="<?=$this->uri('/'); ?>">Thinking</a></li>
+            <li><a href="<?=$this->uri('/life'); ?>">Life</a></li>
+            <li><a href="<?=$this->uri('/pages/projects'); ?>">Projects</a></li>
+            <li><a href="<?=$this->uri('/pages/about'); ?>">About</a></li>
+        </ul>
+        </nav>
+        <!-- #header end -->
+        </header>
+        <?=$this->content;?>
+    </div>
 </body>
 </html>
-

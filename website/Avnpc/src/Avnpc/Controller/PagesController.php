@@ -16,6 +16,17 @@ class PagesController extends ActionController
         $postModel = Api::_()->getModel('Blog\Model\Post');
         $postinfo = $postModel->setItemParams($id)->getPost();
         if($postinfo){
+            header('HTTP/1.1 301 Moved Permanently');
+            return $this->redirect()->toUrl('/pages/' . $postinfo['urlName']);
+        }
+    }
+
+    public function indexAction()
+    {
+        $id = $this->params('id');
+        $postModel = Api::_()->getModel('Blog\Model\Post');
+        $postinfo = $postModel->setItemParams($id)->getPost();
+        if($postinfo){
             $postinfo['Prev'] = $postModel->getItemTable()->where(array(
                 "id < {$postinfo['id']}"
             ))->order('id DESC')->find('one');

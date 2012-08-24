@@ -12,6 +12,19 @@ eva.construct = function(){
 		time.html(moment(time.attr("datetime"), "YYYY-MM-DDTHH:mm:ss ZZ").fromNow());
 	});
 
+	if($("#blog pre>code")[0]){
+		eva.loadcss(eva.s(['/lib/js/google-code-prettify/prettify.css']));
+		$("#blog pre>code").each(function(){
+			var $this = $(this),
+			pre = $this.parent(),
+			$code = $this.html();
+			pre.html($code).addClass('prettyprint');
+		});
+		eva.loader(eva.s(['/lib/js/google-code-prettify/prettify.js']), function(){
+			prettyPrint();
+		});
+	}
+
 	eva.story();
 };
 

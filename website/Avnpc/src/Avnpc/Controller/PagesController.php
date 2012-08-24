@@ -46,6 +46,7 @@ class PagesController extends ActionController
             'comments' => $comments,
         ));
         $view->setTemplate('avnpc/pages/get');
+        $this->pagecapture();
         return $view;
     }
 }

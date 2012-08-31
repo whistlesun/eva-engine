@@ -1063,3 +1063,9 @@ a:hover{color:#0A132F;text-decoration:none;}
 .jspTrack{background:#F5F5F5;}
 .jspDrag{background:#999;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}
 .jspHorizontalBar{height:5px;}
+.timeline .page_content{padding-top:20px;padding-bottom:0px;max-width:100%;}
+.timeline p.copyright{display:none;}
+.timeline .neighbors{display:none;}
+.timeline .vco-storyjs .vco-feature h1,.timeline .vco-storyjs .vco-feature h2,.timeline .vco-storyjs .vco-feature h3,.timeline .vco-storyjs .vco-feature h4,.timeline .vco-storyjs .vco-feature h5,.timeline .vco-storyjs .vco-feature h6{font-family:Microsoft YaHei,Trebuchet MS,Verdana,Helvetica,Arial,sans-serif;}
+.timeline .vco-storyjs p,.timeline .vco-storyjs blockquote,.timeline .vco-storyjs blockquote p,.timeline .vco-storyjs .twitter blockquote p{font-family:Microsoft YaHei,Trebuchet MS,Verdana,Helvetica,Arial,sans-serif !important;}
+.timeline .vco-storyjs .timenav h1,.timeline .vco-storyjs .flag-content h1,.timeline .vco-storyjs .era h1,.timeline .vco-storyjs .timenav h2,.timeline .vco-storyjs .flag-content h2,.timeline .vco-storyjs .era h2,.timeline .vco-storyjs .timenav h3,.timeline .vco-storyjs .flag-content h3,.timeline .vco-storyjs .era h3,.timeline .vco-storyjs .timenav h4,.timeline .vco-storyjs .flag-content h4,.timeline .vco-storyjs .era h4,.timeline .vco-storyjs .timenav h5,.timeline .vco-storyjs .flag-content h5,.timeline .vco-storyjs .era h5,.timeline .vco-storyjs .timenav h6,.timeline .vco-storyjs .flag-content h6,.timeline .vco-storyjs .era h6{font-family:MS UI Gothic,sans-serif !important;}

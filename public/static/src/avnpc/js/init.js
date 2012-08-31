@@ -24,8 +24,33 @@ eva.construct = function(){
 			prettyPrint();
 		});
 	}
-
 	eva.story();
+
+	if($("#timeline-embed")[0]){
+		$timeline = $("#timeline-embed");
+		$("body").addClass('timeline');
+		eva.loader(eva.s(['src/avnpc/timeline/js/storyjs-embed.js']), function(){
+			var minHeight = 550;
+			var height = $(window).height() > minHeight ? $(window).height() - 80 : minHeight;
+			var source = $timeline.html();
+			$timeline.empty();
+			var config = {
+				type:               'timeline',
+				width:              '100%',
+				height:             height,
+				start_at_end:       true, 
+				debug:              false,
+				lang:               'zh-cn',
+				source:             source,
+				embed_id:           'timeline-embed',
+				js:                 eva.s('src/avnpc/timeline/js/timeline-min.js'), 
+				css:                eva.s('src/avnpc/timeline/css/timeline.css') 
+			};
+			//console.log(config);
+			createStoryJS(config);
+		});	
+	}
+
 };
 
 eva.destruct = function(){

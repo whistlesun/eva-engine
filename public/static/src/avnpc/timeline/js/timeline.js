@@ -1,33 +1,40 @@
 /*!
 	TimelineJS
-	Version 1.65
+	Version 2.11
 	Designed and built by Zach Wise at VéritéCo
 
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	http://www.gnu.org/licenses/
+	This Source Code Form is subject to the terms of the Mozilla Public
+	License, v. 2.0. If a copy of the MPL was not distributed with this
+	file, You can obtain one at http://mozilla.org/MPL/2.0/.
 	
 */
 
-/*********************************************** 
-     Begin VMM.js 
-***********************************************/ 
+/* **********************************************
+     Begin VMM.StoryJS.License.js
+********************************************** */
 
-/*	VéritéCo JS Master
-	Version: 0.6
-	Date: June 19, 2012
-	Copyright 2012 VéritéCo unless part of TimelineJS, 
-	if part of TimelineJS then it inherits TimelineJS's license.
-	Designed and built by Zach Wise digitalartwork.net
-================================================== */
+/*!
+	StoryJS
+	Designed and built by Zach Wise at VéritéCo
+
+	This Source Code Form is subject to the terms of the Mozilla Public
+	License, v. 2.0. If a copy of the MPL was not distributed with this
+	file, You can obtain one at http://mozilla.org/MPL/2.0/.
+*/
+
+/* **********************************************
+     Begin VMM.js
+********************************************** */
+
+/**
+	* VéritéCo JS Core
+	* Designed and built by Zach Wise at VéritéCo zach@verite.co
+
+	* This Source Code Form is subject to the terms of the Mozilla Public
+	* License, v. 2.0. If a copy of the MPL was not distributed with this
+	* file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+*/  
 
 
 /*	Simple JavaScript Inheritance
@@ -136,7 +143,8 @@ if (typeof VMM == 'undefined') {
 		
 		api_keys_master: {
 			flickr:		"RAIvxHY4hE/Elm5cieh4X5ptMyDpj7MYIxziGxi0WGCcy1s+yr7rKQ==",
-			google:		"jwNGnYw4hE9lmAez4ll0QD+jo6SKBJFknkopLS4FrSAuGfIwyj57AusuR0s8dAo=",
+			//google:		"jwNGnYw4hE9lmAez4ll0QD+jo6SKBJFknkopLS4FrSAuGfIwyj57AusuR0s8dAo=",
+			google:		"uQKadH1VMlCsp560gN2aOiMz4evWkl1s34yryl3F/9FJOsn+/948CbBUvKLN46U=",
 			twitter:	""
 		},
 		
@@ -388,9 +396,9 @@ var type={
 
 
 
-/*********************************************** 
-     Begin VMM.Library.js 
-***********************************************/ 
+/* **********************************************
+     Begin VMM.Library.js
+********************************************** */
 
 /*	* LIBRARY ABSTRACTION
 ================================================== */
@@ -994,9 +1002,9 @@ if( typeof( jQuery ) != 'undefined' ){
 }
 
 
-/*********************************************** 
-     Begin VMM.Browser.js 
-***********************************************/ 
+/* **********************************************
+     Begin VMM.Browser.js
+********************************************** */
 
 /*	* DEVICE AND BROWSER DETECTION
 ================================================== */
@@ -1155,16 +1163,16 @@ if(typeof VMM != 'undefined' && typeof VMM.Browser == 'undefined') {
 	VMM.Browser.init();
 }
 
-/*********************************************** 
-     Begin VMM.FileExtention.js 
-***********************************************/ 
+/* **********************************************
+     Begin VMM.FileExtention.js
+********************************************** */
 
 /*	* File Extention
 ================================================== */
 if(typeof VMM != 'undefined' && typeof VMM.FileExtention == 'undefined') {
 	VMM.FileExtention = {
 		googleDocType: function(url) {
-			var fileName			= url,
+			var fileName			= url.replace(/\s\s*$/, ''),
 				fileExtension		= "",
 				validFileExtensions = ["DOC","DOCX","XLS","XLSX","PPT","PPTX","PDF","PAGES","AI","PSD","TIFF","DXF","SVG","EPS","PS","TTF","XPS","ZIP","RAR"],
 				flag				= false;
@@ -1181,9 +1189,9 @@ if(typeof VMM != 'undefined' && typeof VMM.FileExtention == 'undefined') {
 	}
 }
 
-/*********************************************** 
-     Begin VMM.Date.js 
-***********************************************/ 
+/* **********************************************
+     Begin VMM.Date.js
+********************************************** */
 
 /*	* Utilities and Useful Functions
 ================================================== */
@@ -1545,9 +1553,9 @@ if(typeof VMM != 'undefined' && typeof VMM.Date == 'undefined') {
 	
 }
 
-/*********************************************** 
-     Begin VMM.Util.js 
-***********************************************/ 
+/* **********************************************
+     Begin VMM.Util.js
+********************************************** */
 
 /*	* Utilities and Useful Functions
 ================================================== */
@@ -2026,266 +2034,550 @@ if(typeof VMM != 'undefined' && typeof VMM.Util == 'undefined') {
 	}).init();
 }
 
-/*********************************************** 
-     Begin VMM.LoadLib.js 
-***********************************************/ 
+/* **********************************************
+     Begin LazyLoad.js
+********************************************** */
 
-/*	* LoadLib Based on LazyLoad by Ryan Grove
-	* https://github.com/rgrove/lazyload/ 
-	* Copyright (c) 2011 Ryan Grove <ryan@wonko.com>
-	* All rights reserved.
+/*jslint browser: true, eqeqeq: true, bitwise: true, newcap: true, immed: true, regexp: false */
 
-	* Permission is hereby granted, free of charge, to any person obtaining a copy of
-	* this software and associated documentation files (the 'Software'), to deal in
-	* the Software without restriction, including without limitation the rights to
-	* use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-	* the Software, and to permit persons to whom the Software is furnished to do so,
-	* subject to the following conditions:
+/**
+LazyLoad makes it easy and painless to lazily load one or more external
+JavaScript or CSS files on demand either during or after the rendering of a web
+page.
 
-	* The above copyright notice and this permission notice shall be included in all
-	* copies or substantial portions of the Software.
+Supported browsers include Firefox 2+, IE6+, Safari 3+ (including Mobile
+Safari), Google Chrome, and Opera 9+. Other browsers may or may not work and
+are not officially supported.
 
+Visit https://github.com/rgrove/lazyload/ for more info.
+
+Copyright (c) 2011 Ryan Grove <ryan@wonko.com>
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the 'Software'), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+@module lazyload
+@class LazyLoad
+@static
+@version 2.0.3 (git)
+*/
+
+LazyLoad = (function (doc) {
+  // -- Private Variables ------------------------------------------------------
+
+  // User agent and feature test information.
+  var env,
+
+  // Reference to the <head> element (populated lazily).
+  head,
+
+  // Requests currently in progress, if any.
+  pending = {},
+
+  // Number of times we've polled to check whether a pending stylesheet has
+  // finished loading. If this gets too high, we're probably stalled.
+  pollCount = 0,
+
+  // Queued requests.
+  queue = {css: [], js: []},
+
+  // Reference to the browser's list of stylesheets.
+  styleSheets = doc.styleSheets;
+
+  // -- Private Methods --------------------------------------------------------
+
+  /**
+  Creates and returns an HTML element with the specified name and attributes.
+
+  @method createNode
+  @param {String} name element name
+  @param {Object} attrs name/value mapping of element attributes
+  @return {HTMLElement}
+  @private
+  */
+  function createNode(name, attrs) {
+    var node = doc.createElement(name), attr;
+
+    for (attr in attrs) {
+      if (attrs.hasOwnProperty(attr)) {
+        node.setAttribute(attr, attrs[attr]);
+      }
+    }
+
+    return node;
+  }
+
+  /**
+  Called when the current pending resource of the specified type has finished
+  loading. Executes the associated callback (if any) and loads the next
+  resource in the queue.
+
+  @method finish
+  @param {String} type resource type ('css' or 'js')
+  @private
+  */
+  function finish(type) {
+    var p = pending[type],
+        callback,
+        urls;
+
+    if (p) {
+      callback = p.callback;
+      urls     = p.urls;
+
+      urls.shift();
+      pollCount = 0;
+
+      // If this is the last of the pending URLs, execute the callback and
+      // start the next request in the queue (if any).
+      if (!urls.length) {
+        callback && callback.call(p.context, p.obj);
+        pending[type] = null;
+        queue[type].length && load(type);
+      }
+    }
+  }
+
+  /**
+  Populates the <code>env</code> variable with user agent and feature test
+  information.
+
+  @method getEnv
+  @private
+  */
+  function getEnv() {
+    var ua = navigator.userAgent;
+
+    env = {
+      // True if this browser supports disabling async mode on dynamically
+      // created script nodes. See
+      // http://wiki.whatwg.org/wiki/Dynamic_Script_Execution_Order
+      async: doc.createElement('script').async === true
+    };
+
+    (env.webkit = /AppleWebKit\//.test(ua))
+      || (env.ie = /MSIE/.test(ua))
+      || (env.opera = /Opera/.test(ua))
+      || (env.gecko = /Gecko\//.test(ua))
+      || (env.unknown = true);
+  }
+
+  /**
+  Loads the specified resources, or the next resource of the specified type
+  in the queue if no resources are specified. If a resource of the specified
+  type is already being loaded, the new request will be queued until the
+  first request has been finished.
+
+  When an array of resource URLs is specified, those URLs will be loaded in
+  parallel if it is possible to do so while preserving execution order. All
+  browsers support parallel loading of CSS, but only Firefox and Opera
+  support parallel loading of scripts. In other browsers, scripts will be
+  queued and loaded one at a time to ensure correct execution order.
+
+  @method load
+  @param {String} type resource type ('css' or 'js')
+  @param {String|Array} urls (optional) URL or array of URLs to load
+  @param {Function} callback (optional) callback function to execute when the
+    resource is loaded
+  @param {Object} obj (optional) object to pass to the callback function
+  @param {Object} context (optional) if provided, the callback function will
+    be executed in this object's context
+  @private
+  */
+  function load(type, urls, callback, obj, context) {
+    var _finish = function () { finish(type); },
+        isCSS   = type === 'css',
+        nodes   = [],
+        i, len, node, p, pendingUrls, url;
+
+    env || getEnv();
+
+    if (urls) {
+      // If urls is a string, wrap it in an array. Otherwise assume it's an
+      // array and create a copy of it so modifications won't be made to the
+      // original.
+      urls = typeof urls === 'string' ? [urls] : urls.concat();
+
+      // Create a request object for each URL. If multiple URLs are specified,
+      // the callback will only be executed after all URLs have been loaded.
+      //
+      // Sadly, Firefox and Opera are the only browsers capable of loading
+      // scripts in parallel while preserving execution order. In all other
+      // browsers, scripts must be loaded sequentially.
+      //
+      // All browsers respect CSS specificity based on the order of the link
+      // elements in the DOM, regardless of the order in which the stylesheets
+      // are actually downloaded.
+      if (isCSS || env.async || env.gecko || env.opera) {
+        // Load in parallel.
+        queue[type].push({
+          urls    : urls,
+          callback: callback,
+          obj     : obj,
+          context : context
+        });
+      } else {
+        // Load sequentially.
+        for (i = 0, len = urls.length; i < len; ++i) {
+          queue[type].push({
+            urls    : [urls[i]],
+            callback: i === len - 1 ? callback : null, // callback is only added to the last URL
+            obj     : obj,
+            context : context
+          });
+        }
+      }
+    }
+
+    // If a previous load request of this type is currently in progress, we'll
+    // wait our turn. Otherwise, grab the next item in the queue.
+    if (pending[type] || !(p = pending[type] = queue[type].shift())) {
+      return;
+    }
+
+    head || (head = doc.head || doc.getElementsByTagName('head')[0]);
+    pendingUrls = p.urls;
+
+    for (i = 0, len = pendingUrls.length; i < len; ++i) {
+      url = pendingUrls[i];
+
+      if (isCSS) {
+          node = env.gecko ? createNode('style') : createNode('link', {
+            href: url,
+            rel : 'stylesheet'
+          });
+      } else {
+        node = createNode('script', {src: url});
+        node.async = false;
+      }
+
+      node.className = 'lazyload';
+      node.setAttribute('charset', 'utf-8');
+
+      if (env.ie && !isCSS) {
+        node.onreadystatechange = function () {
+          if (/loaded|complete/.test(node.readyState)) {
+            node.onreadystatechange = null;
+            _finish();
+          }
+        };
+      } else if (isCSS && (env.gecko || env.webkit)) {
+        // Gecko and WebKit don't support the onload event on link nodes.
+        if (env.webkit) {
+          // In WebKit, we can poll for changes to document.styleSheets to
+          // figure out when stylesheets have loaded.
+          p.urls[i] = node.href; // resolve relative URLs (or polling won't work)
+          pollWebKit();
+        } else {
+          // In Gecko, we can import the requested URL into a <style> node and
+          // poll for the existence of node.sheet.cssRules. Props to Zach
+          // Leatherman for calling my attention to this technique.
+          node.innerHTML = '@import "' + url + '";';
+          pollGecko(node);
+        }
+      } else {
+        node.onload = node.onerror = _finish;
+      }
+
+      nodes.push(node);
+    }
+
+    for (i = 0, len = nodes.length; i < len; ++i) {
+      head.appendChild(nodes[i]);
+    }
+  }
+
+  /**
+  Begins polling to determine when the specified stylesheet has finished loading
+  in Gecko. Polling stops when all pending stylesheets have loaded or after 10
+  seconds (to prevent stalls).
+
+  Thanks to Zach Leatherman for calling my attention to the @import-based
+  cross-domain technique used here, and to Oleg Slobodskoi for an earlier
+  same-domain implementation. See Zach's blog for more details:
+  http://www.zachleat.com/web/2010/07/29/load-css-dynamically/
+
+  @method pollGecko
+  @param {HTMLElement} node Style node to poll.
+  @private
+  */
+  function pollGecko(node) {
+    var hasRules;
+
+    try {
+      // We don't really need to store this value or ever refer to it again, but
+      // if we don't store it, Closure Compiler assumes the code is useless and
+      // removes it.
+      hasRules = !!node.sheet.cssRules;
+    } catch (ex) {
+      // An exception means the stylesheet is still loading.
+      pollCount += 1;
+
+      if (pollCount < 200) {
+        setTimeout(function () { pollGecko(node); }, 50);
+      } else {
+        // We've been polling for 10 seconds and nothing's happened. Stop
+        // polling and finish the pending requests to avoid blocking further
+        // requests.
+        hasRules && finish('css');
+      }
+
+      return;
+    }
+
+    // If we get here, the stylesheet has loaded.
+    finish('css');
+  }
+
+  /**
+  Begins polling to determine when pending stylesheets have finished loading
+  in WebKit. Polling stops when all pending stylesheets have loaded or after 10
+  seconds (to prevent stalls).
+
+  @method pollWebKit
+  @private
+  */
+  function pollWebKit() {
+    var css = pending.css, i;
+
+    if (css) {
+      i = styleSheets.length;
+
+      // Look for a stylesheet matching the pending URL.
+      while (--i >= 0) {
+        if (styleSheets[i].href === css.urls[0]) {
+          finish('css');
+          break;
+        }
+      }
+
+      pollCount += 1;
+
+      if (css) {
+        if (pollCount < 200) {
+          setTimeout(pollWebKit, 50);
+        } else {
+          // We've been polling for 10 seconds and nothing's happened, which may
+          // indicate that the stylesheet has been removed from the document
+          // before it had a chance to load. Stop polling and finish the pending
+          // request to prevent blocking further requests.
+          finish('css');
+        }
+      }
+    }
+  }
+
+  return {
+
+    /**
+    Requests the specified CSS URL or URLs and executes the specified
+    callback (if any) when they have finished loading. If an array of URLs is
+    specified, the stylesheets will be loaded in parallel and the callback
+    will be executed after all stylesheets have finished loading.
+
+    @method css
+    @param {String|Array} urls CSS URL or array of CSS URLs to load
+    @param {Function} callback (optional) callback function to execute when
+      the specified stylesheets are loaded
+    @param {Object} obj (optional) object to pass to the callback function
+    @param {Object} context (optional) if provided, the callback function
+      will be executed in this object's context
+    @static
+    */
+    css: function (urls, callback, obj, context) {
+      load('css', urls, callback, obj, context);
+    },
+
+    /**
+    Requests the specified JavaScript URL or URLs and executes the specified
+    callback (if any) when they have finished loading. If an array of URLs is
+    specified and the browser supports it, the scripts will be loaded in
+    parallel and the callback will be executed after all scripts have
+    finished loading.
+
+    Currently, only Firefox and Opera support parallel loading of scripts while
+    preserving execution order. In other browsers, scripts will be
+    queued and loaded one at a time to ensure correct execution order.
+
+    @method js
+    @param {String|Array} urls JS URL or array of JS URLs to load
+    @param {Function} callback (optional) callback function to execute when
+      the specified scripts are loaded
+    @param {Object} obj (optional) object to pass to the callback function
+    @param {Object} context (optional) if provided, the callback function
+      will be executed in this object's context
+    @static
+    */
+    js: function (urls, callback, obj, context) {
+      load('js', urls, callback, obj, context);
+    }
+
+  };
+})(this.document);
+
+
+/* **********************************************
+     Begin VMM.LoadLib.js
+********************************************** */
+
+/*
+	LoadLib
+	Designed and built by Zach Wise digitalartwork.net
+*/
+
+/*	* CodeKit Import
+	* http://incident57.com/codekit/
 ================================================== */
-window.loadedJS = [];
+// @codekit-prepend "../Library/LazyLoad.js";
 
-
-if(typeof VMM != 'undefined' && typeof VMM.LoadLib == 'undefined') {
-	//VMM.LoadLib.js('http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', onJQueryLoaded);
-	//VMM.LoadLib.css('http://someurl.css', onCSSLoaded);
+LoadLib = (function (doc) {
+	var loaded	= [];
 	
-	
-	
-	VMM.LoadLib = (function (doc) {
-		var env,
-		head,
-		pending = {},
-		pollCount = 0,
-		queue = {css: [], js: []},
-		styleSheets = doc.styleSheets;
-	
-		var loaded_Array = [];
-	
-		function isLoaded(url) {
-			var has_been_loaded = false;
-			for(var i=0; i<loaded_Array.length; i++) {
-				if (loaded_Array[i] == url) {
-					has_been_loaded = true;
-				}
+	function isLoaded(url) {
+		
+		var i			= 0,
+			has_loaded	= false;
+		
+		for (i = 0; i < loaded.length; i++) {
+			if (loaded[i] == url) {
+				has_loaded = true;
 			}
-			if (!has_been_loaded) {
-				loaded_Array.push(url);
-			}
-			return has_been_loaded;
 		}
-
-		function createNode(name, attrs) {
-			var node = doc.createElement(name), attr;
-
-			for (attr in attrs) {
-				if (attrs.hasOwnProperty(attr)) {
-					node.setAttribute(attr, attrs[attr]);
-				}
-			}
-
-			return node;
+		
+		if (has_loaded) {
+			return true;
+		} else {
+			loaded.push(url);
+			return false;
 		}
-
-	  function finish(type) {
-	    var p = pending[type],
-	        callback,
-	        urls;
-
-	    if (p) {
-	      callback = p.callback;
-	      urls     = p.urls;
-	      urls.shift();
-	      pollCount = 0;
-	      if (!urls.length) {
-	        callback && callback.call(p.context, p.obj);
-	        pending[type] = null;
-	        queue[type].length && load(type);
-	      }
-	    }
-	  }
-
-	  function getEnv() {
-	    var ua = navigator.userAgent;
-
-	    env = {
-
-	      async: doc.createElement('script').async === true
-	    };
-
-	    (env.webkit = /AppleWebKit\//.test(ua))
-	      || (env.ie = /MSIE/.test(ua))
-	      || (env.opera = /Opera/.test(ua))
-	      || (env.gecko = /Gecko\//.test(ua))
-	      || (env.unknown = true);
-	  }
-
-	  function load(type, urls, callback, obj, context) {
-	    var _finish = function () { finish(type); },
-	        isCSS   = type === 'css',
-	        nodes   = [],
-	        i, len, node, p, pendingUrls, url;
-
-	    env || getEnv();
-
-	    if (urls) {
-
-	      urls = typeof urls === 'string' ? [urls] : urls.concat();
-
-	      if (isCSS || env.async || env.gecko || env.opera) {
-
-	        queue[type].push({
-	          urls    : urls,
-	          callback: callback,
-	          obj     : obj,
-	          context : context
-	        });
-	      } else {
-	        for (i = 0, len = urls.length; i < len; ++i) {
-	          queue[type].push({
-	            urls    : [urls[i]],
-	            callback: i === len - 1 ? callback : null,
-	            obj     : obj,
-	            context : context
-	          });
-	        }
-	      }
-	    }
-
-	    if (pending[type] || !(p = pending[type] = queue[type].shift())) {
-	      return;
-	    }
-
-	    head || (head = doc.head || doc.getElementsByTagName('head')[0]);
-	    pendingUrls = p.urls;
-
-	    for (i = 0, len = pendingUrls.length; i < len; ++i) {
-	      url = pendingUrls[i];
-
-	      if (isCSS) {
-	          node = env.gecko ? createNode('style') : createNode('link', {
-	            href: url,
-	            rel : 'stylesheet'
-	          });
-	      } else {
-	        node = createNode('script', {src: url});
-	        node.async = false;
-	      }
-
-	      node.className = 'lazyload';
-	      node.setAttribute('charset', 'utf-8');
-
-	      if (env.ie && !isCSS) {
-	        node.onreadystatechange = function () {
-	          if (/loaded|complete/.test(node.readyState)) {
-	            node.onreadystatechange = null;
-	            _finish();
-	          }
-	        };
-	      } else if (isCSS && (env.gecko || env.webkit)) {
-	        if (env.webkit) {
-	          p.urls[i] = node.href; 
-	          pollWebKit();
-	        } else {
-	          node.innerHTML = '@import "' + url + '";';
-	          pollGecko(node);
-	        }
-	      } else {
-	        node.onload = node.onerror = _finish;
-	      }
-
-	      nodes.push(node);
-	    }
-
-	    for (i = 0, len = nodes.length; i < len; ++i) {
-	      head.appendChild(nodes[i]);
-	    }
-	  }
-
-	  function pollGecko(node) {
-	    var hasRules;
-
-	    try {
-
-	      hasRules = !!node.sheet.cssRules;
-	    } catch (ex) {
-	      pollCount += 1;
-
-	      if (pollCount < 200) {
-	        setTimeout(function () { pollGecko(node); }, 50);
-	      } else {
-
-	        hasRules && finish('css');
-	      }
-
-	      return;
-	    }
-
-	    finish('css');
-	  }
-
-	  function pollWebKit() {
-	    var css = pending.css, i;
-
-	    if (css) {
-	      i = styleSheets.length;
-
-	      while (--i >= 0) {
-	        if (styleSheets[i].href === css.urls[0]) {
-	          finish('css');
-	          break;
-	        }
-	      }
-
-	      pollCount += 1;
-
-	      if (css) {
-	        if (pollCount < 200) {
-	          setTimeout(pollWebKit, 50);
-	        } else {
-
-	          finish('css');
-	        }
-	      }
-	    }
-	  }
-
-	  return {
-
+		
+	}
+	
+	return {
+		
 		css: function (urls, callback, obj, context) {
-			if (isLoaded(urls)) {
-				return callback;
-			} else {
-				load('css', urls, callback, obj, context);
+			if (!isLoaded(urls)) {
+				LazyLoad.css(urls, callback, obj, context);
 			}
 		},
 
 		js: function (urls, callback, obj, context) {
-			if (isLoaded(urls)) {
-				return callback;
-			} else {
-				load('js', urls, callback, obj, context);
+			if (!isLoaded(urls)) {
+				LazyLoad.js(urls, callback, obj, context);
 			}
 		}
-
-	  };
-	})(this.document);
-}
-
+    };
+	
+})(this.document);
 
 
-/*********************************************** 
-     Begin VMM.ExternalAPI.js 
-***********************************************/ 
+/* **********************************************
+     Begin VMM.Core.js
+********************************************** */
+
+/* VeriteCo Core
+================================================== */
+
+/*	* CodeKit Import
+	* http://incident57.com/codekit/
+================================================== */
+// @codekit-prepend "VMM.js";
+// @codekit-prepend "VMM.Library.js";
+// @codekit-prepend "VMM.Browser.js";
+// @codekit-prepend "VMM.FileExtention.js";
+// @codekit-prepend "VMM.Date.js";
+// @codekit-prepend "VMM.Util.js";
+// @codekit-prepend "VMM.LoadLib.js";
+// @codekit-prepend "VMM.Language.js";
+
+
+
+/* **********************************************
+     Begin VMM.Language.js
+********************************************** */
+
+/* DEFAULT LANGUAGE 
+================================================== */
+if(typeof VMM != 'undefined' && typeof VMM.Language == 'undefined') {
+	VMM.Language = {
+		lang: "en",
+		api: {
+			wikipedia: "en"
+		},
+		date: {
+			month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+			month_abbr: ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."],
+			day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+			day_abbr: ["Sun.","Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."]
+		}, 
+		dateformats: {
+			year: "yyyy",
+			month_short: "mmm",
+			month: "mmmm yyyy",
+			full_short: "mmm d",
+			full: "mmmm d',' yyyy",
+			time_no_seconds_short: "h:MM TT",
+			time_no_seconds_small_date: "h:MM TT'<br/><small>'mmmm d',' yyyy'</small>'",
+			full_long: "mmm d',' yyyy 'at' h:MM TT",
+			full_long_small_date: "h:MM TT'<br/><small>mmm d',' yyyy'</small>'"
+		},
+		messages: {
+			loading_timeline: "Loading Timeline... ",
+			return_to_title: "Return to Title",
+			expand_timeline: "Expand Timeline",
+			contract_timeline: "Contract Timeline",
+			wikipedia: "From Wikipedia, the free encyclopedia",
+			loading_content: "Loading Content",
+			loading: "Loading"
+		}
+	}
+};
+
+/* **********************************************
+     Begin VMM.ExternalAPI.js
+********************************************** */
 
 /* External API
 ================================================== */
 if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 	
-	VMM.ExternalAPI = {
+	VMM.ExternalAPI = ({
+		
+		keys: {
+			google:				"",
+			flickr:				"",
+			twitter:			""
+		},
+		
+		keys_master: {
+			vp:			"Pellentesque nibh felis, eleifend id, commodo in, interdum vitae, leo",
+			flickr:		"RAIvxHY4hE/Elm5cieh4X5ptMyDpj7MYIxziGxi0WGCcy1s+yr7rKQ==",
+			google:		"jwNGnYw4hE9lmAez4ll0QD+jo6SKBJFknkopLS4FrSAuGfIwyj57AusuR0s8dAo=",
+			twitter:	""
+		},
+		
+		init: function() {
+			return this;
+		},
+		
+		setKeys: function(d) {
+			VMM.ExternalAPI.keys	= d;
+		},
 		
 		pushQues: function() {
 			
@@ -2321,8 +2613,8 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 		twitter: {
 			tweetArray: [],
 			
-			get: function(mid, id) {
-				var tweet = {mid: mid, id: id};
+			get: function(m) {
+				var tweet = {mid: m.id, id: m.uid};
 				VMM.master_config.twitter.que.push(tweet);
 				VMM.master_config.twitter.active = true;
 				//VMM.master_config.api.pushques.push(VMM.ExternalAPI.twitter.pushQue);
@@ -2366,6 +2658,7 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 				
 					VMM.attachElement("#"+tweet.id.toString(), twit );
 					VMM.attachElement("#text_thumb_"+tweet.id.toString(), d.text );
+					VMM.attachElement("#marker_content_" + tweet.id.toString(), d.text );
 					
 				})
 				.error(function(jqXHR, textStatus, errorThrown) {
@@ -2582,19 +2875,31 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 		
 		googlemaps: {
 			
-			get: function(url, id) {
-				var timer, api_key, map_vars;
+			maptype: "toner",
+			
+			setMapType: function(d) {
+				if (d != "") {
+					VMM.ExternalAPI.googlemaps.maptype = d;
+				}
+			},
+			
+			get: function(m) {
+				var timer, 
+					api_key,
+					map_vars,
+					map_url,
+					map;
 				
-				map_vars = VMM.Util.getUrlVars(url);
+				map_vars = VMM.Util.getUrlVars(m.id);
 				
-				if (VMM.master_config.Timeline.api_keys.google != "") {
-					api_key = VMM.master_config.Timeline.api_keys.google;
+				if (VMM.ExternalAPI.keys.google != "") {
+					api_key = VMM.ExternalAPI.keys.google;
 				} else {
-					api_key = Aes.Ctr.decrypt(VMM.master_config.api_keys_master.google, VMM.master_config.vp, 256);
+					api_key = Aes.Ctr.decrypt(VMM.ExternalAPI.keys_master.google, VMM.ExternalAPI.keys_master.vp, 256);
 				}
 				
-				var map_url = "http://maps.googleapis.com/maps/api/js?key=" + api_key + "&libraries=places&sensor=false&callback=VMM.ExternalAPI.googlemaps.onMapAPIReady";
-				var map = { url: url, vars: map_vars, id: id };
+				map_url = "http://maps.googleapis.com/maps/api/js?key=" + api_key + "&libraries=places&sensor=false&callback=VMM.ExternalAPI.googlemaps.onMapAPIReady";
+				map = { url: m.id, vars: map_vars, id: m.uid };
 				
 				if (VMM.master_config.googlemaps.active) {
 					VMM.master_config.googlemaps.que.push(map);
@@ -2604,7 +2909,7 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 					if (VMM.master_config.googlemaps.api_loaded) {
 						
 					} else {
-						VMM.LoadLib.js(map_url, function() {
+						LoadLib.js(map_url, function() {
 							trace("Google Maps API Library Loaded");
 						});
 					}
@@ -2612,9 +2917,44 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 			},
 			
 			create: function(m) {
-				var map_attribution = "";
-				var layer;
-				var map;
+				trace(m.url);
+				VMM.ExternalAPI.googlemaps.createAPIMap(m);
+				if (m.url[0].match("msid")) {
+					//VMM.ExternalAPI.googlemaps.createAPIMap(m);
+				} else {
+					//VMM.ExternalAPI.googlemaps.createiFrameMap(m);
+				} 
+				
+			},
+			
+			createiFrameMap: function(m) {
+				var embed_url		= m.url + "&output=embed",
+					mc				= "",
+					unique_map_id	= m.id.toString() + "_gmap";
+					
+				mc				+= "<div class='google-map' id='" + unique_map_id + "' style='width=100%;height=100%;'>";
+				mc				+= "<iframe width='100%' height='100%' frameborder='0' scrolling='no' marginheight='0' marginwidth='0' src='" + embed_url + "'></iframe>";
+				mc				+= "</div>";
+				
+				VMM.attachElement("#" + m.id, mc);
+				
+			},
+			
+			createAPIMap: function(m) {
+				var map_attribution	= "",
+					layer,
+					map,
+					map_options,
+					unique_map_id			= m.id.toString() + "_gmap",
+					map_attribution_html	= "",
+					location				= new google.maps.LatLng(41.875696,-87.624207),
+					latlong,
+					zoom					= 11,
+					has_location			= false,
+					has_zoom				= false,
+					api_limit				= false,
+					map_bounds;
+					
 				
 				function mapProvider(name) {
 					if (name in VMM.ExternalAPI.googlemaps.map_providers) {
@@ -2662,32 +3002,25 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 				/* Make the Map
 				================================================== */
 				
-				
-				if (type.of(VMM.master_config.Timeline.maptype) == "string") {
-					if (VMM.ExternalAPI.googlemaps.defaultType(VMM.master_config.Timeline.maptype)) {
-						layer				=	google.maps.MapTypeId[VMM.master_config.Timeline.maptype.toUpperCase()];
+				if (VMM.ExternalAPI.googlemaps.maptype != "") {
+					if (VMM.ExternalAPI.googlemaps.defaultType(VMM.ExternalAPI.googlemaps.maptype)) {
+						layer				=	google.maps.MapTypeId[VMM.ExternalAPI.googlemaps.maptype.toUpperCase()];
 					} else {
-						layer				=	VMM.master_config.Timeline.maptype;
+						layer				=	VMM.ExternalAPI.googlemaps.maptype;
 					}
 				} else {
 					layer					=	"toner";
 				}
 				
-				var location				=	new google.maps.LatLng(41.875696,-87.624207);
-				var latlong;
-				var zoom					=	11;
-				var has_location			=	false;
-				var has_zoom				=	false;
-				var map_bounds;
 				
 				if (type.of(VMM.Util.getUrlVars(m.url)["ll"]) == "string") {
-					has_location			=	true;
-					latlong					=	VMM.Util.getUrlVars(m.url)["ll"].split(",");
-					location				=	new google.maps.LatLng(parseFloat(latlong[0]),parseFloat(latlong[1]));
+					has_location			= true;
+					latlong					= VMM.Util.getUrlVars(m.url)["ll"].split(",");
+					location				= new google.maps.LatLng(parseFloat(latlong[0]),parseFloat(latlong[1]));
 					
 				} else if (type.of(VMM.Util.getUrlVars(m.url)["sll"]) == "string") {
-					latlong					=	VMM.Util.getUrlVars(m.url)["sll"].split(",");
-					location				=	new google.maps.LatLng(parseFloat(latlong[0]),parseFloat(latlong[1]));
+					latlong					= VMM.Util.getUrlVars(m.url)["sll"].split(",");
+					location				= new google.maps.LatLng(parseFloat(latlong[0]),parseFloat(latlong[1]));
 				} 
 				
 				if (type.of(VMM.Util.getUrlVars(m.url)["z"]) == "string") {
@@ -2695,7 +3028,7 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 					zoom					=	parseFloat(VMM.Util.getUrlVars(m.url)["z"]);
 				}
 				
-				var map_options = {
+				map_options = {
 					zoom:						zoom,
 					disableDefaultUI:			true,
 					mapTypeControl:				false,
@@ -2711,43 +3044,300 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 				    }
 				}
 				
-				var unique_map_id			=	m.id.toString() + "_gmap";
-				
 				VMM.attachElement("#" + m.id, "<div class='google-map' id='" + unique_map_id + "' style='width=100%;height=100%;'></div>");
 				
-				var map						=	new google.maps.Map(document.getElementById(unique_map_id), map_options);
+				map		= new google.maps.Map(document.getElementById(unique_map_id), map_options);
 				
-				if (VMM.ExternalAPI.googlemaps.defaultType(VMM.master_config.Timeline.maptype)) {
+				if (VMM.ExternalAPI.googlemaps.defaultType(VMM.ExternalAPI.googlemaps.maptype)) {
 					
 				} else {
 					map.mapTypes.set(layer, new google.maps.VeriteMapType(layer));
 					// ATTRIBUTION
-					var map_attribution_html =	"<div class='map-attribution'><div class='attribution-text'>" + map_attribution + "</div></div>";
+					map_attribution_html =	"<div class='map-attribution'><div class='attribution-text'>" + map_attribution + "</div></div>";
 					VMM.appendElement("#"+unique_map_id, map_attribution_html);
 				}
 				
-				loadKML();
+				// DETERMINE IF KML IS POSSIBLE
+				if (m.url[0].match("msid")) {
+					loadKML();
+				} else {
+					//loadPlaces();
+					if (type.of(VMM.Util.getUrlVars(m.url)["q"]) == "string") {
+						geocodePlace();
+					} 
+				}
+				
+				// GEOCODE
+				function geocodePlace() {
+
+
+					
+					var geocoder	= new google.maps.Geocoder(),
+						address		= VMM.Util.getUrlVars(m.url)["q"],
+						marker;
+						
+					if (address.match("loc:")) {
+						var address_latlon = address.split(":")[1].split("+");
+						location = new google.maps.LatLng(parseFloat(address_latlon[0]),parseFloat(address_latlon[1]));
+						has_location = true;
+					}
+						
+					geocoder.geocode( { 'address': address}, function(results, status) {
+						if (status == google.maps.GeocoderStatus.OK) {
+							
+							marker = new google.maps.Marker({
+								map: map,
+								position: results[0].geometry.location
+							});
+							
+							// POSITION MAP
+							//map.setCenter(results[0].geometry.location);
+							//map.panTo(location);
+							if (typeof results[0].geometry.viewport != 'undefined') {
+								map.fitBounds(results[0].geometry.viewport);
+							} else if (typeof results[0].geometry.bounds != 'undefined') {
+								map.fitBounds(results[0].geometry.bounds);
+							} else {
+								map.setCenter(results[0].geometry.location);
+							}
+							
+							if (has_location) {
+								map.panTo(location);
+							}
+							if (has_zoom) {
+								map.setZoom(zoom);
+							}
+							
+						} else {
+							trace("Geocode for " + address + " was not successful for the following reason: " + status);
+							trace("TRYING PLACES SEARCH");
+							
+							if (has_location) {
+								map.panTo(location);
+							}
+							if (has_zoom) {
+								map.setZoom(zoom);
+							}
+							
+							loadPlaces();
+						}
+					});
+				}
+				
+				// PLACES
+				function loadPlaces() {
+					var place,
+						search_request,
+						infowindow,
+						search_bounds,
+						bounds_sw,
+						bounds_ne;
+					
+					place_search	= new google.maps.places.PlacesService(map);
+					infowindow		= new google.maps.InfoWindow();
+					
+					search_request = {
+						query:		"",
+						types:		['country', 'neighborhood', 'political', 'locality', 'geocode']
+					};
+					
+					if (type.of(VMM.Util.getUrlVars(m.url)["q"]) == "string") {
+						search_request.query	= VMM.Util.getUrlVars(m.url)["q"];
+					}
+					
+					if (has_location) {
+						search_request.location	= location;
+						search_request.radius	= "15000";
+					} else {
+						bounds_sw = new google.maps.LatLng(-89.999999,-179.999999);
+						bounds_ne = new google.maps.LatLng(89.999999,179.999999);
+						search_bounds = new google.maps.LatLngBounds(bounds_sw,bounds_ne);
+						
+						//search_request.location	= search_bounds;
+					}
+					
+					place_search.textSearch(search_request, placeResults);
+					
+					function placeResults(results, status) {
+						
+						if (status == google.maps.places.PlacesServiceStatus.OK) {
+							
+							for (var i = 0; i < results.length; i++) {
+								//createMarker(results[i]);
+							}
+							
+							if (has_location) {
+								map.panTo(location);
+							} else {
+								if (results.length >= 1) {
+									map.panTo(results[0].geometry.location);
+									if (has_zoom) {
+										map.setZoom(zoom);
+									}
+								} 
+							}
+							
+							
+						} else {
+							trace("Place search for " + search_request.query + " was not successful for the following reason: " + status);
+							// IF There's a problem loading the map, load a simple iFrame version instead
+							trace("YOU MAY NEED A GOOGLE MAPS API KEY IN ORDER TO USE THIS FEATURE OF TIMELINEJS");
+							trace("FIND OUT HOW TO GET YOUR KEY HERE: https://developers.google.com/places/documentation/#Authentication");
+							
+							
+							if (has_location) {
+								map.panTo(location);
+								if (has_zoom) {
+									map.setZoom(zoom);
+								}
+							} else {
+								trace("USING SIMPLE IFRAME MAP EMBED");
+								if (m.url[0].match("https")) { 
+									m.url = m.url[0].replace("https", "http");
+								}
+								VMM.ExternalAPI.googlemaps.createiFrameMap(m);
+							}
+							
+						}
+						
+					}
+					
+					function createMarker(place) {
+						var marker, placeLoc;
+						
+						placeLoc = place.geometry.location;
+						marker = new google.maps.Marker({
+							map: map,
+							position: place.geometry.location
+						});
+
+						google.maps.event.addListener(marker, 'click', function() {
+							infowindow.setContent(place.name);
+							infowindow.open(map, this);
+						});
+					}
+					
+				}
+				
+				function loadPlacesAlt() {
+					var api_key,
+						places_url,
+						has_key		= false;
+						
+					trace("LOADING PLACES API FOR GOOGLE MAPS");
+						
+					if (VMM.ExternalAPI.keys.google != "") {
+						api_key	= VMM.ExternalAPI.keys.google;
+						has_key	= true;
+					} else {
+						trace("YOU NEED A GOOGLE MAPS API KEY IN ORDER TO USE THIS FEATURE OF TIMELINEJS");
+						trace("FIND OUT HOW TO GET YOUR KEY HERE: https://developers.google.com/places/documentation/#Authentication");
+					}
+					
+					places_url		= "https://maps.googleapis.com/maps/api/place/textsearch/json?key=" + api_key + "&sensor=false&language=" + m.lang + "&";
+					
+					if (type.of(VMM.Util.getUrlVars(m.url)["q"]) == "string") {
+						places_url	+= "query=" + VMM.Util.getUrlVars(m.url)["q"];
+					}
+					
+					if (has_location) {
+						places_url	+= "&location=" + location;
+					} 
+					
+					if (has_key) {
+						VMM.getJSON(places_url, function(d) {
+							trace("PLACES JSON");
+						
+							var places_location 	= "",
+								places_bounds		= "",
+								places_bounds_ne	= "",
+								places_bounds_sw	= "";
+						
+							trace(d);
+						
+							if (d.status == "OVER_QUERY_LIMIT") {
+								trace("OVER_QUERY_LIMIT");
+								if (has_location) {
+									map.panTo(location);
+									if (has_zoom) {
+										map.setZoom(zoom);
+									}
+								} else {
+									trace("DOING TRADITIONAL MAP IFRAME EMBED UNTIL QUERY LIMIT RESTORED");
+									api_limit = true;
+									VMM.ExternalAPI.googlemaps.createiFrameMap(m);
+								}
+							
+							} else {
+								if (d.results.length >= 1) {
+									//location = new google.maps.LatLng(parseFloat(d.results[0].geometry.location.lat),parseFloat(d.results[0].geometry.location.lng));
+									//map.panTo(location);
+							
+									places_bounds_ne	= new google.maps.LatLng(parseFloat(d.results[0].geometry.viewport.northeast.lat),parseFloat(d.results[0].geometry.viewport.northeast.lng));
+									places_bounds_sw	= new google.maps.LatLng(parseFloat(d.results[0].geometry.viewport.southwest.lat),parseFloat(d.results[0].geometry.viewport.southwest.lng));
+							
+									places_bounds = new google.maps.LatLngBounds(places_bounds_sw, places_bounds_ne)
+									map.fitBounds(places_bounds);
+							
+								} else {
+									trace("NO RESULTS");
+								}
+						
+								if (has_location) {
+									map.panTo(location);
+								} 
+								if (has_zoom) {
+									map.setZoom(zoom);
+								}
+							}
+						
+						})
+						.error(function(jqXHR, textStatus, errorThrown) {
+							trace("PLACES JSON ERROR");
+							trace("PLACES JSON ERROR: " + textStatus + " " + jqXHR.responseText);
+						})
+						.success(function(d) {
+							trace("PLACES JSON SUCCESS");
+						});
+					} else {
+						if (has_location) {
+							map.panTo(location);
+							if (has_zoom) {
+								map.setZoom(zoom);
+							}
+						} else {
+							trace("DOING TRADITIONAL MAP IFRAME EMBED BECAUSE NO GOOGLE MAP API KEY WAS PROVIDED");
+							VMM.ExternalAPI.googlemaps.createiFrameMap(m);
+						}
+					}
+					
+					
+				}
 				
 				// KML
 				function loadKML() {
-					var kml_url				=	m.url + "&output=kml";
-					kml_url					=	kml_url.replace("&output=embed", "");
-					var kml_layer			=	new google.maps.KmlLayer(kml_url, {preserveViewport:true});
-					var infowindow			=	new google.maps.InfoWindow();
+					var kml_url, kml_layer, infowindow, text;
+					
+					kml_url				= m.url + "&output=kml";
+					kml_url				= kml_url.replace("&output=embed", "");
+					kml_layer			= new google.maps.KmlLayer(kml_url, {preserveViewport:true});
+					infowindow			= new google.maps.InfoWindow();
 					kml_layer.setMap(map);
-
+					
 					google.maps.event.addListenerOnce(kml_layer, "defaultviewport_changed", function() {
-						map.fitBounds(kml_layer.getDefaultViewport() );
+					   
 						if (has_location) {
 							map.panTo(location);
-						} 
+						} else {
+							map.fitBounds(kml_layer.getDefaultViewport() );
+						}
 						if (has_zoom) {
 							map.setZoom(zoom);
 						}
 					});
 					
 					google.maps.event.addListener(kml_layer, 'click', function(kmlEvent) {
-						var text			=	kmlEvent.featureData.description;
+						text			= kmlEvent.featureData.description;
 						showInfoWindow(text);
 						
 						function showInfoWindow(c) {
@@ -2756,6 +3346,7 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 						}
 					});
 				}
+				
 				
 			},
 			
@@ -2844,9 +3435,9 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 		
 		googleplus: {
 			
-			get: function(user, activity) {
+			get: function(m) {
 				var api_key;
-				var gplus = {user: user, activity: activity};
+				var gplus = {user: m.user, activity: m.id, id: m.uid};
 				
 				VMM.master_config.googleplus.que.push(gplus);
 				VMM.master_config.googleplus.active = true;
@@ -2990,8 +3581,8 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 		
 		googledocs: {
 			
-			get: function(url, id) {
-				var doc = {url: url, id: id};
+			get: function(m) {
+				var doc = {url: m.id, id: m.uid};
 				VMM.master_config.googledocs.que.push(doc);
 				VMM.master_config.googledocs.active = true;
 			},
@@ -3018,8 +3609,8 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 		
 		flickr: {
 			
-			get: function(mid, id, link) {
-				var flick = {mid: mid, id: id, link:link};
+			get: function(m) {
+				var flick = {mid: m.id, id: m.uid, link: m.link};
 				VMM.master_config.flickr.que.push(flick);
 				VMM.master_config.flickr.active = true;
 			},
@@ -3028,7 +3619,7 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 				var api_key,
 					callback_timeout= setTimeout(callback, VMM.master_config.timers.api, flick);
 					
-				if (VMM.master_config.Timeline.api_keys.flickr != "") {
+				if (typeof VMM.master_config.Timeline != 'undefined' && VMM.master_config.Timeline.api_keys.flickr != "") {
 					api_key = VMM.master_config.Timeline.api_keys.flickr;
 				} else {
 					api_key = Aes.Ctr.decrypt(VMM.master_config.api_keys_master.flickr, VMM.master_config.vp, 256)
@@ -3131,8 +3722,8 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 		
 		soundcloud: {
 			
-			get: function(mid, id) {
-				var sound = {mid: mid, id: id};
+			get: function(m) {
+				var sound = {mid: m.id, id: m.uid};
 				VMM.master_config.soundcloud.que.push(sound);
 				VMM.master_config.soundcloud.active = true;
 			},
@@ -3156,8 +3747,8 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 		
 		wikipedia: {
 			
-			get: function(url, id, lang) {
-				var api_obj = {url: url, id: id, lang: lang};
+			get: function(m) {
+				var api_obj = {url: m.id, id: m.uid, lang: m.lang};
 				VMM.master_config.wikipedia.que.push(api_obj);
 				VMM.master_config.wikipedia.active = true;
 			},
@@ -3250,15 +3841,15 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 		
 		youtube: {
 			
-			get: function(mid, id, start) {
-				var the_url = "http://gdata.youtube.com/feeds/api/videos/" + mid + "?v=2&alt=jsonc&callback=?",
-					vid = {mid: mid, id: id, start: start};
+			get: function(m) {
+				var the_url = "http://gdata.youtube.com/feeds/api/videos/" + m.id + "?v=2&alt=jsonc&callback=?",
+					vid = {mid: m.id, id: m.uid, start: m.start, hd: m.hd};
 					
 				VMM.master_config.youtube.que.push(vid);
 				
 				if (!VMM.master_config.youtube.active) {
 					if (!VMM.master_config.youtube.api_loaded) {
-						VMM.LoadLib.js('http://www.youtube.com/player_api', function() {
+						LoadLib.js('http://www.youtube.com/player_api', function() {
 							trace("YouTube API Library Loaded");
 						});
 					}
@@ -3279,7 +3870,6 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 						vid_start_seconds	= 0;
 						
 					if (vidstart.match('m')) {
-						vidstart = vidstart.split("=")[1];
 						vid_start_minutes = parseInt(vidstart.split("m")[0], 10);
 						vid_start_seconds = parseInt(vidstart.split("m")[1].split("s")[0], 10);
 						vid.start = (vid_start_minutes * 60) + vid_start_seconds;
@@ -3294,8 +3884,13 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 					active: 				false,
 					player: 				{},
 					name:					vid.id,
-					playing:				false
+					playing:				false,
+					hd:						false
 				};
+				
+				if (typeof(vid.hd) != 'undefined') {
+					p.hd = true;
+				}
 				
 				p.player[vid.id] = new YT.Player(vid.id, {
 					height: 				'390',
@@ -3356,6 +3951,12 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 					if (VMM.master_config.youtube.array[i].player[the_name] == e.target) {
 						if (e.data == YT.PlayerState.PLAYING) {
 							VMM.master_config.youtube.array[i].playing = true;
+							trace(VMM.master_config.youtube.array[i].hd)
+							if (VMM.master_config.youtube.array[i].hd) {
+								// SET TO HD
+								// DOESN'T WORK AS OF NOW
+								//VMM.master_config.youtube.array[i].player.setPlaybackQuality("hd720");
+							}
 						}
 					}
 				}
@@ -3370,8 +3971,8 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 		
 		vimeo: {
 			
-			get: function(mid, id) {
-				var vid = {mid: mid, id: id};
+			get: function(m) {
+				var vid = {mid: m.id, id: m.uid};
 				VMM.master_config.vimeo.que.push(vid);
 				VMM.master_config.vimeo.active = true;
 			},
@@ -3408,7 +4009,7 @@ if(typeof VMM != 'undefined' && typeof VMM.ExternalAPI == 'undefined') {
 			
 		}
 	
-	}
+	}).init();
 	
 }
 
@@ -3421,9 +4022,9 @@ function onYouTubePlayerAPIReady() {
 	VMM.ExternalAPI.youtube.onAPIReady();
 }
 
-/*********************************************** 
-     Begin VMM.MediaElement.js 
-***********************************************/ 
+/* **********************************************
+     Begin VMM.MediaElement.js
+********************************************** */
 
 /* MediaElement
 ================================================== */
@@ -3436,7 +4037,7 @@ if(typeof VMM != 'undefined' && typeof VMM.MediaElement == 'undefined') {
 		},
 		
 		loadingmessage: function(m) {
-			return "<div class='loading'><div class='loading-container'><div class='loading-icon'></div>" + "<div class='message'><p>" + m + "</p></div></div></div>";
+			return "<div class='vco-loading'><div class='vco-loading-container'><div class='vco-loading-icon'></div>" + "<div class='vco-message'><p>" + m + "</p></div></div></div>";
 		},
 		
 		thumbnail: function(data, w, h, uid) {
@@ -3529,6 +4130,7 @@ if(typeof VMM != 'undefined' && typeof VMM.MediaElement == 'undefined') {
 				var mediaElem = "", captionElem = "", creditElem = "", _id = "", isTextMedia = false, m;
 				
 				m = VMM.MediaType(data.media); //returns an object with .type and .id
+				m.uid = uid;
 				_valid = true;
 				
 			// CREDIT
@@ -3541,59 +4143,62 @@ if(typeof VMM != 'undefined' && typeof VMM.MediaElement == 'undefined') {
 				}
 			// IMAGE
 				if (m.type				==	"image") {
+					if (m.id.match("https://")) {
+						m.id = m.id.replace("https://","http://");
+					}
 					mediaElem			=	"<div class='media-image media-shadow'><img src='" + m.id + "' class='media-image'></div>";
 			// FLICKR
 				} else if (m.type		==	"flickr") {
 					//mediaElem			=	"<div class='media-image media-shadow' id='" + uid + "'>" + loading_messege + "</div>";
 					mediaElem			=	"<div class='media-image media-shadow'><a href='" + m.link + "' target='_blank'><img id='" + uid + "'></a></div>";
-					VMM.ExternalAPI.flickr.get(m.id, uid, m.link);
+					VMM.ExternalAPI.flickr.get(m);
 			// INSTAGRAM
 				} else if (m.type		==	"instagram") {
 					mediaElem			=	"<div class='media-image media-shadow'><a href='" + m.link + "' target='_blank'><img src='" + VMM.ExternalAPI.instagram.get(m.id) + "'></a></div>";
 					//VMM.ExternalAPI.instagram.get(m.id, uid);
 			// GOOGLE DOCS
 				} else if (m.type		==	"googledoc") {
-					mediaElem			=	"<div class='media-frame media-shadow doc' id='" + uid + "'>" + loading_messege + "</div>";
-					VMM.ExternalAPI.googledocs.get(m.id, uid);
+					mediaElem			=	"<div class='media-frame media-shadow doc' id='" + m.uid + "'>" + loading_messege + "</div>";
+					VMM.ExternalAPI.googledocs.get(m);
 			// YOUTUBE
 				} else if (m.type		==	"youtube") {
-					mediaElem			=	"<div class='media-shadow'><div class='media-frame video youtube' id='" + uid + "'>" + loading_messege + "</div></div>";
-					VMM.ExternalAPI.youtube.get(m.id, uid, m.start);
+					mediaElem			=	"<div class='media-shadow'><div class='media-frame video youtube' id='" + m.uid + "'>" + loading_messege + "</div></div>";
+					VMM.ExternalAPI.youtube.get(m);
 			// VIMEO
 				} else if (m.type		==	"vimeo") {
 					mediaElem			=	"<div class='media-shadow'><iframe class='media-frame video vimeo' autostart='false' frameborder='0' width='100%' height='100%' src='http://player.vimeo.com/video/" + m.id + "?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff'></iframe></div>";
-					VMM.ExternalAPI.vimeo.get(m.id, uid);
+					VMM.ExternalAPI.vimeo.get(m);
 			// DAILYMOTION
 				} else if (m.type		==	"dailymotion") {
 					mediaElem			=	"<div class='media-shadow'><iframe class='media-frame video dailymotion' autostart='false' frameborder='0' width='100%' height='100%' src='http://www.dailymotion.com/embed/video/" + m.id + "'></iframe></div>";
 			// TWITTER
 				} else if (m.type		==	"twitter"){
-					mediaElem			=	"<div class='twitter' id='" + uid + "'>" + loading_messege + "</div>";
+					mediaElem			=	"<div class='twitter' id='" + m.uid + "'>" + loading_messege + "</div>";
 					isTextMedia			=	true;
-					VMM.ExternalAPI.twitter.get(m.id, uid);
+					VMM.ExternalAPI.twitter.get(m);
 			// TWITTER
 				} else if (m.type		==	"twitter-ready") {
 					isTextMedia			=	true;
 					mediaElem			=	m.id;
 			// SOUNDCLOUD
 				} else if (m.type		==	"soundcloud") {
-					mediaElem			=	"<div class='media-frame media-shadow soundcloud' id='" + uid + "'>" + loading_messege + "</div>";
-					VMM.ExternalAPI.soundcloud.get(m.id, uid);
+					mediaElem			=	"<div class='media-frame media-shadow soundcloud' id='" + m.uid + "'>" + loading_messege + "</div>";
+					VMM.ExternalAPI.soundcloud.get(m);
 			// GOOGLE MAPS
 				} else if (m.type		==	"google-map") {
-					mediaElem			=	"<div class='media-frame media-shadow map' id='" + uid + "'>" + loading_messege + "</div>";
-					VMM.ExternalAPI.googlemaps.get(m.id, uid);
+					mediaElem			=	"<div class='media-frame media-shadow map' id='" + m.uid + "'>" + loading_messege + "</div>";
+					VMM.ExternalAPI.googlemaps.get(m);
 			// GOOGLE PLUS
 				} else if (m.type		==	"googleplus") {
 					_id					=	"googleplus_" + m.id;
 					mediaElem			=	"<div class='googleplus' id='" + _id + "'>" + loading_messege + "</div>";
 					isTextMedia			=	true;
-					VMM.ExternalAPI.googleplus.get(m.user, m.id, uid);
+					VMM.ExternalAPI.googleplus.get(m);
 			// WIKIPEDIA
 				} else if (m.type		==	"wikipedia") {
-					mediaElem			=	"<div class='wikipedia' id='" + uid + "'>" + loading_messege + "</div>";
+					mediaElem			=	"<div class='wikipedia' id='" + m.uid + "'>" + loading_messege + "</div>";
 					isTextMedia			=	true;
-					VMM.ExternalAPI.wikipedia.get(m.id, uid, m.lang);
+					VMM.ExternalAPI.wikipedia.get(m);
 			// STORIFY
 				} else if (m.type		==	"storify") { 
 					isTextMedia			=	true;
@@ -3636,9 +4241,9 @@ if(typeof VMM != 'undefined' && typeof VMM.MediaElement == 'undefined') {
 	}).init();
 }
 
-/*********************************************** 
-     Begin VMM.MediaType.js 
-***********************************************/ 
+/* **********************************************
+     Begin VMM.MediaType.js
+********************************************** */
 
 /*	MediaType
 	Determines the type of media the url string is.
@@ -3648,14 +4253,16 @@ if(typeof VMM != 'undefined' && typeof VMM.MediaElement == 'undefined') {
 ================================================== */
 if(typeof VMM != 'undefined' && typeof VMM.MediaType == 'undefined') {
 	
-	VMM.MediaType = function(d) {
-		var success	= false,
+	VMM.MediaType = function(_d) {
+		var d		= _d.replace(/^\s\s*/, '').replace(/\s\s*$/, ''),
+			success	= false,
 			media	= {
 				type:		"unknown",
 				id:			"",
 				start:		0,
+				hd:			false,
 				link:		"",
-				lang:		"",
+				lang:		VMM.Language.lang,
 				uniqueid:	VMM.Util.unique_ID(6)
 			};
 		
@@ -3665,15 +4272,14 @@ if(typeof VMM != 'undefined' && typeof VMM.MediaType == 'undefined') {
 		    success = true;
 		} else if (d.match('(www.)?youtube|youtu\.be')) {
 			if (d.match('v=')) {
-				media.id = VMM.Util.getUrlVars(d)["v"];
-				media.start = VMM.Util.getUrlVars(d)["t"];
+				media.id	= VMM.Util.getUrlVars(d)["v"];
 			} else if (d.match('\/embed\/')) {
-				media.id = d.split("embed\/")[1].split(/[?&]/)[0];
-				media.start = d.split("embed\/")[1].split(/[?&]/)[1];
+				media.id	= d.split("embed\/")[1].split(/[?&]/)[0];
 			} else {
-				media.id = d.split(/v\/|v=|youtu\.be\//)[1].split(/[?&]/)[0];
-				media.start = d.split(/v\/|v=|youtu\.be\//)[1].split(/[?&]/)[1];
+				media.id	= d.split(/v\/|v=|youtu\.be\//)[1].split(/[?&]/)[0];
 			}
+			media.start	= VMM.Util.getUrlVars(d)["t"];
+			media.hd	= VMM.Util.getUrlVars(d)["hd"];
 		    media.type = "youtube";
 		    success = true;
 		} else if (d.match('(player.)?vimeo\.com')) {
@@ -3767,177 +4373,9 @@ if(typeof VMM != 'undefined' && typeof VMM.MediaType == 'undefined') {
 	}
 }
 
-/*********************************************** 
-     Begin VMM.Media.js 
-***********************************************/ 
-
-/* Media
-================================================== */
-if(typeof VMM != 'undefined' && typeof VMM.Media == 'undefined') {
-	
-	// something = new VMM.Media(parent, w, h, {thedata});
-	VMM.Media = function(parent, w, h, thedata) {  
-		
-		/* PRIVATE VARS
-		================================================== */
-		var data = {}; // HOLDS DATA
-		
-		var _valid = false;
-		
-		var config = {
-			width: 720,
-			height: 400,
-			content_width: 720,
-			content_height: 400,
-			ease: "easeInOutExpo",
-			duration: 1000,
-			spacing: 15
-		};
-		/* ELEMENTS
-		================================================== */
-		var $media = "";
-		var $container = "";
-		var $mediacontainer  = "";
-		var $mediaelement = "";
-		var layout = parent; // expecting media div
-		
-		if (w != null && w != "") {config.width = w};
-		if (h != null && h != "") {config.height = h};
-		/*
-		if (typeof thedata != "undefined") {
-			data = thedata;
-			this.init(data);
-		}
-		*/
-		/* PUBLIC FUNCTIONS
-		================================================== */
-		this.init = function(d) {
-			if(typeof d != 'undefined') {
-				this.setData(d);
-			} else {
-				trace("WAITING ON DATA");
-			}
-		};
-		
-		var build = function(media, caption, credit) {
-			
-			$media = VMM.appendAndGetElement(layout, "<div>", "media");
-			$container = VMM.appendAndGetElement($media, "<div>", "container");
-			$mediacontainer = VMM.appendAndGetElement($container, "<div>", "media-container");
-			
-
-			if (data.media != null && data.media != "") {
-
-				_valid = true;
-				var m = {};
-				
-				m = VMM.MediaType(data.media); //returns an object with .type and .id
-				
-				if (m.type == "image") {
-					VMM.appendElement($mediacontainer, "<img src='" + m.id + "'>");  
-				} else if (m.type == "youtube") {
-					VMM.appendElement($mediacontainer, "<iframe frameborder='0' src='http://www.youtube.com/embed/" + m.id + "?&rel=0&theme=light&showinfo=0&hd=1&autohide=0&color=white' allowfullscreen>");
-				} else if (m.type == "vimeo") {
-					VMM.appendElement($mediacontainer, "<iframe frameborder='0' src='http://player.vimeo.com/video/" + m.id + "?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff'>");
-				} else {
-					
-				}
-				
-				// CREDIT
-				if (data.credit != null && data.credit != "") {
-					VMM.appendElement($container, VMM.createElement("div", data.credit, "credit"));
-				}
-
-				// CAPTION
-				if (data.caption != null && data.caption != "") {
-					VMM.appendElement($container, VMM.createElement("div", data.caption, "caption"));
-				}
-
-			}
-	    };
-	
-		
-	
-		/* GETTERS AND SETTERS
-		================================================== */
-		
-		this.setData = function(d) {
-			if(typeof d != 'undefined') {
-				data = d;
-				build();
-			} else{
-				trace("NO DATA");
-			}
-		};
-		
-		/* RESIZE
-		================================================== */
-		
-		function reSize() {
-
-		}
-		
-
-
-	}
-	
-	// Less expensive to use prototype
-	
-	VMM.Media.prototype.height = function(h) {
-		if (h != null && h != "") {
-			config.height = h;
-			reSize();
-		} else {
-			return config.height;
-		}
-	};
-	
-	VMM.Media.prototype.width = function(w) {
-		if (w != null && w != "") {
-			config.width = w;
-			reSize();
-		} else {
-			return config.width;
-		}
-	};
-	
-	/* GETTERS AND SETTERS
-	================================================== */
-	
-	VMM.Media.prototype.getData = function() {
-		return data;
-	};
-	
-	VMM.Media.prototype.setConfig = function(d) {
-		if(typeof d != 'undefined') {
-			config = d;
-		} else{
-			trace("NO CONFIG DATA");
-		}
-	};
-	
-	VMM.Media.prototype.getConfig = function() {
-		return config;
-	};
-	
-	VMM.Media.prototype.setSize = function(w, h) {
-		if (w != null) {config.width = w};
-		if (h != null) {config.height = h};
-		if (_active) {
-			reSize();
-		}
-		
-	}
-	
-	VMM.Media.prototype.active = function() {
-		return _active;
-	};
-	
-}
-
-/*********************************************** 
-     Begin VMM.TextElement.js 
-***********************************************/ 
+/* **********************************************
+     Begin VMM.TextElement.js
+********************************************** */
 
 /* TextElement
 ================================================== */
@@ -3956,9 +4394,25 @@ if(typeof VMM != 'undefined' && typeof VMM.TextElement == 'undefined') {
 	}).init();
 }
 
-/*********************************************** 
-     Begin VMM.DragSlider.js 
-***********************************************/ 
+/* **********************************************
+     Begin VMM.Media.js
+********************************************** */
+
+/* Media
+================================================== */
+
+/*	* CodeKit Import
+	* http://incident57.com/codekit/
+================================================== */
+// @codekit-prepend "VMM.ExternalAPI.js";
+// @codekit-prepend "VMM.MediaElement.js";
+// @codekit-prepend "VMM.MediaType.js";
+// @codekit-prepend "VMM.TextElement.js";
+
+
+/* **********************************************
+     Begin VMM.DragSlider.js
+********************************************** */
 
 /* DRAG SLIDER
 ================================================== */
@@ -4183,56 +4637,79 @@ if(typeof VMM != 'undefined' && typeof VMM.DragSlider == 'undefined') {
 	}
 }
 
-/*********************************************** 
-     Begin VMM.Slider.js 
-***********************************************/ 
+/* **********************************************
+     Begin VMM.Slider.js
+********************************************** */
 
 /* Slider
 ================================================== */
+/*	* CodeKit Import
+	* http://incident57.com/codekit/
+================================================== */
+// @codekit-append "VMM.Slider.Slide.js";
+
 if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 	
 	VMM.Slider = function(parent, parent_config) {
 		
-		var events = {}, config;
-		var $slider, $slider_mask, $slider_container, $slides_items;
-		var data = [], slides = [], slide_positions = [];
-		
-		var slides_content		=	"";
-		var current_slide		=	0;
-		var current_width		=	960;
-		var touch				=	{move: false, x: 10, y:0, off: 0, dampen: 48};
-		var content				=	"";
-		var _active				=	false;
-		var layout				=	parent;
-		var navigation			=	{nextBtn:"", prevBtn:"", nextDate:"", prevDate:"", nextTitle:"", prevTitle:""};
-		var timer;
+		var config,
+			timer,
+			$slider,
+			$slider_mask,
+			$slider_container,
+			$slides_items,
+			events				= {},
+			data				= [],
+			slides				= [],
+			slide_positions		= [],
+			slides_content		= "",
+			current_slide		= 0,
+			current_width		= 960,
+			touch = {
+				move:			false,
+				x:				10,
+				y:				0,
+				off:			0,
+				dampen:			48
+			},
+			content				= "",
+			_active				= false,
+			layout				= parent,
+			navigation = {
+				nextBtn:		"",
+				prevBtn:		"",
+				nextDate:		"",
+				prevDate:		"",
+				nextTitle:		"",
+				prevTitle:		""
+			};
 		
 		// CONFIG
-		if(typeof VMM.Timeline != 'undefined') {
-			config	= 	VMM.Timeline.Config;
+		if(typeof parent_config != 'undefined') {
+			config	= parent_config;
 		} else {
-			config = {
-				preload: 4,
-				current_slide: 0,
-				interval: 10, 
-				something: 0, 
-				width: 720, 
-				height: 400, 
-				ease: "easeInOutExpo", 
-				duration: 1000, 
-				timeline: false, 
-				spacing: 15,
+			config	= {
+				preload:			4,
+				current_slide:		0,
+				interval:			10, 
+				something:			0, 
+				width:				720, 
+				height:				400, 
+				ease:				"easeInOutExpo", 
+				duration:			1000, 
+				timeline:			false, 
+				spacing:			15,
 				slider: {
-					width: 720, 
-					height: 400, 
+					width:			720, 
+					height:			400, 
 					content: {
-						width: 720, 
-						height: 400, 
-						padding: 130
+						width:		720, 
+						height:		400, 
+						padding:	130
 					}, 
 					nav: {
-						width: 100, 
-						height: 200
+						width:		100, 
+						height:		200
 					} 
 				} 
 			};
@@ -4242,14 +4719,14 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 		================================================== */
 		this.ver = "0.6";
 		
-		config.slider.width		=	config.width;
-		config.slider.height	=	config.height;
+		config.slider.width		= config.width;
+		config.slider.height	= config.height;
 		
 		/* PUBLIC FUNCTIONS
 		================================================== */
 		this.init = function(d) {
-			slides = [];
-			slide_positions = [];
+			slides			= [];
+			slide_positions	= [];
 			
 			if(typeof d != 'undefined') {
 				this.setData(d);
@@ -4331,9 +4808,8 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 		};
 		
 		function reSize(go_to_slide, from_start) {
-			
-			var _go_to_slide = true;
-			var _from_start = false;
+			var _go_to_slide	= true,
+				_from_start		= false;
 			
 			if (go_to_slide != null) {_go_to_slide = go_to_slide};
 			if (from_start != null) {_from_start = from_start};
@@ -4347,8 +4823,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 			VMM.Lib.width($slides_items, (slides.length * config.slider.content.width));
 			
 			if (_from_start) {
-				var _pos = slides[current_slide].leftpos();
-				VMM.Lib.css($slider_container, "left", _pos);
+				VMM.Lib.css($slider_container, "left", slides[current_slide].leftpos());
 			}
 			
 			// RESIZE SLIDES
@@ -4454,10 +4929,12 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 		/* BUILD SLIDES
 		================================================== */
 		var buildSlides = function(d) {
+			var i	= 0;
+			
 			VMM.attachElement($slides_items, "");
 			slides = [];
 			
-			for(var i = 0; i < d.length; i++) {
+			for(i = 0; i < d.length; i++) {
 				var _slide = new VMM.Slider.Slide(d[i], $slides_items);
 				//_slide.show();
 				slides.push(_slide);
@@ -4465,11 +4942,13 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 		}
 		
 		var preloadSlides = function(skip) {
+			var i	= 0;
+			
 			if (skip) {
 				preloadTimeOutSlides();
 			} else {
-				for(var k = 0; k < slides.length; k++) {
-					slides[k].clearTimers();
+				for(i = 0; i < slides.length; i++) {
+					slides[i].clearTimers();
 				}
 				timer = setTimeout(preloadTimeOutSlides, config.duration);
 				
@@ -4477,23 +4956,25 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 		}
 		
 		var preloadTimeOutSlides = function() {
-			for(var k = 0; k < slides.length; k++) {
-				slides[k].enqueue = true;
+			var i = 0;
+			
+			for(i = 0; i < slides.length; i++) {
+				slides[i].enqueue = true;
 			}
 			
-			for(var j = 0; j < config.preload; j++) {
-				if ( !((current_slide + j) > slides.length - 1)) {
-					slides[current_slide + j].show();
-					slides[current_slide + j].enqueue = false;
+			for(i = 0; i < config.preload; i++) {
+				if ( !((current_slide + i) > slides.length - 1)) {
+					slides[current_slide + i].show();
+					slides[current_slide + i].enqueue = false;
 				}
-				if ( !( (current_slide - j) < 0 ) ) {
-					slides[current_slide - j].show();
-					slides[current_slide - j].enqueue = false;
+				if ( !( (current_slide - i) < 0 ) ) {
+					slides[current_slide - i].show();
+					slides[current_slide - i].enqueue = false;
 				}
 			}
 			
 			if (slides.length > 50) {
-				for(var i = 0; i < slides.length; i++) {
+				for(i = 0; i < slides.length; i++) {
 					if (slides[i].enqueue) {
 						slides[i].hide();
 					}
@@ -4509,7 +4990,8 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 		/* SIZE SLIDES
 		================================================== */
 		var sizeSlides = function() {
-			var layout_text_media		= ".slider-item .layout-text-media .media .media-container ",
+			var i						= 0,
+				layout_text_media		= ".slider-item .layout-text-media .media .media-container ",
 				layout_media			= ".slider-item .layout-media .media .media-container ",
 				layout_both				= ".slider-item .media .media-container",
 				layout_caption			= ".slider-item .media .media-container .media-shadow .caption",
@@ -4659,7 +5141,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 			VMM.Lib.css( layout_media + 		".caption",	"max-width",	mediasize.media.video.width);
 			
 			// MAINTAINS VERTICAL CENTER IF IT CAN
-			for(var i = 0; i < slides.length; i++) {
+			for(i = 0; i < slides.length; i++) {
 				
 				slides[i].layout(is_skinny);
 				
@@ -4675,8 +5157,10 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 		/* POSITION SLIDES
 		================================================== */
 		var positionSlides = function() {
-			var pos = 0;
-			for(var i = 0; i < slides.length; i++) {
+			var pos = 0,
+				i	= 0;
+				
+			for(i = 0; i < slides.length; i++) {
 				pos = i * (config.slider.width+config.spacing);
 				slides[i].leftpos(pos);
 			}
@@ -4685,8 +5169,10 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 		/* OPACITY SLIDES
 		================================================== */
 		var opacitySlides = function(n) {
-			var _ease = "linear";
-			for(var i = 0; i < slides.length; i++) {
+			var _ease	= "linear",
+				i		= 0;
+				
+			for(i = 0; i < slides.length; i++) {
 				if (i == current_slide) {
 					slides[i].animate(config.duration, _ease, {"opacity": 1});
 				} else if (i == current_slide - 1 || i == current_slide + 1) {
@@ -4701,20 +5187,21 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 			goToSlide(n, ease, duration);
 		================================================== */
 		var goToSlide = function(n, ease, duration, fast, firstrun) {
+			var _ease		= config.ease,
+				_duration	= config.duration,
+				is_last		= false,
+				is_first	= false,
+				_title		= "",
+				_pos;
 			
 			/* STOP ANY VIDEO PLAYERS ACTIVE
 			================================================== */
 			VMM.ExternalAPI.youtube.stopPlayers();
 			
 			// Set current slide
-			current_slide = n;
+			current_slide	= n;
+			_pos			= slides[current_slide].leftpos();
 			
-			var _ease = config.ease;
-			var _duration = config.duration;
-			var is_last = false;
-			var is_first = false;
-			var _pos = slides[current_slide].leftpos();
-			var _title = "";
 			
 			if (current_slide == 0) {is_first = true};
 			if (current_slide +1 >= slides.length) {is_last = true};
@@ -4806,8 +5293,8 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 				navigation.nextDate = VMM.appendAndGetElement(navigation.nextBtnContainer, "<div>", "date", "");
 				navigation.prevDate = VMM.appendAndGetElement(navigation.prevBtnContainer, "<div>", "date", "");
 			}
-			navigation.nextTitle = VMM.appendAndGetElement(navigation.nextBtnContainer, "<div>", "title", "Title Goes Here");
-			navigation.prevTitle = VMM.appendAndGetElement(navigation.prevBtnContainer, "<div>", "title", "Title Goes Here");
+			navigation.nextTitle = VMM.appendAndGetElement(navigation.nextBtnContainer, "<div>", "title", "");
+			navigation.prevTitle = VMM.appendAndGetElement(navigation.prevBtnContainer, "<div>", "title", "");
 			
 			VMM.bindEvent(".nav-next", onNextClick);
 			VMM.bindEvent(".nav-previous", onPrevClick);
@@ -4818,15 +5305,15 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 		/* BUILD
 		================================================== */
 		var build = function() {
-			
+			var __duration = 3000;
 			// Clear out existing content
 			VMM.attachElement(layout, "");
 			
 			// Get DOM Objects to local objects
-			$slider = VMM.getElement("div.slider");
-			$slider_mask = VMM.appendAndGetElement($slider, "<div>", "slider-container-mask");
-			$slider_container = VMM.appendAndGetElement($slider_mask, "<div>", "slider-container");
-			$slides_items = VMM.appendAndGetElement($slider_container, "<div>", "slider-item-container");
+			$slider				= VMM.getElement(layout);
+			$slider_mask		= VMM.appendAndGetElement($slider, "<div>", "slider-container-mask");
+			$slider_container	= VMM.appendAndGetElement($slider_mask, "<div>", "slider-container");
+			$slides_items		= VMM.appendAndGetElement($slider_container, "<div>", "slider-item-container");
 			
 			// BUILD NAVIGATION
 			buildNavigation();
@@ -4836,9 +5323,6 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 			
 			/* MAKE SLIDER TOUCHABLE
 			================================================== */
-			
-			var __duration = 3000;
-			
 			if (VMM.Browser.device == "tablet" || VMM.Browser.device == "mobile") {
 				config.duration = 500;
 				__duration = 1000;
@@ -4867,12 +5351,13 @@ if(typeof VMM != 'undefined' && typeof VMM.Slider == 'undefined') {
 
 
 
-/*********************************************** 
-     Begin VMM.Slider.Slide.js 
-***********************************************/ 
+/* **********************************************
+     Begin VMM.Slider.Slide.js
+********************************************** */
 
 /* Slider Slide 
 ================================================== */
+
 if (typeof VMM.Slider != 'undefined') {
 	VMM.Slider.Slide = function(d, _parent) {
 		
@@ -5047,8 +5532,8 @@ if (typeof VMM.Slider != 'undefined') {
 		
 		var buildSlide = function() {
 			trace("BUILDSLIDE");
-			$wrap	=	VMM.appendAndGetElement(element, "<div>", "content");
-			$slide	=	VMM.appendAndGetElement($wrap, "<div>");
+			$wrap	= VMM.appendAndGetElement(element, "<div>", "content");
+			$slide	= VMM.appendAndGetElement($wrap, "<div>");
 			
 			/* DATE
 			================================================== */
@@ -5087,15 +5572,15 @@ if (typeof VMM.Slider != 'undefined') {
 			/* TEXT
 			================================================== */
 			if (data.text != null && data.text != "") {
-				c.has.text		=	true;
-				c.text			+=	VMM.createElement("p", VMM.Util.linkify_with_twitter(data.text, "_blank"));
+				c.has.text		=  true;
+				c.text			+= VMM.createElement("p", VMM.Util.linkify_with_twitter(data.text, "_blank"));
 			}
 			
 			if (c.has.text || c.has.headline) {
-				c.text			=	VMM.createElement("div", c.text, "container");
+				c.text		= VMM.createElement("div", c.text, "container");
 				//$text		=	VMM.appendAndGetElement($slide, "<div>", "text", c.text);
 				
-				$text		=	VMM.appendAndGetElement($slide, "<div>", "text", VMM.TextElement.create(c.text));
+				$text		= VMM.appendAndGetElement($slide, "<div>", "text", VMM.TextElement.create(c.text));
 				
 			}
 			
@@ -5109,8 +5594,8 @@ if (typeof VMM.Slider != 'undefined') {
 			================================================== */
 			if (data.asset != null && data.asset != "") {
 				if (data.asset.media != null && data.asset.media != "") {
-					c.has.media	=	true;
-					$media		=	VMM.appendAndGetElement($slide, "<div>", "media", VMM.MediaElement.create(data.asset, data.uniqueid));
+					c.has.media	= true;
+					$media		= VMM.appendAndGetElement($slide, "<div>", "media", VMM.MediaElement.create(data.asset, data.uniqueid));
 				}
 			}
 			
@@ -5142,50 +5627,9 @@ if (typeof VMM.Slider != 'undefined') {
 };
 
 
-/*********************************************** 
-     Begin VMM.Language.js 
-***********************************************/ 
-
-/* DEFAULT LANGUAGE 
-================================================== */
-if(typeof VMM != 'undefined' && typeof VMM.Language == 'undefined') {
-	VMM.Language = {
-		lang: "en",
-		api: {
-			wikipedia: "en"
-		},
-		date: {
-			month: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-			month_abbr: ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."],
-			day: ["Sunday","Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-			day_abbr: ["Sun.","Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat."]
-		}, 
-		dateformats: {
-			year: "yyyy",
-			month_short: "mmm",
-			month: "mmmm yyyy",
-			full_short: "mmm d",
-			full: "mmmm d',' yyyy",
-			time_no_seconds_short: "h:MM TT",
-			time_no_seconds_small_date: "h:MM TT'<br/><small>'mmmm d',' yyyy'</small>'",
-			full_long: "mmm d',' yyyy 'at' hh:MM TT",
-			full_long_small_date: "hh:MM TT'<br/><small>mmm d',' yyyy'</small>'"
-		},
-		messages: {
-			loading_timeline: "Loading Timeline... ",
-			return_to_title: "Return to Title",
-			expand_timeline: "Expand Timeline",
-			contract_timeline: "Contract Timeline",
-			wikipedia: "From Wikipedia, the free encyclopedia",
-			loading_content: "Loading Content",
-			loading: "Loading"
-		}
-	}
-};
-
-/*********************************************** 
-     Begin AES.js 
-***********************************************/ 
+/* **********************************************
+     Begin AES.js
+********************************************** */
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 /*  AES implementation in JavaScript (c) Chris Veness 2005-2011                                   */
@@ -5651,9 +6095,9 @@ Utf8.decode = function(strUtf) {
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 
-/*********************************************** 
-     Begin bootstrap-tooltip.js 
-***********************************************/ 
+/* **********************************************
+     Begin bootstrap-tooltip.js
+********************************************** */
 
 /* ===========================================================
  * bootstrap-tooltip.js v2.0.1
@@ -5926,12 +6370,49 @@ Utf8.decode = function(strUtf) {
 
 }( window.jQuery );
 
-/*********************************************** 
-     Begin VMM.Timeline.js 
-***********************************************/ 
+/* **********************************************
+     Begin VMM.StoryJS.js
+********************************************** */
+
+/* VeriteCo StoryJS
+================================================== */
+
+/*	* CodeKit Import
+	* http://incident57.com/codekit/
+================================================== */
+// @codekit-prepend "VMM.StoryJS.License.js";
+// @codekit-prepend "Core/VMM.Core.js";
+// @codekit-prepend "Language/VMM.Language.js";
+// @codekit-prepend "Media/VMM.Media.js";
+// @codekit-prepend "Slider/VMM.DragSlider.js";
+// @codekit-prepend "Slider/VMM.Slider.js";
+// @codekit-prepend "Library/AES.js";
+// @codekit-prepend "Library/bootstrap-tooltip.js";
+
+
+if(typeof VMM != 'undefined' && typeof VMM.StoryJS == 'undefined') {
+	
+	VMM.StoryJS = function() {  
+		
+		/* PRIVATE VARS
+		================================================== */
+		
+		/* PUBLIC FUNCTIONS
+		================================================== */
+		this.init = function(d) {
+			
+		};
+		
+	}
+}
+
+
+/* **********************************************
+     Begin VMM.Timeline.js
+********************************************** */
 
 /**
-	* Timeline
+	* TimelineJS
 	* Designed and built by Zach Wise at VéritéCo
 
 	* This program is free software: you can redistribute it and/or modify
@@ -5953,31 +6434,10 @@ Utf8.decode = function(strUtf) {
 ================================================== */
 // @codekit-prepend "VMM.Timeline.License.js";
 
-// @codekit-prepend "Core/VMM.js";
-// @codekit-prepend "Core/VMM.Library.js";
-// @codekit-prepend "Core/VMM.Browser.js";
-// @codekit-prepend "Core/VMM.FileExtention.js";
-// @codekit-prepend "Core/VMM.Date.js";
-// @codekit-prepend "Core/VMM.Util.js";
-// @codekit-prepend "Core/VMM.LoadLib.js";
-
-// @codekit-prepend "Media/VMM.ExternalAPI.js";
-// @codekit-prepend "Media/VMM.MediaElement.js";
-// @codekit-prepend "Media/VMM.MediaType.js";
-// @codekit-prepend "Media/VMM.Media.js";
-// @codekit-prepend "Media/VMM.TextElement.js";
-
-// @codekit-prepend "Slider/VMM.DragSlider.js";
-// @codekit-prepend "Slider/VMM.Slider.js";
-// @codekit-prepend "Slider/VMM.Slider.Slide.js";
-
-// @codekit-prepend "VMM.Language.js";
+// @codekit-prepend "Core/VMM.StoryJS.js";
 
 // @codekit-append "VMM.Timeline.TimeNav.js";
 // @codekit-append "VMM.Timeline.DataObj.js";
-
-// @codekit-prepend "lib/AES.js";
-// @codekit-prepend "lib/bootstrap-tooltip.js";
 
 
 /* Timeline
@@ -5985,36 +6445,56 @@ Utf8.decode = function(strUtf) {
 
 if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 	
-	VMM.Timeline = function(w, h, conf, _timeline_id) {
+	VMM.Timeline = function(_timeline_id, w, h) {
 		
-		var $timeline, $feedback, slider, timenav, version, timeline_id;
-		var events = {}, data = {}, _dates = [], config = {};
-		var has_width = false, has_height = false, ie7 = false, is_moving = false;
+		var $timeline,
+			$container,
+			$feature,
+			$feedback,
+			$slider,
+			$navigation,
+			slider,
+			timenav,
+			version		= "2.x",
+			timeline_id	= "#timelinejs",
+			events		= {},
+			data		= {},
+			_dates		= [],
+			config		= {},
+			has_width	= false,
+			has_height	= false,
+			ie7			= false,
+			is_moving	= false;
 		
+
 		if (type.of(_timeline_id) == "string") {
-			timeline_id = 			_timeline_id;
+			if (_timeline_id.match("#")) {
+				timeline_id	= _timeline_id;
+			} else {
+				timeline_id	= "#" + _timeline_id;
+			}
 		} else {
-			timeline_id = 			"#timelinejs";
+			timeline_id		= "#timelinejs";
 		}
 		
-		version = 					"1.68";
-		
-		trace("TIMELINE VERSION " + version);
+		trace("VERSION " + version);
 		
 		/* CONFIG
 		================================================== */
 		config = {
 			embed:					false,
 			events: {
-				data_ready:		"DATAREADY",
-				messege:		"MESSEGE",
-				headline:		"HEADLINE",
-				slide_change:	"SLIDE_CHANGE",
-				resize:			"resize"
+				data_ready:			"DATAREADY",
+				messege:			"MESSEGE",
+				headline:			"HEADLINE",
+				slide_change:		"SLIDE_CHANGE",
+				resize:				"resize"
 			},
 			id: 					timeline_id,
+			source:					"nothing",
 			type: 					"timeline",
 			touch:					false,
+			orientation: 			"normal", 
 			maptype: 				"toner",
 			preload:				4,
 			current_slide:			0,
@@ -6085,6 +6565,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 			},
 			ease: 					"easeInOutExpo",
 			duration: 				1000,
+			gmap_key: 				"",
 			language: 				VMM.Language
 		};
 		
@@ -6120,7 +6601,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 		
 		/* CREATE CONFIG
 		================================================== */
-		var createConfig = function(conf) {
+		function createConfig(conf) {
 			
 			// APPLY SUPPLIED CONFIG TO TIMELINE CONFIG
 			if (typeof embed_config == 'object') {
@@ -6145,23 +6626,38 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 			VMM.Timeline.Config			= config;
 			VMM.master_config.Timeline	= VMM.Timeline.Config;
 			this.events					= config.events;
+			
+			if (config.gmap_key != "") {
+				config.api_keys.google = config.gmap_key;
+			}
 		}
 		
 		/* CREATE TIMELINE STRUCTURE
 		================================================== */
-		var createStructure = function(w, h) {
-			$timeline = 			VMM.getElement(timeline_id);
+		function createStructure() {
+			// CREATE DOM STRUCTURE
+			$timeline	= VMM.getElement(timeline_id);
+			VMM.Lib.addClass($timeline, "vco-timeline");
+			VMM.Lib.addClass($timeline, "vco-storyjs");
 			
-			VMM.Lib.addClass(timeline_id, "vmm-timeline");
+			$container	= VMM.appendAndGetElement($timeline, "<div>", "vco-container vco-main");
+			$feature	= VMM.appendAndGetElement($container, "<div>", "vco-feature");
+			$slider		= VMM.appendAndGetElement($feature, "<div>", "vco-slider");
+			$navigation	= VMM.appendAndGetElement($container, "<div>", "vco-navigation");
+			$feedback	= VMM.appendAndGetElement($timeline, "<div>", "vco-feedback", "");
+			
 			if (config.touch) {
-				VMM.Lib.addClass(timeline_id, "vmm-touch");
+				VMM.Lib.addClass($timeline, "vco-touch");
 			} else {
-				VMM.Lib.addClass(timeline_id, "vmm-notouch");
+				VMM.Lib.addClass($timeline, "vco-notouch");
 			}
 			
-			$feedback = 			VMM.appendAndGetElement($timeline, "<div>", "feedback", "");
-			slider = 				new VMM.Slider(timeline_id + " div.slider", config);
-			timenav = 				new VMM.Timeline.TimeNav(timeline_id + " div.navigation");
+			if (typeof config.language.right_to_left != 'undefined') {
+				VMM.Lib.addClass($timeline, "vco-right-to-left");
+			}
+			
+			slider		= new VMM.Slider($slider, config);
+			timenav		= new VMM.Timeline.TimeNav($navigation);
 			
 			if (!has_width) {
 				config.width = VMM.Lib.width($timeline);
@@ -6185,9 +6681,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 			trace(d);
 			data = d.timeline;
 			
-			if (type.of(data.era) == "array") {
-				
-			} else {
+			if (type.of(data.era) != "array") {
 				data.era = [];
 			}
 			
@@ -6200,9 +6694,15 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 		}
 		
 		function reSize() {
+			
 			updateSize();
+			
 			slider.setSize(config.feature.width, config.feature.height);
 			timenav.setSize(config.width, config.height);
+			if (orientationChange()) {
+				setViewport();
+			}
+			
 		};
 		
 		function onSliderLoaded(e) {
@@ -6237,7 +6737,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 			slider.setSlide(config.current_slide);
 		};
 		
-		var goToEvent = function(n) {
+		function goToEvent(n) {
 			if (n <= _dates.length - 1 && n >= 0) {
 				config.current_slide = n;
 				slider.setSlide(config.current_slide);
@@ -6251,32 +6751,89 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 			}
 		}
 		
-		/* PUBLIC FUNCTIONS
-		================================================== */
-		this.init = function(_data, _timeline_id, conf) {
+		function getViewport() {
 			
-			if (type.of(_timeline_id) == "string") {
-				if (_timeline_id.match("#")) {
-					timeline_id = _timeline_id;
+		}
+		
+		function setViewport() {
+			var viewport_content		= "",
+				viewport_orientation	= searchOrientation(window.orientation);
+			
+			if (VMM.Browser.device == "mobile") {
+				if (viewport_orientation == "portrait") {
+					//viewport_content	= "width=device-width; initial-scale=0.75, maximum-scale=0.75";
+					viewport_content	= "width=device-width; initial-scale=0.5, maximum-scale=0.5";
+				} else if (viewport_orientation == "landscape") {
+					viewport_content	= "width=device-width; initial-scale=0.5, maximum-scale=0.5";
 				} else {
-					timeline_id = "#" + _timeline_id;
+					viewport_content	= "width=device-width, initial-scale=1, maximum-scale=1.0";
 				}
+			} else if (VMM.Browser.device == "tablet") {
+				//viewport_content		= "width=device-width, initial-scale=1, maximum-scale=1.0";
 			}
 			
-			createConfig(conf);
-			createStructure(w,h);
+			if (document.getElementById("viewport")) {
+				//VMM.Lib.attr("#viewport", "content", viewport_content);
+			} else {
+				//VMM.appendElement("head", "<meta id='viewport' name='viewport' content=" + viewport_content + "/>");
+			}
+
+		}
+		
+		/* ORIENTATION
+		================================================== */
+		function searchOrientation(orientation) {
+			var orient = "";
 			
-			trace('TIMELINE INIT');
-			VMM.Date.setLanguage(VMM.Timeline.Config.language);
-			VMM.master_config.language = VMM.Timeline.Config.language;
+			if ( orientation == 0  || orientation == 180) {  
+				orient = "portrait";
+			} else if ( orientation == 90 || orientation == -90) {  
+				orient = "landscape";
+			} else {
+				orient = "normal";
+			}
 			
-			$feedback = VMM.appendAndGetElement($timeline, "<div>", "feedback", "");
+			return orient;
+		}
+		
+		function orientationChange() {
+			var orientation	= searchOrientation(window.orientation);
+			
+			if (orientation == config.orientation) {
+				return false;
+			} else {
+				config.orientation = orientation;
+				return true;
+			}
+			
+		}
+		
+		
+		/* PUBLIC FUNCTIONS
+		================================================== */
+		this.init = function(c, _data) {
+			trace('INIT');
+			setViewport();
+			createConfig(c);
+			createStructure();
+			
+			if (type.of(_data) == "string") {
+				config.source	= _data;
+			}
+			
+			// LANGUAGE
+			VMM.Date.setLanguage(config.language);
+			VMM.master_config.language = config.language;
+			
+			// EXTERNAL API
+			VMM.ExternalAPI.setKeys(config.api_keys);
+			VMM.ExternalAPI.googlemaps.setMapType(config.maptype);
 			
 			// EVENTS
 			VMM.bindEvent(global, onDataReady, config.events.data_ready);
 			VMM.bindEvent(global, showMessege, config.events.messege);
 			
-			VMM.fireEvent(global, config.events.messege, VMM.master_config.language.messages.loading_timeline);
+			VMM.fireEvent(global, config.events.messege, config.language.messages.loading_timeline);
 			
 			/* GET DATA
 			================================================== */
@@ -6286,8 +6843,8 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 				}
 			}
 			
-			if (type.of(_data) == "string" || type.of(_data) == "object") {
-				VMM.Timeline.DataObj.getData(_data);
+			if (type.of(config.source) == "string" || type.of(config.source) == "object") {
+				VMM.Timeline.DataObj.getData(config.source);
 			} else {
 				VMM.Timeline.DataObj.getData(VMM.getElement(timeline_id));
 			}
@@ -6301,14 +6858,14 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 		
 		this.reload = function(_d) {
 			trace("loadNewDates" + _d);
-			VMM.fireEvent(global, config.events.messege, VMM.master_config.language.messages.loading_timeline);
+			VMM.fireEvent(global, config.events.messege, config.language.messages.loading_timeline);
 			data = {};
 			VMM.Timeline.DataObj.getData(_d);
 		};
 		
 		/* DATA 
 		================================================== */
-		var getData = function(url) {
+		function getData(url) {
 			VMM.getJSON(url, function(d) {
 				data = VMM.Timeline.DataObj.getData(d);
 				VMM.fireEvent(global, config.events.data_ready);
@@ -6317,24 +6874,23 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 		
 		/* MESSEGES 
 		================================================== */
-		
-		var showMessege = function(e, msg) {
+		function showMessege(e, msg) {
 			trace("showMessege " + msg);
 			//VMM.attachElement($messege, msg);
 			VMM.attachElement($feedback, VMM.MediaElement.loadingmessage(msg)); 
 		};
 		
-		var hideMessege = function() {
+		function hideMessege() {
 			VMM.Lib.animate($feedback, config.duration, config.ease*4, {"opacity": 0}, detachMessege);
 		};
 		
-		var detachMessege = function() {
+		function detachMessege() {
 			VMM.Lib.detach($feedback);
 		}
 		
 		/* BUILD DISPLAY
 		================================================== */
-		var build = function() {
+		function build() {
 			
 			// START AT SLIDE
 			if (parseInt(config.start_at_slide) > 0 && config.current_slide == 0) {
@@ -6351,30 +6907,31 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 				ie7 = true;
 				VMM.fireEvent(global, config.events.messege, "Internet Explorer " + VMM.Browser.version + " is not supported by TimelineJS. Please update your browser to version 8 or higher.");
 			} else {
-				// CREATE DOM STRUCTURE
-				VMM.attachElement($timeline, "");
-				VMM.appendElement($timeline, "<div class='container main'><div class='feature'><div class='slider'></div></div><div class='navigation'></div></div>");
-			
+				
+				detachMessege();
 				reSize();
-			
-				VMM.bindEvent("div.slider", onSliderLoaded, "LOADED");
-				VMM.bindEvent("div.navigation", onTimeNavLoaded, "LOADED");
-				VMM.bindEvent("div.slider", onSlideUpdate, "UPDATE");
-				VMM.bindEvent("div.navigation", onMarkerUpdate, "UPDATE");
-			
+				
+				// EVENT LISTENERS
+				VMM.bindEvent($slider, onSliderLoaded, "LOADED");
+				VMM.bindEvent($navigation, onTimeNavLoaded, "LOADED");
+				VMM.bindEvent($slider, onSlideUpdate, "UPDATE");
+				VMM.bindEvent($navigation, onMarkerUpdate, "UPDATE");
+				
+				// INITIALIZE COMPONENTS
 				slider.init(_dates);
 				timenav.init(_dates, data.era);
 			
 				// RESIZE EVENT LISTENERS
 				VMM.bindEvent(global, reSize, config.events.resize);
-				//VMM.bindEvent(global, function(e) {e.preventDefault()}, "touchmove");
+				
+				
 				
 			}
 			
 			
 		};
 		
-		var ie7Build = function() {
+		function ie7Build() {
 			trace("IE7 or lower");
 			for(var i = 0; i < _dates.length; i++) {
 				trace(_dates[i]);
@@ -6396,7 +6953,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 			}
 		};
 		
-		var updateSize = function() {
+		function updateSize() {
 			trace("UPDATE SIZE");
 			config.width = VMM.Lib.width($timeline);
 			config.height = VMM.Lib.height($timeline);
@@ -6413,7 +6970,7 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 		};
 		
 		// BUILD DATE OBJECTS
-		var buildDates = function() {
+		function buildDates() {
 			
 			_dates = [];
 			VMM.fireEvent(global, config.events.messege, "Building Dates");
@@ -6484,27 +7041,42 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 			/* CREATE START PAGE IF AVAILABLE
 			================================================== */
 			if (data.headline != null && data.headline != "" && data.text != null && data.text != "") {
-				trace("HAS STARTPAGE");
-				var _date = {}, td_num = 0, td;
-				
-				td = _dates[0].startdate;
-				_date.startdate = new Date(_dates[0].startdate);
-				
-				if (td.getMonth() === 0 && td.getDate() == 1 && td.getHours() === 0 && td.getMinutes() === 0 ) {
-					// trace("YEAR ONLY");
-					_date.startdate.setFullYear(td.getFullYear() - 1);
-				} else if (td.getDate() <= 1 && td.getHours() === 0 && td.getMinutes() === 0) {
-					// trace("YEAR MONTH");
-					_date.startdate.setMonth(td.getMonth() - 1);
-				} else if (td.getHours() === 0 && td.getMinutes() === 0) {
-					// trace("YEAR MONTH DAY");
-					_date.startdate.setDate(td.getDate() - 1);
-				} else  if (td.getMinutes() === 0) {
-					// trace("YEAR MONTH DAY HOUR");
-					_date.startdate.setHours(td.getHours() - 1);
+
+				var startpage_date,
+					_date			= {},
+					td_num			= 0,
+					td;
+					
+				if (typeof data.startDate != 'undefined') {
+					startpage_date	= VMM.Date.parse(data.startDate);
 				} else {
-					// trace("YEAR MONTH DAY HOUR MINUTE");
-					_date.startdate.setMinutes(td.getMinutes() - 1);
+					startpage_date = false;
+				}
+				trace("HAS STARTPAGE");
+				trace(startpage_date);
+				
+				if (startpage_date && startpage_date < _dates[0].startdate) {
+					_date.startdate = new Date(startpage_date);
+				} else {
+					td = _dates[0].startdate;
+					_date.startdate = new Date(_dates[0].startdate);
+				
+					if (td.getMonth() === 0 && td.getDate() == 1 && td.getHours() === 0 && td.getMinutes() === 0 ) {
+						// trace("YEAR ONLY");
+						_date.startdate.setFullYear(td.getFullYear() - 1);
+					} else if (td.getDate() <= 1 && td.getHours() === 0 && td.getMinutes() === 0) {
+						// trace("YEAR MONTH");
+						_date.startdate.setMonth(td.getMonth() - 1);
+					} else if (td.getHours() === 0 && td.getMinutes() === 0) {
+						// trace("YEAR MONTH DAY");
+						_date.startdate.setDate(td.getDate() - 1);
+					} else  if (td.getMinutes() === 0) {
+						// trace("YEAR MONTH DAY HOUR");
+						_date.startdate.setHours(td.getHours() - 1);
+					} else {
+						// trace("YEAR MONTH DAY HOUR MINUTE");
+						_date.startdate.setMinutes(td.getMinutes() - 1);
+					}
 				}
 				
 				_date.uniqueid		= VMM.Util.unique_ID(7);
@@ -6543,9 +7115,9 @@ if(typeof VMM != 'undefined' && typeof VMM.Timeline == 'undefined') {
 	
 };
 
-/*********************************************** 
-     Begin VMM.Timeline.TimeNav.js 
-***********************************************/ 
+/* **********************************************
+     Begin VMM.Timeline.TimeNav.js
+********************************************** */
 
 /* 	TimeNav
 	This class handles the bottom timeline navigation.
@@ -6557,7 +7129,11 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 	VMM.Timeline.TimeNav = function(parent, content_width, content_height) {
 		trace("VMM.Timeline.TimeNav");
 		
-		var events					= {},
+		var $timenav, $content, $time, $timeintervalminor, $timeinterval, $timeintervalmajor, $timebackground, 
+			$timeintervalbackground, $timenavline, $timenavindicator, $timeintervalminor_minor, $toolbar, $zoomin, $zoomout, $dragslide,
+			config					= VMM.Timeline.Config,
+			row_height,
+			events					= {},
 			timespan				= {},
 			layout					= parent,
 			data					= [],
@@ -6580,25 +7156,92 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 					right:			""
 				}
 			},
-			$timenav, $content, $time, $timeintervalminor, $timeinterval, $timeintervalmajor, $timebackground, 
-			$timeintervalbackground, $timenavline, $timenavindicator, $timeintervalminor_minor, $toolbar, $zoomin, $zoomout, $dragslide;
-			
-		
-
-		var timelookup			= 	{day: 24, month: 12, year: 10, hour: 60, minute: 60, second: 1000, decade: 10, century: 100, millenium: 1000, age: 1000000, epoch: 10000000, era: 100000000, eon: 500000000, week: 4.34812141, days_in_month: 30.4368499, days_in_week: 7, weeks_in_month:4.34812141, weeks_in_year:52.177457, days_in_year: 365.242199, hours_in_day: 24 };
-		var dateFractionBrowser	= 	{day: 86400000, week: 7, month: 30.4166666667, year: 12, hour: 24, minute: 1440, second: 86400, decade: 10, century: 100, millenium: 1000, age: 1000000, epoch: 10000000, era: 100000000, eon: 500000000 };
-		
-		var interval			= 	{type: "year", number: 10, first: 1970, last: 2011, multiplier: 100, classname:"_idd", interval_type:"interval"};
-		var interval_major		= 	{type: "year", number: 10, first: 1970, last: 2011, multiplier: 100, classname:"major", interval_type:"interval major"};
-		var interval_macro		= 	{type: "year", number: 10, first: 1970, last: 2011, multiplier: 100, classname:"_dd_minor", interval_type:"interval minor"};
-		var interval_calc		= 	{day: {},month: {},year: {},hour: {},minute: {}, second: {},decade: {},century: {},millenium: {},week: {}, age: {}, epoch: {}, era: {}, eon: {} };
+			timelookup = {
+				day:			24,
+				month:			12,
+				year:			10,
+				hour:			60,
+				minute:			60,
+				second:			1000,
+				decade:			10,
+				century:		100,
+				millenium:		1000,
+				age:			1000000,
+				epoch:			10000000,
+				era:			100000000,
+				eon:			500000000,
+				week:			4.34812141,
+				days_in_month:	30.4368499,
+				days_in_week:	7,
+				weeks_in_month:	4.34812141,
+				weeks_in_year:	52.177457,
+				days_in_year:	365.242199,
+				hours_in_day:	24
+			},
+			dateFractionBrowser = {
+				day:			86400000,
+				week:			7,
+				month:			30.4166666667,
+				year:			12,
+				hour:			24,
+				minute:			1440,
+				second:			86400,
+				decade:			10,
+				century:		100,
+				millenium:		1000,
+				age:			1000000,
+				epoch:			10000000,
+				era:			100000000,
+				eon:			500000000
+			},
+			interval = {
+				type:			"year",
+				number:			10,
+				first:			1970,
+				last:			2011,
+				multiplier:		100,
+				classname:		"_idd",
+				interval_type:	"interval"
+			},
+			interval_major = {
+				type:			"year",
+				number:			10,
+				first:			1970,
+				last:			2011,
+				multiplier:		100,
+				classname:		"major",
+				interval_type:	"interval major"
+			},
+			interval_macro = {
+				type:			"year",
+				number:			10,
+				first:			1970,
+				last:			2011,
+				multiplier:		100,
+				classname:		"_dd_minor",
+				interval_type:	"interval minor"
+			},
+			interval_calc = {
+				day: {},
+				month: {},
+				year: {},
+				hour: {},
+				minute: {},
+				second: {},
+				decade: {},
+				century: {},
+				millenium: {},
+				week: {},
+				age: {},
+				epoch: {},
+				era: {},
+				eon: {}
+			};
 		
 		
 		/* ADD to Config
 		================================================== */
-		var config				= 	VMM.Timeline.Config;
-		var row_height			=	config.nav.marker.height/2;
-		//config.nav.rows			= 	[1, config.nav.marker.height, config.nav.marker.height*2];
+		row_height			=	config.nav.marker.height/2;
 		config.nav.rows = {
 			full:				[1, row_height*2, row_height*4],
 			half:				[1, row_height, row_height*2, row_height*3, row_height*4, row_height*5],
@@ -6611,15 +7254,6 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 		if (content_height != null && content_height != "") {
 			config.nav.height	= 	content_height;
 		}
-		
-		/*
-		config.nav.density = 		2;
-		config.nav.multiplier = {
-			current: 				6,
-			min: 					.1,
-			max: 					50
-		};
-		*/
 		
 		/* INIT
 		================================================== */
@@ -6776,7 +7410,7 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 				scroll_to = config.nav.constraint.right;
 			}
 			
-			VMM.Lib.stop($timenav);
+			//VMM.Lib.stop($timenav);
 			//VMM.Lib.animate($timenav, config.duration/2, "linear", {"left": scroll_to});
 			VMM.Lib.css($timenav, "left", scroll_to);	
 		}
@@ -6805,6 +7439,7 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 		};
 		
 		var goToMarker = function(n, ease, duration, fast, firstrun) {
+			trace("GO TO MARKER");
 			var _ease		= config.ease,
 				_duration	= config.duration,
 				is_last		= false,
@@ -6812,7 +7447,7 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 			
 			current_marker = 	n;
 			
-			timenav_pos.left			= (config.width/2) - VMM.Lib.position(markers[current_marker].marker).left;
+			timenav_pos.left			= (config.width/2) - markers[current_marker].pos_left
 			timenav_pos.visible.left	= Math.abs(timenav_pos.left) - 100;
 			timenav_pos.visible.right	= Math.abs(timenav_pos.left) + config.width + 100;
 			
@@ -6855,9 +7490,10 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 			var last_pos	= 0,
 				pos			= 0,
 				pos_dif		= 0,
-				mp_diff		= [];
+				mp_diff		= [],
+				i			= 0;
 			
-			for(var i = 0; i < markers.length; i++) {
+			for(i = 0; i < markers.length; i++) {
 				if (data[i].type == "start") {
 					
 				} else {
@@ -6872,30 +7508,34 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 		}
 		
 		var averageDateDistance = function() {
-			var last_dd = 			0;
-			var dd = 				0;
-			var date_dif = 			0;
-			var date_diffs = 		[];
-			var is_first_date = 	true;
+			var last_dd			= 0,
+				dd				= 0,
+				_dd				= "",
+				date_dif		= 0,
+				date_diffs		= [],
+				is_first_date	= true,
+				i				= 0;
 			
-			for(var i = 0; i < data.length; i++) {
+			for(i = 0; i < data.length; i++) {
 				if (data[i].type == "start") {
 					trace("DATA DATE IS START")
 				} else {
-					var _dd = 		data[i].startdate;
-					last_dd = 		dd;
-					dd = 			_dd;
-					date_dif = 		dd - last_dd;
-					
+					_dd			= data[i].startdate;
+					last_dd		= dd;
+					dd			= _dd;
+					date_dif	= dd - last_dd;
 					date_diffs.push(date_dif);
 				}
 			}
+			
 			return VMM.Util.average(date_diffs);
 		}
 		
 		var calculateMultiplier = function() {
-			var temp_multiplier = config.nav.multiplier.current;
-			for(var i = 0; i < temp_multiplier; i++) {
+			var temp_multiplier	= config.nav.multiplier.current,
+				i				= 0;
+				
+			for(i = 0; i < temp_multiplier; i++) {
 				if (averageMarkerPositionDistance() < 75) {
 					if (config.nav.multiplier.current > 1) {
 						config.nav.multiplier.current = (config.nav.multiplier.current - 1);
@@ -6907,8 +7547,8 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 		
 		var calculateInterval = function() {
 			// NEED TO REWRITE ALL OF THIS
-			var _first								= 	getDateFractions(data[0].startdate);
-			var _last								=	getDateFractions(data[data.length - 1].enddate);
+			var _first								= getDateFractions(data[0].startdate),
+				_last								= getDateFractions(data[data.length - 1].enddate);
 			
 			// EON
 			interval_calc.eon.type					=	"eon";
@@ -7080,80 +7720,84 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 		var positionRelative = function(_interval, first, last) {
 			var _first,
 				_last,
-				_type = _interval.type,
-				timerelative = {start: "", end: "", type: _type};
+				_type			= _interval.type,
+				timerelative = {
+					start:		"",
+					end:		"",
+					type:		_type
+				};
 			
 			/* FIRST
 			================================================== */
-			_first	= getDateFractions(first);
+			_first					= getDateFractions(first);
 			timerelative.start		= first.months;
 			
 			if (_type == "eon") {
-				timerelative.start = _first.eons;
+				timerelative.start	= _first.eons;
 			} else if (_type == "era") {
-				timerelative.start = _first.eras;
+				timerelative.start	= _first.eras;
 			} else if (_type == "epoch") {
-				timerelative.start = _first.epochs;
+				timerelative.start	= _first.epochs;
 			} else if (_type == "age") {
-				timerelative.start = _first.ages;
+				timerelative.start	= _first.ages;
 			} else if (_type == "millenium") {
-				timerelative.start = first.milleniums;
+				timerelative.start	= first.milleniums;
 			} else if (_type == "century") {
-				timerelative.start = _first.centuries;
+				timerelative.start	= _first.centuries;
 			} else if (_type == "decade") {
-				timerelative.start = _first.decades;
+				timerelative.start	= _first.decades;
 			} else if (_type == "year") {
-				timerelative.start = _first.years;
+				timerelative.start	= _first.years;
 			} else if (_type == "month") {
-				timerelative.start = _first.months;
+				timerelative.start	= _first.months;
 			} else if (_type == "week") {
-				timerelative.start = _first.weeks;
+				timerelative.start	= _first.weeks;
 			} else if (_type == "day") {
-				timerelative.start = _first.days;
+				timerelative.start	= _first.days;
 			} else if (_type == "hour") {
-				timerelative.start = _first.hours;
+				timerelative.start	= _first.hours;
 			} else if (_type == "minute") {
-				timerelative.start = _first.minutes;
+				timerelative.start	= _first.minutes;
 			}
 			
 			/* LAST
 			================================================== */
 			if (type.of(last) == "date") {
 				
-				_last = getDateFractions(last);
-				timerelative.end = last.months;
+				_last					= getDateFractions(last);
+				timerelative.end		= last.months;
 				
 				if (_type == "eon") {
-					timerelative.end = _last.eons;
+					timerelative.end	= _last.eons;
 				} else if (_type == "era") {
-					timerelative.end = _last.eras;
+					timerelative.end	= _last.eras;
 				} else if (_type == "epoch") {
-					timerelative.end = _last.epochs;
+					timerelative.end	= _last.epochs;
 				} else if (_type == "age") {
-					timerelative.end = _last.ages;
+					timerelative.end	= _last.ages;
 				} else if (_type == "millenium") {
-					timerelative.end = last.milleniums;
+					timerelative.end	= last.milleniums;
 				} else if (_type == "century") {
-					timerelative.end = _last.centuries;
+					timerelative.end	= _last.centuries;
 				} else if (_type == "decade") {
-					timerelative.end = _last.decades;
+					timerelative.end	= _last.decades;
 				} else if (_type == "year") {
-					timerelative.end = _last.years;
+					timerelative.end	= _last.years;
 				} else if (_type == "month") {
-					timerelative.end = _last.months;
+					timerelative.end	= _last.months;
 				} else if (_type == "week") {
-					timerelative.end = _last.weeks;
+					timerelative.end	= _last.weeks;
 				} else if (_type == "day") {
-					timerelative.end = _last.days;
+					timerelative.end	= _last.days;
 				} else if (_type == "hour") {
-					timerelative.end = _last.hours;
+					timerelative.end	= _last.hours;
 				} else if (_type == "minute") {
-					timerelative.end = _last.minutes;
+					timerelative.end	= _last.minutes;
 				}
 				
 			} else {
 				
-				timerelative.end = timerelative.start;
+				timerelative.end		= timerelative.start;
 				
 			}
 			
@@ -7181,9 +7825,11 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 				pos_cache_array			= [],
 				pos_cache_max			= 6,
 				in_view = {
-					left:			timenav_pos.visible.left - in_view_margin,
-					right:			timenav_pos.visible.right + in_view_margin
-				};
+					left:				timenav_pos.visible.left - in_view_margin,
+					right:				timenav_pos.visible.right + in_view_margin
+				},
+				i						= 0,
+				k						= 0;
 				
 			config.nav.minor_width = config.width;
 			
@@ -7191,7 +7837,7 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 			VMM.Lib.removeClass(".flag", "row2");
 			VMM.Lib.removeClass(".flag", "row3");
 			
-			for(var i = 0; i < markers.length; i++) {
+			for(i = 0; i < markers.length; i++) {
 				
 				var line,
 					marker				= markers[i],
@@ -7206,6 +7852,7 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 				pos.begin				= Math.round(pos.begin +  pos_offset);
 				pos.end					= Math.round(pos.end + pos_offset);
 				line					= Math.round(pos.end - pos.begin);
+				marker.pos_left			= pos.begin;
 				
 				if (current_marker == i) {
 					timenav_pos.left			= (config.width/2) - pos;
@@ -7246,7 +7893,7 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 				// CONTROL ROW POSITION
 				if (tags.length > 0) {
 					
-					for (var k = 0; k < tags.length; k++) {
+					for (k = 0; k < tags.length; k++) {
 						if (k < config.nav.rows.current.length) {
 							if (marker.tag == tags[k]) {
 								row = k;
@@ -7259,63 +7906,6 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 					}
 					row_pos = config.nav.rows.current[row];
 				} else {
-					/*
-					pos_cache_close = 0;
-					for (var l = 0; l < pos_cache_array.length; l++) {
-						if (pos.begin - pos_cache_array[l].pos.begin < ((config.nav.marker.width/2))) {
-							pos_cache_close++;
-							trace("POS CACHE TOO CLOSE");
-
-							markers[pos_cache_array[l].id].full = false;
-							VMM.Lib.addClass(markers[pos_cache_array[l].id].flag, "flag-small");
-							
-						}
-					}
-					if (pos_cache_close > 3) {
-						trace("POS CACHE TOO CLOSE GRATER THAN 2");
-						marker.full = false;
-						VMM.Lib.addClass(marker.flag, "flag-small");
-						
-						if (row < config.nav.rows.current.length - 1) {
-							row ++;
-						} else {
-							row = 0;
-							row_depth ++;
-						}
-						
-						if (config.nav.rows.current == config.nav.rows.full) {
-							if (row_depth_sub == 0) {
-								row_depth_sub = 1;
-							} else {
-								row_depth_sub = 0;
-							}
-							
-							row_pos = config.nav.rows.half[ (row*2) + row_depth_sub ];
-						} else {
-							row_pos = config.nav.rows.half[row];
-						}
-						
-						
-					} else {
-						if (!marker.full) {
-							VMM.Lib.removeClass(markers[i].flag, "flag-small");
-							marker.full = true;
-						}
-						if (pos.begin - previous_pos.begin < (config.nav.marker.width + config.spacing)) {
-							if (row < config.nav.rows.full.length - 1) {
-								row ++;
-							} else {
-								row = 0;
-								row_depth ++;
-							}
-						} else {
-							row_depth = 1;
-							row = 1;
-						}
-						row_pos = config.nav.rows.full[row];
-						
-					}
-					*/
 					
 					if (pos.begin - previous_pos.begin < (config.nav.marker.width + config.spacing)) {
 						if (row < config.nav.rows.current.length - 1) {
@@ -7330,25 +7920,7 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 						row = 1;
 					}
 					row_pos = config.nav.rows.current[row];
-					/*
-					if (row_depth > 2) {
-						marker.full = false;
-						VMM.Lib.addClass(marker.flag, "flag-small");
-						trace(config.nav.rows.current);
-						trace(config.nav.rows.full);
-						if (row_depth_sub == 0) {
-							row_depth_sub = 1;
-						} else {
-							row_depth_sub = 0;
-						}
-						if (config.nav.rows.current == config.nav.rows.full) {
-							trace(config.nav.rows.half[(row*2) + 1]);
-							trace(config.nav.rows.full[row]);
-							row_pos = config.nav.rows.half[ (row*2) + row_depth_sub ];
-						}
-						
-					} 
-					*/
+					
 				}
 				
 				// SET LAST MARKER POSITION
@@ -7388,15 +7960,23 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 			}
 			
 			// ANIMATE THE TIMELINE TO ADJUST TO CHANGES
-			VMM.Lib.stop($timenav);
-			VMM.Lib.animate($timenav, config.duration/2, config.ease, {"left": (config.width/2) - (cur_mark)});
+			if (is_animated) {
+				VMM.Lib.stop($timenav);
+				VMM.Lib.animate($timenav, config.duration/2, config.ease, {"left": (config.width/2) - (cur_mark)});
+			} else {
+				
+			}
+			
 			//VMM.Lib.delay_animate(config.duration, $timenav, config.duration/2, config.ease, {"left": (config.width/2) - (cur_mark)});
 			
 		
 		}
 		
 		var positionEras = function(is_animated) {
-			for(var i = 0; i < era_markers.length; i++) {
+			var i	= 0,
+				p	= 0;
+				
+			for(i = 0; i < era_markers.length; i++) {
 				var era			= era_markers[i],
 					pos			= positionOnTimeline(interval, era.relative_pos),
 					row_pos		= 0,
@@ -7406,7 +7986,7 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 				// CONTROL ROW POSITION
 				if (era.tag != "") {
 					era_height = (config.nav.marker.height * config.nav.rows.full.length) / config.nav.rows.current.length;
-					for (var p = 0; p < tags.length; p++) {
+					for (p = 0; p < tags.length; p++) {
 						if (p < config.nav.rows.current.length) {
 							if (era.tag == tags[p]) {
 								row = p;
@@ -7449,7 +8029,8 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 					left:			timenav_pos.visible.left - in_view_margin,
 					right:			timenav_pos.visible.right + in_view_margin
 				}
-				not_too_many		= true;
+				not_too_many		= true,
+				i					= 0;
 			
 			config.nav.minor_left = 0;
 				
@@ -7459,7 +8040,7 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 			}
 			
 			
-			for(var i = 0; i < the_intervals.length; i++) {
+			for(i = 0; i < the_intervals.length; i++) {
 				var _interval			= the_intervals[i].element,
 					_interval_date		= the_intervals[i].date,
 					_interval_visible	= the_intervals[i].visible,
@@ -7547,18 +8128,10 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 				
 					if (pos > config.nav.minor_width) {
 						config.nav.minor_width = pos;
-						//config.nav.constraint.right_min = -pos;
-						//config.nav.constraint.right = config.nav.constraint.right_min + (config.width/2);
-						
-						
 					}
 					
 					if (pos < config.nav.minor_left) {
 						config.nav.minor_left = pos;
-						//config.nav.constraint.right_min = pos;
-						//config.nav.constraint.right = config.nav.constraint.right_min + (config.width/2);
-						
-						
 					}
 					
 				}
@@ -7571,25 +8144,12 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 				}
 			}
 			
-
-			
 			config.nav.constraint.right_min = -(config.nav.minor_width)+(config.width);
 			config.nav.constraint.right = config.nav.constraint.right_min + (config.width/2);
 			
 			VMM.Lib.css($timeintervalminor_minor, "left", config.nav.minor_left - (config.width)/2);
 			VMM.Lib.width($timeintervalminor_minor, (config.nav.minor_width)+(config.width) + Math.abs(config.nav.minor_left) );
-			//trace((config.nav.minor_width/config.nav.multiplier.current)/2)
 			
-			/*
-			for(var k = 0; k < the_intervals.length; k++) {
-				var _animation	= the_intervals[k].animation;
-					
-				if (_animation.animate) {
-					var _interval	= the_intervals[k].interval_element;
-					VMM.Lib.animate(_interval, config.duration/2, config.ease, {opacity: _animation.opacity, left: _animation.pos}, "interval_que");
-				}
-			}
-			*/
 		}
 		
 		/* Interval Elements
@@ -7607,14 +8167,15 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 				firefox = {
 					flag:			false,
 					offset:			0
-				};
+				},
+				i					= 0;
 			
 			VMM.attachElement(_element_parent, "");
 			
 			_interval.date = new Date(data[0].startdate.getFullYear(), 0, 1, 0,0,0);
 			_timezone_offset = _interval.date.getTimezoneOffset();
 			
-			for(var i = 0; i < int_number; i++) {
+			for(i = 0; i < int_number; i++) {
 				trace(_interval.type);
 				var _is_year			= false,
 					int_obj = {
@@ -7800,27 +8361,30 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 		/* BUILD
 		================================================== */
 		var build = function() {
-			
+			var i	= 0,
+				j	= 0;
+				
 			VMM.attachElement(layout, "");
 			
-			$timenav = 					VMM.appendAndGetElement(layout, "<div>", "timenav");
-			$content = 					VMM.appendAndGetElement($timenav, "<div>", "content");
-			$time = 					VMM.appendAndGetElement($timenav, "<div>", "time");
-			$timeintervalminor = 		VMM.appendAndGetElement($time, "<div>", "time-interval-minor");
-			$timeintervalminor_minor = 	VMM.appendAndGetElement($timeintervalminor, "<div>", "minor");
-			$timeintervalmajor = 		VMM.appendAndGetElement($time, "<div>", "time-interval-major");
-			$timeinterval = 			VMM.appendAndGetElement($time, "<div>", "time-interval");
-			$timebackground = 			VMM.appendAndGetElement(layout, "<div>", "timenav-background");
-			$timenavline = 				VMM.appendAndGetElement($timebackground, "<div>", "timenav-line");
-			$timenavindicator = 		VMM.appendAndGetElement($timebackground, "<div>", "timenav-indicator");
-			$timeintervalbackground = 	VMM.appendAndGetElement($timebackground, "<div>", "timenav-interval-background", "<div class='top-highlight'></div>");
-			$toolbar = 					VMM.appendAndGetElement(layout, "<div>", "toolbar");
+			$timenav					= VMM.appendAndGetElement(layout, "<div>", "timenav");
+			$content					= VMM.appendAndGetElement($timenav, "<div>", "content");
+			$time						= VMM.appendAndGetElement($timenav, "<div>", "time");
+			$timeintervalminor			= VMM.appendAndGetElement($time, "<div>", "time-interval-minor");
+			$timeintervalminor_minor	= VMM.appendAndGetElement($timeintervalminor, "<div>", "minor");
+			$timeintervalmajor			= VMM.appendAndGetElement($time, "<div>", "time-interval-major");
+			$timeinterval				= VMM.appendAndGetElement($time, "<div>", "time-interval");
+			$timebackground				= VMM.appendAndGetElement(layout, "<div>", "timenav-background");
+			$timenavline				= VMM.appendAndGetElement($timebackground, "<div>", "timenav-line");
+			$timenavindicator			= VMM.appendAndGetElement($timebackground, "<div>", "timenav-indicator");
+			$timeintervalbackground		= VMM.appendAndGetElement($timebackground, "<div>", "timenav-interval-background", "<div class='top-highlight'></div>");
+			$toolbar					= VMM.appendAndGetElement(layout, "<div>", "toolbar");
+			
 			
 			buildInterval();
 			buildMarkers();
 			buildEras();
 			calculateMultiplier();
-			positionMarkers();
+			positionMarkers(false);
 			positionEras();
 			
 			positionInterval($timeinterval, interval_array, false, true);
@@ -7836,8 +8400,8 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 				
 			}
 			
-			$zoomin		= VMM.appendAndGetElement($toolbar, "<div>", "zoom-in", "<div class='icon'></div>");
-			$zoomout	= VMM.appendAndGetElement($toolbar, "<div>", "zoom-out", "<div class='icon'></div>");
+			$zoomin						= VMM.appendAndGetElement($toolbar, "<div>", "zoom-in", "<div class='icon'></div>");
+			$zoomout					= VMM.appendAndGetElement($toolbar, "<div>", "zoom-out", "<div class='icon'></div>");
 			
 			// MAKE TIMELINE DRAGGABLE/TOUCHABLE
 			$dragslide = new VMM.DragSlider;
@@ -7861,28 +8425,32 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 				VMM.bindEvent(layout, onMouseScroll, 'mousewheel');
 			}
 			
-			VMM.fireEvent(layout, "LOADED");
-			_active = true;
 			
-			reSize(true);
 			
 			// USER CONFIGURABLE ADJUSTMENT TO DEFAULT ZOOM
 			if (config.nav.zoom.adjust != 0) {
 				if (config.nav.zoom.adjust < 0) {
-					for(var i = 0; i < Math.abs(config.nav.zoom.adjust); i++) {
+					for(i = 0; i < Math.abs(config.nav.zoom.adjust); i++) {
 						onZoomOut();
 					}
 				} else {
-					for(var j = 0; j < config.nav.zoom.adjust; j++) {
+					for(j = 0; j < config.nav.zoom.adjust; j++) {
 						onZoomIn();
 					}
 				}
 			}
 			
+			//VMM.fireEvent(layout, "LOADED");
+			_active = true;
+			
+			reSize(true);
+			VMM.fireEvent(layout, "LOADED");
+			
 		};
 		
 		var buildInterval = function() {
-			
+			var i	= 0,
+				j	= 0;
 			// CALCULATE INTERVAL
 			timespan = getDateFractions((data[data.length - 1].enddate) - (data[0].startdate), true);
 			trace(timespan);
@@ -7960,8 +8528,8 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 			createIntervalElements(interval_major, interval_major_array, $timeintervalmajor);
 			
 			// Cleanup duplicate interval elements between normal and major
-			for(var i = 0; i < interval_array.length; i++) {
-				for(var j = 0; j < interval_major_array.length; j++) {
+			for(i = 0; i < interval_array.length; i++) {
+				for(j = 0; j < interval_major_array.length; j++) {
 					if (interval_array[i].date_string == interval_major_array[j].date_string) {
 						VMM.attachElement(interval_array[i].element, "");
 					}
@@ -7973,14 +8541,27 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 			
 			var row			= 2,
 				lpos		= 0,
-				row_depth	= 0;
+				row_depth	= 0,
+				i			= 0,
+				k			= 0,
+				l			= 0;
+				
 				
 			markers			= [];
 			era_markers		= [];
 			
-			for(var i = 0; i < data.length; i++) {
+			for(i = 0; i < data.length; i++) {
 				
-				var _marker, _marker_flag, _marker_content, _marker_dot, _marker_line, _marker_line_event, _marker_title = "", has_title = false;
+				var _marker,
+					_marker_flag,
+					_marker_content,
+					_marker_dot,
+					_marker_line,
+					_marker_line_event,
+					_marker_obj,
+					_marker_title		= "",
+					has_title			= false;
+				
 				
 				_marker					= VMM.appendAndGetElement($content, "<div>", "marker");
 				_marker_flag			= VMM.appendAndGetElement(_marker, "<div>", "flag");
@@ -8010,9 +8591,6 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 						if (m.type == "quote" || m.type == "unknown") {
 							_marker_title = VMM.Util.untagify(m.id);
 							has_title = true;
-						} else if (m.type == "twitter") {
-							has_title = false;
-							VMM.appendElement(_marker_content, "<h3 id='text_thumb_" + m.id + "'>" + _marker_title + "</h3>");
 						} else {
 							has_title = false;
 						}
@@ -8024,10 +8602,12 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 				} else {
 					trace("TITLE SLUG NOT FOUND " + data[i].slug)
 				}
-
 				
 				if (has_title) {
 					VMM.appendElement(_marker_content, "<h3>" + _marker_title + "</h3>");
+				} else {
+					VMM.appendElement(_marker_content, "<h3>" + _marker_title + "</h3>");
+					VMM.appendElement(_marker_content, "<h3 id='marker_content_" + data[i].uniqueid + "'>" + _marker_title + "</h3>");
 				}
 				
 				// ADD ID
@@ -8037,14 +8617,15 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 				VMM.bindEvent(_marker_flag, onMarkerClick, "", {number: i});
 				VMM.bindEvent(_marker_flag, onMarkerHover, "mouseenter mouseleave", {number: i, elem:_marker_flag});
 				
-				var _marker_obj = {
+				_marker_obj = {
 					marker: 			_marker,
 					flag: 				_marker_flag,
 					lineevent: 			_marker_line_event,
 					type: 				"marker",
 					full:				true,
 					relative_pos:		_marker_relative_pos,
-					tag:				data[i].tag
+					tag:				data[i].tag,
+					pos_left:			0
 				};
 				
 				
@@ -8071,16 +8652,16 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 			
 			// CREATE TAGS
 			tags = VMM.Util.deDupeArray(tags);
-			if (tags.length > 2) {
+			if (tags.length > 3) {
 				config.nav.rows.current = config.nav.rows.half;
 			} else {
 				config.nav.rows.current = config.nav.rows.full;
 			}
-			for(var k = 0; k < tags.length; k++) {
+			for(k = 0; k < tags.length; k++) {
 				if (k < config.nav.rows.current.length) {
 					var tag_element = VMM.appendAndGetElement($timebackground, "<div>", "timenav-tag");
 					VMM.Lib.addClass(tag_element, "timenav-tag-row-" + (k+1));
-					if (tags.length > 2) {
+					if (tags.length > 3) {
 						VMM.Lib.addClass(tag_element, "timenav-tag-size-half");
 					} else {
 						VMM.Lib.addClass(tag_element, "timenav-tag-size-full");
@@ -8091,8 +8672,8 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 			}
 			
 			// RESIZE FLAGS IF NEEDED
-			if (tags.length > 2) {
-				for(var l = 0; l < markers.length; l++) {
+			if (tags.length > 3) {
+				for(l = 0; l < markers.length; l++) {
 					VMM.Lib.addClass(markers[l].flag, "flag-small");
 					markers[l].full = false;
 				}
@@ -8103,9 +8684,10 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 		
 		var buildEras = function() {
 			var number_of_colors	= 6,
-				current_color		= 0;
+				current_color		= 0,
+				j					= 0;
 			// CREATE ERAS
-			for(var j = 0; j < eras.length; j++) {
+			for(j = 0; j < eras.length; j++) {
 				var era = {
 						content: 			VMM.appendAndGetElement($content, "<div>", "era"),
 						text_content: 		VMM.appendAndGetElement($timeinterval, "<div>", "era"),
@@ -8118,29 +8700,21 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 					},
 					st						= VMM.Date.prettyDate(era.startdate),
 					en						= VMM.Date.prettyDate(era.enddate),
-					era_text				= "";
+					era_text				= "<div>&nbsp;</div>";
 					
 				if (typeof eras[j].tag != "undefined") {
 					era.tag = eras[j].tag;
 				}
+				
 				era.relative_pos = positionRelative(interval, era.startdate, era.enddate);
 				
 				VMM.Lib.attr(era.content, "id", era.uniqueid);
 				VMM.Lib.attr(era.text_content, "id", era.uniqueid + "_text");
-				//VMM.Lib.css(era.content, "background", era.color);
-				
-				era_text		+= "<div>&nbsp;";
-				//era_text		+= "<h3>" + VMM.Util.unlinkify(era.title) + "</h3>"
-				if (st != en) {
-					//era_text	+= "<h4>" + st + " &mdash; " + en + "</h4>";
-				} else {
-					//era_text	+= "<h4>" + st + "</h4>";
-				}
-				era_text		+= "</div>";
 				
 				// Background Color
 				VMM.Lib.addClass(era.content, "era"+(current_color+1));
 				VMM.Lib.addClass(era.text_content, "era"+(current_color+1));
+				
 				if (current_color < number_of_colors) {
 					current_color++;
 				} else {
@@ -8160,9 +8734,9 @@ if(typeof VMM.Timeline != 'undefined' && typeof VMM.Timeline.TimeNav == 'undefin
 	
 }
 
-/*********************************************** 
-     Begin VMM.Timeline.DataObj.js 
-***********************************************/ 
+/* **********************************************
+     Begin VMM.Timeline.DataObj.js
+********************************************** */
 
 /*	TIMELINE SOURCE DATA PROCESSOR
 ================================================== */
@@ -8188,9 +8762,12 @@ if (typeof VMM.Timeline !== 'undefined' && typeof VMM.Timeline.DataObj == 'undef
 					trace("DATA SOURCE: STORIFY");
 					VMM.Timeline.DataObj.model.storify.getData(raw_data);
 					//http://api.storify.com/v1/stories/number10gov/g8-and-nato-chicago-summit
+				} else if (raw_data.match(".jsonp")) {
+					trace("DATA SOURCE: JSONP");
+					LoadLib.js(raw_data, VMM.Timeline.DataObj.onJSONPLoaded);
 				} else {
 					trace("DATA SOURCE: JSON");
-					VMM.getJSON(raw_data, VMM.Timeline.DataObj.parseJSON);
+					VMM.getJSON(raw_data + "?callback=onJSONP_Data", VMM.Timeline.DataObj.parseJSON);
 				}
 			} else if (type.of(raw_data) == "html") {
 				trace("DATA SOURCE: HTML");
@@ -8199,6 +8776,11 @@ if (typeof VMM.Timeline !== 'undefined' && typeof VMM.Timeline.DataObj == 'undef
 				trace("DATA SOURCE: UNKNOWN");
 			}
 			
+		},
+		
+		onJSONPLoaded: function() {
+			trace("JSONP IS LOADED");
+			VMM.fireEvent(global, VMM.Timeline.Config.events.data_ready, storyjs_jsonp_data);
 		},
 		
 		parseHTML: function (d) {
@@ -8324,14 +8906,38 @@ if (typeof VMM.Timeline !== 'undefined' && typeof VMM.Timeline.DataObj == 'undef
 			googlespreadsheet: {
 				
 				getData: function(raw) {
-					var _key = VMM.Util.getUrlVars(raw)["key"];
-					var _url = "https://spreadsheets.google.com/feeds/list/" + _key + "/od6/public/values?alt=json";
-					VMM.getJSON(_url, VMM.Timeline.DataObj.model.googlespreadsheet.buildData);
+					var key, url, timeout;
+					
+					key	= VMM.Util.getUrlVars(raw)["key"];
+					url	= "https://spreadsheets.google.com/feeds/list/" + key + "/od6/public/values?alt=json";
+					
+					timeout = setTimeout(function() {
+						trace("Google Docs timeout");
+						VMM.fireEvent(global, VMM.Timeline.Config.events.messege, "Google Docs is not responding");
+					}, 6000);
+					
+					VMM.getJSON(url, VMM.Timeline.DataObj.model.googlespreadsheet.buildData)
+						.error(function(jqXHR, textStatus, errorThrown) {
+							trace("Google Docs ERROR");
+							trace("Google Docs ERROR: " + textStatus + " " + jqXHR.responseText);
+						})
+						.success(function(d) {
+							clearTimeout(timeout);
+						});
 				},
 				
 				buildData: function(d) {
+					var data_obj	= VMM.Timeline.DataObj.data_template_obj;
+					
 					VMM.fireEvent(global, VMM.Timeline.Config.events.messege, "Parsing Data");
-					var _data_obj = VMM.Timeline.DataObj.data_template_obj;
+					
+					function getGVar(v) {
+						if (typeof v != 'undefined') {
+							return v.$t;
+						} else {
+							return "";
+						}
+					}
 
 					for(var i = 0; i < d.feed.entry.length; i++) {
 						var dd		= d.feed.entry[i],
@@ -8344,52 +8950,45 @@ if (typeof VMM.Timeline !== 'undefined' && typeof VMM.Timeline.DataObj == 'undef
 						}
 						
 						if (dd_type.match("start") || dd_type.match("title") ) {
-							_data_obj.timeline.startDate = 			dd.gsx$startdate.$t;
-							_data_obj.timeline.headline = 			dd.gsx$headline.$t;
-							_data_obj.timeline.asset.media = 		dd.gsx$media.$t;
-							_data_obj.timeline.asset.caption = 		dd.gsx$mediacaption.$t;
-							_data_obj.timeline.asset.credit = 		dd.gsx$mediacredit.$t;
-							_data_obj.timeline.text = 				dd.gsx$text.$t;
-							_data_obj.timeline.type = 				"google spreadsheet";
+							data_obj.timeline.startDate		= getGVar(dd.gsx$startdate);
+							data_obj.timeline.headline		= getGVar(dd.gsx$headline);
+							data_obj.timeline.asset.media	= getGVar(dd.gsx$media);
+							data_obj.timeline.asset.caption	= getGVar(dd.gsx$mediacaption);
+							data_obj.timeline.asset.credit	= getGVar(dd.gsx$mediacredit);
+							data_obj.timeline.text			= getGVar(dd.gsx$text);
+							data_obj.timeline.type			= "google spreadsheet";
 						} else if (dd_type.match("era")) {
-							var _era = {
-								"startDate": 						dd.gsx$startdate.$t,
-								"endDate": 							dd.gsx$enddate.$t,
-								"headline": 						dd.gsx$headline.$t,
-								"text": 							dd.gsx$text.$t,
-								"tag": 								""
-								
-							};
-							if (typeof dd.gsx$tag != 'undefined') {
-								_era.tag = dd.gsx$tag.$t;
+							var era = {
+								startDate:		getGVar(dd.gsx$startdate),
+								endDate:		getGVar(dd.gsx$enddate),
+								headline:		getGVar(dd.gsx$headline),
+								text:			getGVar(dd.gsx$text),
+								tag:			getGVar(dd.gsx$tag)
 							}
-							_data_obj.timeline.era.push(_era);
+							data_obj.timeline.era.push(era);
 						} else {
-							var _date = {
-								"type": 							"google spreadsheet",
-								"startDate": 						dd.gsx$startdate.$t,
-								"endDate": 							dd.gsx$enddate.$t,
-					            "headline": 						dd.gsx$headline.$t,
-					            "text": 							dd.gsx$text.$t,
-					            "asset": {
-									"media": 						dd.gsx$media.$t,
-									"credit": 						dd.gsx$mediacredit.$t,
-									"caption": 						dd.gsx$mediacaption.$t
-								},
-					            "tag": 								""
+							var date = {
+									type:			"google spreadsheet",
+									startDate:		getGVar(dd.gsx$startdate),
+									endDate:		getGVar(dd.gsx$enddate),
+									headline:		getGVar(dd.gsx$headline),
+									text:			getGVar(dd.gsx$text),
+									tag:			getGVar(dd.gsx$tag),
+									asset: {
+										media:		getGVar(dd.gsx$media),
+										credit:		getGVar(dd.gsx$mediacredit),
+										caption:	getGVar(dd.gsx$mediacaption),
+										thumbnail:	getGVar(dd.gsx$mediathumbnail)
+									}
 							};
-							if (typeof dd.gsx$tag != 'undefined') {
-								_date.tag				= dd.gsx$tag.$t;
-							}
-							if (typeof dd.gsx$tag != 'undefined') {
-								_date.asset.thumbnail	= dd.gsx$mediathumbnail.$t;
-							}
 							
-							_data_obj.timeline.date.push(_date);
+							data_obj.timeline.date.push(date);
 						}
 					};
 				
-					VMM.fireEvent(global, VMM.Timeline.Config.events.data_ready, _data_obj);
+					VMM.fireEvent(global, VMM.Timeline.Config.events.messege, "Finished Parsing Data");
+					
+					VMM.fireEvent(global, VMM.Timeline.Config.events.data_ready, data_obj);
 				}
 				
 			},
@@ -8397,19 +8996,21 @@ if (typeof VMM.Timeline !== 'undefined' && typeof VMM.Timeline.DataObj == 'undef
 			storify: {
 				
 				getData: function(raw) {
+					var key, url, storify_timeout;
 					//http://storify.com/number10gov/g8-and-nato-chicago-summit
 					//http://api.storify.com/v1/stories/number10gov/g8-and-nato-chicago-summit
 					
 					VMM.fireEvent(global, VMM.Timeline.Config.events.messege, "Loading Storify...");
-					var _key = raw.split("storify.com\/")[1];
-					var _url = "http://api.storify.com/v1/stories/" + _key + "?per_page=300&callback=?";
 					
-					var storify_timeout = setTimeout(function() {
+					key	= raw.split("storify.com\/")[1];
+					url	= "http://api.storify.com/v1/stories/" + key + "?per_page=300&callback=?";
+					
+					storify_timeout = setTimeout(function() {
 						trace("STORIFY timeout");
 						VMM.fireEvent(global, VMM.Timeline.Config.events.messege, "Storify is not responding");
 					}, 6000);
 					
-					VMM.getJSON(_url, VMM.Timeline.DataObj.model.storify.buildData)
+					VMM.getJSON(url, VMM.Timeline.DataObj.model.storify.buildData)
 						.error(function(jqXHR, textStatus, errorThrown) {
 							trace("STORIFY error");
 							trace("STORIFY ERROR: " + textStatus + " " + jqXHR.responseText);

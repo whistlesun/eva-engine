@@ -9,7 +9,7 @@ use User\Form,
 class UserController extends RestfulModuleController
 {
     protected $renders = array(
-        'restPutUser' => 'blog/get',    
+        'restPutUser' => 'user/get',    
         'restPostUser' => 'user/get',    
         'restDeleteUser' => 'remove/get',    
     );
@@ -24,14 +24,29 @@ class UserController extends RestfulModuleController
         $selectQuery = $form->fieldsMap($query, true);
 
         $itemModel = Api::_()->getModelService('User\Model\User');
-        $itemModel->getCache();
-        //p($itemModel);
-        $items = $itemModel->getUsers();
+        $items = $itemModel->setItemList($selectQuery)->getUserList();
+        //p($items[0]->join('Profile')->self(array('*'))->site);
+        $items = $items->toArray(array(
+            'self' => array(
+                '*',
+                'userName',
+            ),
+            'join' => array(
+                'Profile' => array(
+                    '*',
+                    'site',
+                    'birthday',
+                    'phoneMobile',
+                ),
+                'Account' => array('*'),
+            ),
+        ));
         //$paginator = $itemModel->getPaginator();
+
 
         return array(
             'form' => $form,
-            'posts' => $items,
+            'users' => $items,
             'query' => $query,
             //'paginator' => $paginator,
         );
@@ -40,10 +55,72 @@ class UserController extends RestfulModuleController
     public function restGetUser()
     {
         $id = (int)$this->getEvent()->getRouteMatch()->getParam('id');
-        $postModel = Api::_()->getModel('User\Model\Post');
-        $postinfo = $postModel->setItemParams($id)->getPost();
+        $itemModel = Api::_()->getModelService('User\Model\User');
+        $item = $itemModel->getUser($id);
+
+        //p($item->self(array('*'))->toArray());
+
+        //$item = $itemModel->getUser(1);
+        //p($item->self(array('*'))->userName);
+        
+        //$credits = $item->join('Account')->self(array('*'))->credits;
+        //p($credits);
+
+        $item = $item->toArray(array(
+            'self' => array(
+                '*',
+                'userName',
+                'getRegisterIp()',
+                'getFullName()',
+            ),
+            /*
+            'join' => array(
+                'Profile' => array(
+                    '*',
+                    'site',
+                    'birthday',
+                    'phoneMobile',
+                ),
+                'Account' => array('*'),
+                'MyFriends' => array(
+                    'self' => array(
+                        'userName',
+                    ),
+                    'join' => array(
+                        'Profile' => array()
+                    )
+                ),
+            ),
+            'proxy' => array(
+                'Blog\Item\Post::UserPosts' => array(
+                    'self' => array('*'),
+                    'join' => array(
+                        'Text' => array('*'),
+                        'Comments' => array(
+                            'self' => array(
+                                '*'
+                            ),
+                            'proxy' => array(
+                                'User\Item\User::CommentUser' => array(
+                                    'self' => array(
+                                        'userName'
+                                    )
+                                )
+                            ),
+                        )
+                    ),
+                ),
+            ) 
+            */
+        ));
+
+        if(!$item){
+            //Add redirect
+        }
+        //p($item);
+
         return array(
-            'post' => $postinfo,
+            'user' => $item,
             'flashMessenger' => $this->flashMessenger()->getMessages(),
         );
     }
@@ -53,26 +130,24 @@ class UserController extends RestfulModuleController
         $request = $this->getRequest();
         $postData = $request->getPost();
         $form = new Form\UserForm();
-
         $subForms = array(
             'Profile' => array('User\Form\ProfileForm'),
             'Account' => array('User\Form\AccountForm'),
         );
-        $form->setSubforms($subForms)->init();
+        $form->setSubforms($subForms)
+             ->init()
+             ->setData($postData)
+             ->enableFilters();
 
-        $form->setData($postData)->enableFilters();
         if ($form->isValid()) {
 
             $postData = $form->getData();
-            $itemModel = Api::_()->getModel('User\Model\User');
-            $itemData = $form->fieldsMap($postData, true);
-            $itemId = $itemModel->setSubItemMap($subForms)->setItem($postData)->createPost();
+            $itemModel = Api::_()->getModelService('User\Model\User');
+            $itemId = $itemModel->setItem($postData)->createUser();
             $this->flashMessenger()->addMessage('item-create-succeed');
             $this->redirect()->toUrl('/admin/user/' . $itemId);
 
         } else {
-            
-            //p($form->getInputFilter()->getInvalidInput());
         }
 
         return array(
@@ -85,35 +160,34 @@ class UserController extends RestfulModuleController
     {
         $request = $this->getRequest();
         $postData = $request->getPost();
-        $form = new Form\PostEditForm();
+
+        $form = new Form\UserEditForm();
         $subForms = array(
-            'Text' => array('User\Form\TextForm'),
-            'CategoryPost' => array('User\Form\CategoryPostForm'),
-            'FileConnect' => array('File\Form\FileConnectForm'),
+            'Profile' => array('User\Form\ProfileForm'),
+            'Account' => array('User\Form\AccountForm'),
         );
-        
         $form->setSubforms($subForms)
              ->init()
              ->setData($postData)
              ->enableFilters();
 
-        $flashMesseger = array();
         if ($form->isValid()) {
             $postData = $form->getData();
-            $postModel = Api::_()->getModel('User\Model\Post');
-            $postData = $form->fieldsMap($postData, true);
-            $postId = $postModel->setSubItemMap($subForms)->setItem($postData)->savePost();
-            $this->flashMessenger()->addMessage('post-edit-succeed');
-            $this->redirect()->toUrl('/admin/blog/' . $postData['id']);
+            $itemModel = Api::_()->getModelService('User\Model\User');
+
+            $itemId = $itemModel->setItem($postData)->saveUser();
+
+            $this->flashMessenger()->addMessage('item-edit-succeed');
+            $this->redirect()->toUrl('/admin/user/' . $postData['id']);
         } else {
             //$this->flashMessenger()->addMessage('');
-            $flashMesseger = array('post-edit-failed');
+            //$flashMesseger = array('post-edit-failed');
         }
 
         return array(
             'form' => $form,
-            'post' => $postData,
-            'flashMessenger' => $flashMesseger
+            'user' => $postData,
+            //'flashMessenger' => $flashMesseger
         );
     }
 
@@ -122,15 +196,17 @@ class UserController extends RestfulModuleController
         $request = $this->getRequest();
         $postData = $request->getPost();
         $callback = $request->getPost()->get('callback');
+        p($postData);
 
-        $form = new Form\PostDeleteForm();
+        $form = new Form\UserDeleteForm();
         $form->enableFilters()->setData($postData);
         if ($form->isValid()) {
 
             $postData = $form->getData();
-            $postTable = Api::_()->getDbTable('User\DbTable\Posts');
-
-            $postTable->where("id = {$postData['id']}")->remove();
+            $itemModel = Api::_()->getModelService('User\Model\User');
+            $itemModel->setItem(array(
+                'id' => $postData['id']
+            ))->removeUser();
 
             if($callback){
                 $this->redirect()->toUrl($callback);
@@ -138,7 +214,7 @@ class UserController extends RestfulModuleController
 
         } else {
             return array(
-                'post' => $postData,
+                'item' => $postData,
             );
         }
     }

@@ -69,7 +69,7 @@ class UserForm extends \Eva\Form\Form
                         'value' => 'inactive',
                     ),
                 ),
-                'value' => 'active',
+                'value' => 'inactive',
             ),
         ),
         'screenName' => array (
@@ -119,6 +119,10 @@ class UserForm extends \Eva\Form\Form
                 'label' => 'Gender',
                 'options' => array (
                     array (
+                        'label' => 'Select Gender',
+                        'value' => '',
+                    ),
+                    array (
                         'label' => 'Male',
                         'value' => 'male',
                     ),
@@ -167,12 +171,6 @@ class UserForm extends \Eva\Form\Form
                         'label' => 'Online',
                         'value' => 'online',
                     ),
-                    /*
-                    array (
-                        'label' => 'Busy',
-                        'value' => 'busy',
-                    ),
-                    */
                     array (
                         'label' => 'Offline',
                         'value' => 'offline',
@@ -204,7 +202,7 @@ class UserForm extends \Eva\Form\Form
         ),
         'userName' => array (
             'name' => 'userName',
-            'required' => false,
+            'required' => true,
             'filters' => array (
                 'stripTags' => array (
                     'name' => 'StripTags',

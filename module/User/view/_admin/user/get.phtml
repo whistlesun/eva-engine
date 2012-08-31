@@ -1,8 +1,8 @@
 <?
 $user = $this->user;
-$title = $user['id'] ? 'Edit User' : 'Create User';
+$title = $user ? 'Edit User' : 'Create User';
 $title = $this->_($title);
-$method = $user['id'] ? 'put' : 'post';
+$method = $user ? 'put' : 'post';
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
 
@@ -53,9 +53,8 @@ $form->init(array(
                 <div class="page-header">
                     <?if($user):?>
                     <div class="btn-group pull-right">
-                        <a href="<?=$this->uri('/blog/page/' . $post['urlName'])?>" class="btn"><?=$this->_('View')?></a>
-                        <a href="<?=$this->uri('/admin/blog/create')?>" class="btn"><?=$this->_('Clear Cache')?></a>
-                        <a href="<?=$this->uri('/admin/blog/remove/' . $post['id'], 'c', array('c' => $this->uri('/admin/blog/' . $post['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
+                        <a href="<?=$this->uri('/admin/user/create')?>" class="btn"><?=$this->_('Clear Cache')?></a>
+                        <a href="<?=$this->uri('/admin/user/remove/' . $user['id'], 'c', array('c' => $this->uri('/admin/user/' . $user['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
                     </div>
                     <?endif?>
                     <h2><?=$title?></h2>
@@ -170,7 +169,6 @@ $form->init(array(
                     <h3><?=$this->_('Credits Setting')?></h3>
                 </div>
                 <fieldset class="form-horizontal">
-                    <?=$form->helper(array('Account', 'user_id'), array('class' => ''))?>
                     <div class="control-group <?=$form->isError(array('Account', 'credits')) ? 'error' : '';?>">
                         <?=$form->helper(array('Account', 'credits'), 'label', array('class' => 'control-label'))?>
                         <div class="controls">

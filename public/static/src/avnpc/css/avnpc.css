@@ -1063,6 +1063,7 @@ a:hover{color:#0A132F;text-decoration:none;}
 .jspTrack{background:#F5F5F5;}
 .jspDrag{background:#999;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}
 .jspHorizontalBar{height:5px;}
+.timeline .page_header{text-align:center;}.timeline .page_header h2{position:static;font-size:18px;}
 .timeline .page_content{padding-top:20px;padding-bottom:0px;max-width:100%;}
 .timeline p.copyright{display:none;}
 .timeline .neighbors{display:none;}

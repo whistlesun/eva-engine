@@ -809,7 +809,7 @@ body{color:#333;font-size:12px;font-family:Microsoft YaHei,Trebuchet MS,Verdana,
 a{color:#045999;}
 a:hover{color:#0A132F;text-decoration:none;}
 .header{position:fixed;width:190px;height:360px;background:url(img/header.png) no-repeat right top;top:0;left:0;}.header h1{width:180px;background:url(img/h1.png) no-repeat right top;padding:100px 0 0 10px;font-family:'Sarina',cursive;font-size:22px;text-shadow:1px 1px 1px #000;}.header h1 a{color:#C6D3DE;}
-.header p{margin:0 10px;color:#C6D3DE;font-family:'Great Vibes',cursive;font-size:15px;}
+.header p{margin:0 10px;color:#C6D3DE;font-family:'Great Vibes',cursive;font-size:15px;}.header p a{color:#C6D3DE;}
 #menu{margin-top:20px;}#menu li{padding:10px 20px;font-size:14px;text-align:right;}#menu li a{color:#FFF;font-size:20px;text-shadow:1px 1px 1px #0A132F;font-family:'Great Vibes',cursive;}
 #menu li a:hover{color:#045999;}
 .page_content{padding:130px 10px 30px 250px;max-width:980px;}

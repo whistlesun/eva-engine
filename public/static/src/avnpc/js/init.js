@@ -27,7 +27,7 @@ eva.construct = function(){
 	eva.story();
 
 	if($("#timeline-embed")[0]){
-		$timeline = $("#timeline-embed");
+		var $timeline = $("#timeline-embed");
 		$("body").addClass('timeline');
 		eva.loader(eva.s(['src/avnpc/timeline/js/storyjs-embed.js']), function(){
 			var minHeight = 550;

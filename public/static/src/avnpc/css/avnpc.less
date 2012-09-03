@@ -853,6 +853,10 @@ html {
 .timeline {
 	.page_header {
 		text-align:center;
+		padding-top:10px;
+		height:50px;
+		background:#EFEFEF;
+		.box-shadow(inset -1px -1px 7px rgba(0, 0, 0, 0.1));
 
 		h2 {
 			position:static;
@@ -860,7 +864,7 @@ html {
 		}
 	}
 	.page_content {
-		padding-top:20px;
+		padding-top:0;
 		padding-bottom:0px;
 		max-width:100%;
 	}
@@ -878,7 +882,19 @@ html {
 	}
 	.vco-storyjs p, .vco-storyjs blockquote, .vco-storyjs blockquote p, .vco-storyjs .twitter blockquote p {
 		font-family: @fontFamily !important;
+		font-weight: 500;
+		font-size:14px;
+		line-height:1.8em;
 	}
+
+
+	.vco-storyjs blockquote {
+		background: none repeat scroll 0 0 #F1F1F1;
+		margin: 1em;
+		padding: 0.6em 1em;
+		color:#555;
+	}
+	
 
 	.vco-storyjs .timenav h1, .vco-storyjs .flag-content h1, .vco-storyjs .era h1, .vco-storyjs .timenav h2, .vco-storyjs .flag-content h2, .vco-storyjs .era h2, .vco-storyjs .timenav h3, .vco-storyjs .flag-content h3, .vco-storyjs .era h3, .vco-storyjs .timenav h4, .vco-storyjs .flag-content h4, .vco-storyjs .era h4, .vco-storyjs .timenav h5, .vco-storyjs .flag-content h5, .vco-storyjs .era h5, .vco-storyjs .timenav h6, .vco-storyjs .flag-content h6, .vco-storyjs .era h6 {
 		font-family: MS UI Gothic, sans-serif !important;

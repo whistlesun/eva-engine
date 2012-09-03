@@ -41,14 +41,13 @@ class UserController extends RestfulModuleController
                 'Account' => array('*'),
             ),
         ));
-        //$paginator = $itemModel->getPaginator();
-
+        $paginator = $itemModel->getPaginator();
 
         return array(
             'form' => $form,
             'users' => $items,
             'query' => $query,
-            //'paginator' => $paginator,
+            'paginator' => $paginator,
         );
     }
 
@@ -69,14 +68,12 @@ class UserController extends RestfulModuleController
         $item = $item->toArray(array(
             'self' => array(
                 '*',
-                'userName',
                 'getRegisterIp()',
                 'getFullName()',
             ),
-            /*
             'join' => array(
                 'Profile' => array(
-                    '*',
+                    //'*',
                     'site',
                     'birthday',
                     'phoneMobile',
@@ -89,6 +86,9 @@ class UserController extends RestfulModuleController
                     'join' => array(
                         'Profile' => array()
                     )
+                ),
+                'Oauth' => array(
+                    'appExt'
                 ),
             ),
             'proxy' => array(
@@ -111,7 +111,6 @@ class UserController extends RestfulModuleController
                     ),
                 ),
             ) 
-            */
         ));
 
         if(!$item){
@@ -196,7 +195,6 @@ class UserController extends RestfulModuleController
         $request = $this->getRequest();
         $postData = $request->getPost();
         $callback = $request->getPost()->get('callback');
-        p($postData);
 
         $form = new Form\UserDeleteForm();
         $form->enableFilters()->setData($postData);

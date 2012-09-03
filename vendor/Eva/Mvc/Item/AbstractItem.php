@@ -13,6 +13,7 @@ namespace Eva\Mvc\Item;
 
 
 use Eva\Mvc\Model\AbstractModelService,
+    Eva\Paginator\Paginator,
     Zend\Mvc\Exception,
     Zend\ServiceManager\ServiceLocatorAwareInterface,
     Zend\ServiceManager\ServiceLocatorInterface,
@@ -77,6 +78,8 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     * @var ServiceLocatorInterface
     */
     protected $serviceLocator;
+
+    protected $paginator;
 
     /**
     * Set the service locator.
@@ -156,7 +159,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         return $this;
     }
 
-    public function getDbTable()
+    public function dbTable()
     {
         $tableClassName = $this->dataSourceClass;
         $serviceManager = $this->getServiceLocator();
@@ -171,7 +174,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
         return $serviceManager->get($tableClassName);
     }
 
-    public function getWebService()
+    public function webService()
     {
     
     }
@@ -182,7 +185,7 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
             return $this->getWebService();
         }
 
-        return $this->getDbTable();
+        return $this->dbTable();
     }
 
     /**
@@ -320,7 +323,12 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
         foreach($join as $key => $map){
             if(isset($this->relationships[$key])){
-                $self->$key = $this->join($key)->toArray($map);
+                if(isset($this->relationships[$key]['mappedBy'])){
+                    $mapKey = $this->relationships[$key]['mappedBy'];
+                    $self->$mapKey = $this->join($key)->toArray($map);
+                } else {
+                    $self->$key = $this->join($key)->toArray($map);
+                }
             }
         }
 
@@ -331,6 +339,10 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
     public function collections(array $params)
     {
         $dataClass = $this->getDataClass();
+        if($params && method_exists($dataClass, 'setParameters')){
+            $params = new \Zend\Stdlib\Parameters($params);
+            $dataClass->setParameters($params);
+        }
         $items = $dataClass->find('all');
         foreach($items as $key => $dataSource){
             $item = clone $this;
@@ -368,10 +380,10 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
         $dataSource = array();
         if(true === $selectAll || $columns){
+            $dataClass = $this->getDataClass();
             if(false === $selectAll){
                 $dataClass->columns($columns);
             }
-            $dataClass = $this->getDataClass();
             $where = $this->getPrimaryArray();
             $dataSource = $dataClass->where($where)->find('one');
 
@@ -423,6 +435,8 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
         //Important : here must use clone to create many entities
         $relItem = clone $model->getItem($relationship['targetEntity']); 
+        //Important : Joined item should have no dataSource
+        $relItem->setDataSource(array());
 
         $joinFuncName = 'join' . ucfirst($key);
         if(method_exists($this, $joinFuncName)){
@@ -453,12 +467,26 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
     protected function joinOneToMany($key, $relItem, $relationship)
     {
+        $joinColumn = $relationship['joinColumn'];
+        $referencedColumn = $relationship['referencedColumn'];
+        $params = array(
+            $joinColumn => $this->$referencedColumn,
+        );
+
+        if(isset($relationship['joinParameters']) && is_array($relationship['joinParameters'])){
+            $params = array_merge($params, $relationship['joinParameters']);
+        }
         //p(sprintf('joinOneToMany Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
+        return $relItem->collections($params);
     }
 
     protected function joinManyToOne($key, $relItem, $relationship)
     {
+        $joinColumn = $relationship['joinColumn'];
+        $referencedColumn = $relationship['referencedColumn'];
+        $relItem->$joinColumn = $this->$referencedColumn;
         //p(sprintf('joinManyToOne Joined Class %s : joinColumn %s => %s joined %s => %s', get_class($relItem), $joinColumn, $relItem->$joinColumn , $referencedColumn, $this->$referencedColumn));
+        return $this;
     }
 
     protected function joinManyToMany($key, $relItem, $relationship)
@@ -569,61 +597,112 @@ abstract class AbstractItem implements ArrayAccess, Iterator, ServiceLocatorAwar
 
         $this->setDataSource($dataSource);
 
-
-
-        //$hydrator = new Hydrator($dataSource);
-        //$hydrator->hydrate($dataSource, &$this);
-        //$this->setHydrator($hydrator);
-
         $this->initialized = true;
         return $this;
     }
 
+
+    public function setPaginator($paginator)
+    {
+        $this->paginator = $paginator;
+    }
+
+    public function getPaginator(array $paginatorOptions = array())
+    {
+        $defaultPaginatorOptions = array(
+            'itemCountPerPage' => 10,
+            'pageRange' => 5,
+            'pageNumber' => 1,
+        );
+
+        $dataClass = $this->getDataClass();
+        $count = $dataClass->getCount();
+        if(!$count) {
+            return $this->paginator = null;
+        }
+
+        $dbPaginatorOptions = $dataClass->getPaginatorOptions();
+        $paginatorOptions = array_merge($defaultPaginatorOptions, $dbPaginatorOptions, $paginatorOptions);
+
+        $count = (int) $count;
+        $diConfig = array(
+            'instance' => array(
+                'Zend\Paginator\Adapter\DbSelect' => array(
+                    'parameters' => array(
+                        'rowCount' => $count,
+                        'select' => $dataClass->getSelect(),
+                        'adapterOrSqlObject' => $dataClass->getSql(),
+                    )
+                ),
+                'Eva\Paginator\Paginator' => array(
+                    'parameters' => array(
+                        'rowCount' => $count,
+                        'adapter' => 'Zend\Paginator\Adapter\DbSelect',
+                    ),
+                ),
+            )
+        );
+
+
+        foreach ($paginatorOptions as $key => $value) {
+            if(false === in_array($key, array('itemCountPerPage', 'pageNumber', 'pageRange'))){
+                continue;
+            }
+            $diConfig['instance']['Eva\Paginator\Paginator']['parameters'][$key] = $paginatorOptions[$key];
+        }
+
+        $di = new \Zend\Di\Di();
+        $di->configure(new \Zend\Di\Config($diConfig));
+        $paginator = $di->get('Eva\Paginator\Paginator');
+        return $this->paginator = $paginator;
+    }
+
+
     /**
-     * Iterator: move pointer to next item
-     *
-     * @return void
-     */
+    * Iterator: move pointer to next item
+    *
+    * @return void
+    */
     public function next()
     {
         $this->dataSource->next();
     }
 
     /**
-     * Iterator: retrieve current key
-     *
-     * @return mixed
-     */
+    * Iterator: retrieve current key
+    *
+    * @return mixed
+    */
     public function key()
     {
         return $this->dataSource->key();
     }
 
     /**
-     * Iterator: get current item
-     *
-     * @return array
-     */
+    * Iterator: get current item
+    *
+    * @return array
+    */
     public function current()
     {
         return $this->dataSource->current();
     }
 
     /**
-     * Iterator: is pointer valid?
-     *
-     * @return bool
-     */
+    * Iterator: is pointer valid?
+    *
+    * @return bool
+    */
     public function valid()
     {
         return $this->dataSource->valid();
     }
 
     /**
-     * Iterator: rewind
-     *
-     * @return void
-     */
+    * Iterator: rewind
+    *
+    * @return void
+    */
     public function rewind()
     {
         $this->dataSource->rewind();

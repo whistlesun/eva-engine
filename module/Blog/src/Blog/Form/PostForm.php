@@ -220,6 +220,7 @@ class PostForm extends Form
                 'notEmpty' => array (
                     'name' => 'NotEmpty',
                     'options' => array (
+                        \Zend\Validator\NotEmpty::IS_EMPTY => 'Abc',
                     ),
                 ),
                 'stringLength' => array (

@@ -1067,6 +1067,7 @@ a:hover{color:#0A132F;text-decoration:none;}
 .timeline .page_content{padding-top:0;padding-bottom:0px;max-width:100%;}
 .timeline p.copyright{display:none;}
 .timeline .neighbors{display:none;}
+.timeline .storyjs-embed.sized-embed{border:0;}
 .timeline .vco-storyjs .vco-feature h1,.timeline .vco-storyjs .vco-feature h2,.timeline .vco-storyjs .vco-feature h3,.timeline .vco-storyjs .vco-feature h4,.timeline .vco-storyjs .vco-feature h5,.timeline .vco-storyjs .vco-feature h6{font-family:Microsoft YaHei,Trebuchet MS,Verdana,Helvetica,Arial,sans-serif;}
 .timeline .vco-storyjs p,.timeline .vco-storyjs blockquote,.timeline .vco-storyjs blockquote p,.timeline .vco-storyjs .twitter blockquote p{font-family:Microsoft YaHei,Trebuchet MS,Verdana,Helvetica,Arial,sans-serif !important;font-weight:500;font-size:14px;line-height:1.8em;}
 .timeline .vco-storyjs blockquote{background:none repeat scroll 0 0 #F1F1F1;margin:1em;padding:0.6em 1em;color:#555;}

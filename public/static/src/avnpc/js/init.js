@@ -33,6 +33,8 @@ eva.construct = function(){
 			var minHeight = 550;
 			var height = $(window).height() > minHeight ? $(window).height() - 80 : minHeight;
 			var source = $timeline.html();
+			//source = eva.d('proxy/') + '?page=' + encodeURIComponent(source.replace(/&amp;/g, '&'));
+			source = eva.d('proxy/spreadsheet');
 			$timeline.empty();
 			var config = {
 				type:               'timeline',
@@ -43,7 +45,7 @@ eva.construct = function(){
 				lang:               'zh-cn',
 				source:             source,
 				embed_id:           'timeline-embed',
-				js:                 eva.s('src/avnpc/timeline/js/timeline-min.js'), 
+				js:                 eva.s('src/avnpc/timeline/js/timeline.min.js'), 
 				css:                eva.s('src/avnpc/timeline/css/timeline.css') 
 			};
 			//console.log(config);

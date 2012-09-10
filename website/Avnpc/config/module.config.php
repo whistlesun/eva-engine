@@ -66,6 +66,20 @@ return array(
                 ),
                 'priority' => 2,
             ),
+            'proxy' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/proxy[/:id]',
+                    'constraints' => array(
+                        'id'     => '[a-zA-Z][a-zA-Z0-9_-]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Avnpc\Controller\ProxyController',
+                        'action' => 'index',
+                    ),
+                ),
+                'priority' => 2,
+            ),
         ),
     ),
     'controllers' => array(
@@ -74,11 +88,13 @@ return array(
             'Avnpc\Controller\PagesController' => 'Avnpc\Controller\PagesController',
             'Avnpc\Controller\LifeController' => 'Avnpc\Controller\LifeController',
             'Avnpc\Controller\FeedController' => 'Avnpc\Controller\FeedController',
+            'Avnpc\Controller\ProxyController' => 'Avnpc\Controller\ProxyController',
         ),
     ),
 
     'view_manager' => array(
         'template_map' => array(
+            'blank' => __DIR__ . '/../view/blank.phtml',
             'layout/layout' => __DIR__ . '/../layout/avnpc.phtml',
             'avnpc/index' => __DIR__ . '/../view/index.phtml',
             'avnpc/pages/get' => __DIR__ . '/../view/pages/get.phtml',

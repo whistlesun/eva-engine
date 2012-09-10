@@ -24,6 +24,11 @@ class UserController extends RestfulModuleController
         $selectQuery = $form->fieldsMap($query, true);
 
         $itemModel = Api::_()->getModelService('User\Model\User');
+        if(!$selectQuery){
+            $selectQuery = array(
+                'page' => 1
+            );
+        }
         $items = $itemModel->setItemList($selectQuery)->getUserList();
         //p($items[0]->join('Profile')->self(array('*'))->site);
         $items = $items->toArray(array(
@@ -33,7 +38,7 @@ class UserController extends RestfulModuleController
             ),
             'join' => array(
                 'Profile' => array(
-                    '*',
+                    //'*',
                     'site',
                     'birthday',
                     'phoneMobile',
@@ -65,6 +70,11 @@ class UserController extends RestfulModuleController
         //$credits = $item->join('Account')->self(array('*'))->credits;
         //p($credits);
 
+        //$avatars = $item->proxy('File\Item\File::UserAvatar');
+        //$avatar = $avatars[0];
+        //p($avatar->self(array('*'))->toArray());
+
+        /*
         $item = $item->toArray(array(
             'self' => array(
                 '*',
@@ -88,35 +98,20 @@ class UserController extends RestfulModuleController
                     )
                 ),
                 'Oauth' => array(
-                    'appExt'
+                    //'appExt'
                 ),
             ),
             'proxy' => array(
-                'Blog\Item\Post::UserPosts' => array(
+                'File\Item\File::UserAvatar' => array(
                     'self' => array('*'),
-                    'join' => array(
-                        'Text' => array('*'),
-                        'Comments' => array(
-                            'self' => array(
-                                '*'
-                            ),
-                            'proxy' => array(
-                                'User\Item\User::CommentUser' => array(
-                                    'self' => array(
-                                        'userName'
-                                    )
-                                )
-                            ),
-                        )
-                    ),
                 ),
             ) 
         ));
 
         if(!$item){
-            //Add redirect
         }
-        //p($item);
+        p($item);
+        */
 
         return array(
             'user' => $item,

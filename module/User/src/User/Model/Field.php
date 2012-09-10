@@ -5,21 +5,11 @@ namespace User\Model;
 use Eva\Api,
     Eva\Mvc\Model\AbstractModelService;
 
-class User extends AbstractModelService
+class Field extends AbstractModelService
 {
-    protected $map = array(
-        'small' => array(
-        
-        ),
-        'medium' => array(
-        
-        ),
-        'large' => array(
-        
-        )
-    );
 
-    public function createUser(array $data = array())
+
+    public function createField(array $data = array())
     {
         if($data) {
             $this->setItem($data);
@@ -29,6 +19,8 @@ class User extends AbstractModelService
         
         $this->trigger('create.pre');
 
+            p($item->getLoadedRelationships());
+            exit;
         $itemId = $item->create();
 
         if($item->hasLoadedRelationships()){
@@ -44,7 +36,7 @@ class User extends AbstractModelService
         return $itemId;
     }
 
-    public function saveUser(array $data = array())
+    public function saveField(array $data = array())
     {
         if($data) {
             $this->setItem($data);
@@ -71,7 +63,7 @@ class User extends AbstractModelService
 
     }
 
-    public function removeUser(array $map = array())
+    public function removeField(array $map = array())
     {
         $this->trigger('remove.pre');
 
@@ -85,7 +77,7 @@ class User extends AbstractModelService
         return true;
     }
 
-    public function getUser($userIdOrName = null, array $map = array())
+    public function getField($userIdOrName = null, array $map = array())
     {
         $this->trigger('get.precache');
 
@@ -95,7 +87,7 @@ class User extends AbstractModelService
             ));
         } elseif(is_string($userIdOrName)) {
             $this->setItem(array(
-                'userName' => $userIdOrName,
+                'fieldKey' => $userIdOrName,
             ));
         }
         $this->trigger('get.pre');
@@ -115,7 +107,7 @@ class User extends AbstractModelService
         return $item;
     }
 
-    public function getUserList(array $itemListParameters = array(), $map = null)
+    public function getFieldList(array $itemListParameters = array(), $map = null)
     {
         $this->trigger('list.precache');
 

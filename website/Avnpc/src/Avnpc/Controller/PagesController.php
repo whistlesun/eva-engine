@@ -14,7 +14,7 @@ class PagesController extends ActionController
     {
         $id = $this->params('id');
         $postModel = Api::_()->getModel('Blog\Model\Post');
-        $postinfo = $postModel->setItemParams($id)->getPost();
+        $postinfo = $postModel->getPost($id);
         if($postinfo){
             header('HTTP/1.1 301 Moved Permanently');
             return $this->redirect()->toUrl('/pages/' . $postinfo['urlName']);

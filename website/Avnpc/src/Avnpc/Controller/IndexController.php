@@ -16,7 +16,7 @@ class IndexController extends ActionController
         $page = $request->getQuery()->get('page', 1);
 
         $postModel = Api::_()->getModel('Blog\Model\Post');
-        $posts = $postModel->setItemListParams(array('page' => $page))->getPosts();
+        $posts = $postModel->setItemList(array('page' => $page))->getPostList();
         $paginator = $postModel->getPaginator();
 
         $view = new ViewModel(array(

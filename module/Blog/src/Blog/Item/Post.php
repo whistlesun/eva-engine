@@ -40,7 +40,7 @@ class Post extends AbstractItem
         ),
         'save' => array(
             'getUrlName()',
-            'getUpdateTime()',
+            //'getUpdateTime()',
         ),
     );
 

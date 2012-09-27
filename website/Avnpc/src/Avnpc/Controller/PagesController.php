@@ -56,11 +56,15 @@ class PagesController extends ActionController
         if($item){
             $item['Prev'] = $itemModel->getItem()->getDataClass()->where(array(
                 "id < {$item['id']}"
-            ))->order('id DESC')->find('one');
+            ))
+            ->where(array("status" => "published"))
+            ->order('id DESC')->find('one');
 
             $item['Next'] = $itemModel->getItem()->getDataClass()->where(array(
                 "id > {$item['id']}"
-            ))->order('id ASC')->find('one');
+            ))
+            ->where(array("status" => "published"))
+            ->order('id ASC')->find('one');
         }
 
         $comments = array();

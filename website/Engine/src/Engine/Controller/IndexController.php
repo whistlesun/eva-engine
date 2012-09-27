@@ -1,0 +1,14 @@
+<?php
+namespace Engine\Controller;
+
+use Eva\Mvc\Controller\ActionController,
+    Eva\View\Model\ViewModel;
+
+class IndexController extends ActionController
+{
+    public function indexAction()
+    {
+        $view = new ViewModel();
+        return $view;
+    }
+}

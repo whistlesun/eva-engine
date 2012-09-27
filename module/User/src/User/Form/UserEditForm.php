@@ -18,11 +18,30 @@ namespace User\Form;
  * @category   Eva
  * @package    Eva_Form
  */
-class UserEditForm extends UserForm
+class UserEditForm extends UserCreateForm
 {
     protected $mergeFilters = array (
         'id' => array (
             'required' => true,
+        ),
+        'userName' => array (
+            'required' => true,
+        ),
+        'email' => array (
+            'required' => true,
+            'validators' => array (
+                'db' => array(
+                    'name' => 'Eva\Validator\Db\NoRecordExists',
+                    'injectdata' => true,
+                    'options' => array(
+                        'field' => 'email',
+                        'table' => 'user_users',
+                        'exclude' => array(
+                            'field' => 'id',
+                        ),
+                    ),
+                ),
+            ),
         ),
     );
 }

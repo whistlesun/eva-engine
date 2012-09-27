@@ -54,12 +54,13 @@ return array(
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => array(
-            'layout/layout' => EVA_MODULE_PATH . '/Core/view/layout/layout.phtml',
-            'layout/admin' => EVA_MODULE_PATH . '/Core/view/layout/admin.phtml',
-            'layout/adminblank' => EVA_MODULE_PATH . '/Core/view/layout/adminblank.phtml',
+            'layout/layout' => EVA_MODULE_PATH . '/Core/layout/layout.phtml',
+            'layout/admin' => EVA_MODULE_PATH . '/Core/layout/admin.phtml',
+            'layout/adminblank' => EVA_MODULE_PATH . '/Core/layout/adminblank.phtml',
             'index/index'   => EVA_MODULE_PATH . '/Core/view/index/index.phtml',
             'error/404'     => EVA_MODULE_PATH . '/Core/view/error/404.phtml',
             'error/index'   => EVA_MODULE_PATH . '/Core/view/error/index.phtml',
+            'blank' => EVA_MODULE_PATH . '/Core/view/blank.phtml',
         ),
         'module_namespace_layout_map' => array(
             'Admin' => 'layout/admin'
@@ -130,6 +131,11 @@ return array(
             'admin',
         ),
         'translation_file_patterns' => array(
+            'zf' => array(
+                'type' => 'PhpArray',
+                'base_dir' => EVA_LIB_PATH . '/Zend/resources/languages/',
+                'pattern' => '%s/Zend_Validate.php'
+            ),
             'main' => array(
                 'type' => 'csv',
                 'base_dir' => EVA_ROOT_PATH . '/data/languages',

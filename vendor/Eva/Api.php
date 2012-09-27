@@ -240,7 +240,7 @@ class Api
         return new $formClassName;
     }
 
-    public function getModelService($modelClassName)
+    public function getModel($modelClassName)
     {
         if(false === $this->isModuleLoaded($modelClassName)){
             throw new RuntimeException(sprintf(
@@ -248,80 +248,16 @@ class Api
                 $modelClassName
             ));    
         }
-
+        
         $serviceManager = $this->event->getApplication()->getServiceManager();
+        if($serviceManager->has($modelClassName)){
+            return $serviceManager->get($modelClassName);
+        }
+
         $serviceManager->setInvokableClass($modelClassName, $modelClassName);
         return $serviceManager->get($modelClassName);
     }
 
-    public function getModel($modelClassName, array $diConfig = array())
-    {
-        if(false === $this->isModuleLoaded($modelClassName)){
-            throw new RuntimeException(sprintf(
-                'Module not loaded by class %s',
-                $modelClassName
-            ));    
-        }
-
-        $di = $this->getDi();
-        $defaultConfig = array(
-            'definition' => array(
-                'class' => array(
-                    'Zend\Cache\Storage\Adapter' => array(
-                        'instantiator' => array(
-                            'Eva\Cache\StorageFactory',
-                            'factory'
-                        ),
-                    ),
-                    'Eva\Cache\StorageFactory' => array(
-                        'methods' => array(
-                            'factory' => array(
-                                'cfg' => array(
-                                    'required' => true,
-                                    'type' => false
-                                )
-                            )
-                        ),
-                    ),
-                ),
-            ),
-            'instance' => array(
-                'Eva\Cache\StorageFactory' => array(
-                    'parameters' => array(
-                        'cfg' => array(
-                            'adapter' => array(
-                                'name' => 'filesystem',
-                                'options' => array(
-                                    'cacheDir' => EVA_ROOT_PATH . '/data/cache/model/',
-                                ),
-                            ),
-                            'plugins' => array('serializer')
-                        ),
-                    )
-                ),
-                $modelClassName => array(
-                    'parameters' => array(
-                        'cacheStorageFactory' => 'Eva\Cache\StorageFactory',
-                    ),
-                    'injections' => array(
-                        $this->event,
-                    )
-                ),
-            )
-        );
-
-        /**
-        $globalConfig = $this->getConfig();
-        if(isset($globalConfig['cache']['model_cache']['di'])){
-            $defaultConfig = array_merge($defaultConfig, $globalConfig['cache']['model_cache']['di']);
-        }
-        */
-
-        $diConfig = $diConfig ? array_merge($defaultConfig, $diConfig) : $defaultConfig;
-        $di->configure(new DiConfig($diConfig));
-        //\Zend\Di\Display\Console::export($di);
-        return $di->get($modelClassName); 
-    }
 
     public function getView()
     {
@@ -329,5 +265,10 @@ class Api
             return $this->view;
         }
         return $this->view = $this->event->getApplication()->getServiceManager()->get('ViewManager')->getRenderer();
+    }
+
+    public function getServiceManager()
+    {
+        return $this->event->getApplication()->getServiceManager();
     }
 }

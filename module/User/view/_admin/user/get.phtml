@@ -1,29 +1,23 @@
 <?
-$user = $this->user;
-$title = $user ? 'Edit User' : 'Create User';
+$item = $this->item;
+$title = $item['id'] ? 'Edit User' : 'Create User';
 $title = $this->_($title);
-$method = $user ? 'put' : 'post';
 $this->headTitle($title, 'SET');
 $this->textDelay('breadcrumbText', $title);
 
 if($this->form){
 	$form = $this->form;
 } else {
-    if($user) {
-        $form = Eva\Api::_()->getForm('User\Form\UserEditForm');
-    } else {
-        $form = Eva\Api::_()->getForm('User\Form\UserForm');
-    }
+    $form = $item['id'] ? new User\Form\UserEditForm() : new User\Form\UserCreateForm();
+    $form->useSubFormGroup();
 }
-$form->setSubForms(array(
-    'Profile' => array('User\Form\ProfileForm'),
-    'Account' => array('User\Form\AccountForm'),
-));
-$form->init(array(
-    'action' => $this->uri('/admin/user/'),
-    'method' => $method,
-    'values' => $user
-));
+
+$form->setMethod($item['id'] ? 'put' : 'post');
+$form->setView($this)
+     ->setAction($this->uri('/admin/user/'))
+     ->bind($item)
+     ->prepare();
+
 ?>
 
 <input id="flash-messenger" type="hidden" value="<?=is_array($this->flashMessenger) ? implode(',', $this->flashMessenger) : ''?>" />
@@ -49,19 +43,25 @@ $form->init(array(
         <?=$form->restful();?>
         <?=$form->helper('id');?>
         <div class="span10">
+            <?if($item):?>
+            <div class="btn-group pull-right">
+                <a href="<?=$this->uri('/admin/user/create')?>" class="btn"><?=$this->_('Clear Cache')?></a>
+                <a href="<?=$this->uri('/admin/user/remove/' . $item['id'], 'c', array('c' => $this->uri('/admin/user/' . $item['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
+            </div>
+            <ul class="nav nav-tabs">
+                <li class="active">
+                <a href="<?=$this->uri('/admin/user/' . $item['id'])?>"><?=$title?></a>
+                </li>
+                <li><a href="<?=$this->uri('/admin/user/field/userfield/' . $item['id'])?>"><?=$this->_('User Fields')?></a></li>
+                <li><a href="#"><?=$this->_('User Tags')?></a></li>
+            </ul>
+            <?else:?>
             <div class="slate">
-                <div class="page-header">
-                    <?if($user):?>
-                    <div class="btn-group pull-right">
-                        <a href="<?=$this->uri('/admin/user/create')?>" class="btn"><?=$this->_('Clear Cache')?></a>
-                        <a href="<?=$this->uri('/admin/user/remove/' . $user['id'], 'c', array('c' => $this->uri('/admin/user/' . $user['id']))); ?>" class="btn"><?=$this->_('Delete')?></a>
-                    </div>
-                    <?endif?>
+                <div class="page-headr">
                     <h2><?=$title?></h2>
                 </div>
-                <fieldset class="">
-                </fieldset>
             </div>
+            <?endif?>
         </div><!--span10 end-->
 
         <div class="span5">
@@ -124,14 +124,14 @@ $form->init(array(
                     <div class="control-group <?=$form->isError('timezone') ? 'error' : '';?>">
                         <?=$form->helper('timezone', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('timezone', array('class' => ''))?>        
+                            <?=$form->helper('timezone', 'formSelect', array('class' => ''))?>        
                             <div class="help-block"><?=$form->helper('timezone', 'formElementErrors')?></div>
                         </div>
                     </div>
                     <div class="control-group <?=$form->isError('language') ? 'error' : '';?>">
                         <?=$form->helper('language', 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper('language', array('class' => ''))?>        
+                            <?=$form->helper('language', 'formSelect', array('class' => ''))?>        
                             <div class="help-block"><?=$form->helper('language', 'formElementErrors')?></div>
                         </div>
                     </div>
@@ -163,6 +163,7 @@ $form->init(array(
             </div>
         </div><!--span5 end-->
 
+
         <div class="span5">
             <div class="slate">
                 <div class="page-header">
@@ -189,6 +190,41 @@ $form->init(array(
         </div><!--span5 end-->
 
 
+        <!--
+        <div class="span10">
+            <div class="slate">
+                <div class="page-header">
+                    <h3><?=$this->_('Roles & Permissions')?></h3>
+                </div>
+                <?foreach($form->get('RoleUser') as $subForm):?>
+                <?$role = $subForm->getRole()?>
+                <fieldset class="form-horizontal">
+                    <div class="control-group <?=$subForm->isError('role_id') ? 'error' : '';?> span3">
+                        <?=$subForm->helper('role_id', 'label', array(
+                            'class' => 'control-label',
+                            'label' => $role['roleName'],
+                        ))?>
+                        <div class="controls">
+                            <?=$subForm->helper('role_id', 'formCheckbox', array(
+                                'class' => '',
+                                'checked' => 'unchecked'
+                            ))?>
+                            <div class="help-block"><?=$subForm->helper('role_id', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                    <div class="control-group <?=$subForm->isError('status') ? 'error' : '';?> span3">
+                        <?=$subForm->helper('status', 'label', array('class' => 'control-label'))?>
+                        <div class="controls">
+                            <?=$subForm->helper('status', 'formSelect', array('class' => ''))?>        
+                            <div class="help-block"><?=$subForm->helper('status', 'formElementErrors')?></div>
+                        </div>
+                    </div>
+                </fieldset>
+                <?endforeach?>
+            </div>
+        </div><!--span5 end-->
+        -->
+
         <div class="span10">
             <div class="slate">
                 <div class="page-header">
@@ -212,7 +248,7 @@ $form->init(array(
                     <div class="control-group <?=$form->isError(array('Profile', 'birthday')) ? 'error' : '';?>">
                         <?=$form->helper(array('Profile', 'birthday'), 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper(array('Profile', 'birthday'), array('class' => ''))?>        
+                            <?=$form->helper(array('Profile', 'birthday'), array('class' => 'datepicker', 'data-date-format' => 'yyyy-mm-dd'))?>        
                             <div class="help-block"><?=$form->helper(array('Profile', 'birthday'), 'formElementErrors')?></div>
                         </div>
                     </div>
@@ -233,7 +269,7 @@ $form->init(array(
                     <div class="control-group <?=$form->isError(array('Profile', 'country')) ? 'error' : '';?>">
                         <?=$form->helper(array('Profile', 'country'), 'label', array('class' => 'control-label'))?>
                         <div class="controls">
-                            <?=$form->helper(array('Profile', 'country'), array('class' => ''))?>        
+                            <?=$form->helper(array('Profile', 'country'), 'formSelect', array('class' => ''))?>        
                             <div class="help-block"><?=$form->helper(array('Profile', 'country'), 'formElementErrors')?></div>
                         </div>
                     </div>

@@ -23,41 +23,34 @@ class UserSearchForm extends UserForm
     protected $mergeElements = array(
         'keyword' =>     array(
             'name' => 'keyword',
-            'attributes' => array(
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array(
                 'label' => 'Keyword',
+            ),
+            'attributes' => array(
             ),
         ),
         'status' => array(
+            'options' => array(
+                'empty_option' => 'User Status'
+            ),
             'attributes' => array(
-                'options' => array(
-                    array(
-                        'label' => 'User Status',
-                        'value' => '',
-                    ),
-                ),
                 'value' => '',
             ),
         ),
         'gender' => array(
+            'options' => array(
+                'empty_option' => 'Select Gender'
+            ),
             'attributes' => array(
-                'options' => array(
-                    array(
-                        'label' => 'Select Gender',
-                        'value' => '',
-                    ),
-                ),
                 'value' => '',
             ),
         ),
         'onlineStatus' => array(
+            'options' => array(
+                'empty_option' => 'Online/Offline'
+            ),
             'attributes' => array(
-                'options' => array(
-                    array(
-                        'label' => 'Online/Offline',
-                        'value' => '',
-                    ),
-                ),
                 'value' => '',
             ),
         ),

@@ -62,16 +62,31 @@ class FormClassGenerator
         return $this->metadata = $res;
     }
 
-    public function getFormClassName()
+
+    public function getFormNamespace()
     {
         $dbTableName = $this->dbTableName;
         $className = explode("_", $dbTableName);
         array_shift($className);
+        array_pop($className);
         array_push($className, 'Form');
         $className = array_map(function($string){
             return ucfirst($string);
         }, $className);
         return implode("\\", $className);
+    }
+
+    public function getFormClassName()
+    {
+        $dbTableName = $this->dbTableName;
+        $className = explode("_", $dbTableName);
+        array_shift($className);
+        array_shift($className);
+        array_push($className, 'Form');
+        $className = array_map(function($string){
+            return ucfirst($string);
+        }, $className);
+        return implode("", $className);
     }
 
     public function printCode($array)
@@ -149,10 +164,12 @@ class FormClassGenerator
         }
         $elementArray = array(
             'name' => $element['name'],
-            'attributes' => array(
-                'type' => $element['type'],
+            'type' => $element['type'],
+            'options' => array(
                 'label' => $this->getLabel($element['name']),
-                'options' => $options,
+                'value_options' => $options,
+            ),
+            'attributes' => array(
             ),
         );
         if($value){
@@ -166,9 +183,11 @@ class FormClassGenerator
 
         $elementArray = array(
             'name' => $element['name'],
-            'attributes' => array(
-                'type' => $element['type'],
+            'type' => $element['type'],
+            'options' => array(
                 'label' => $this->getLabel($element['name']),
+            ),
+            'attributes' => array(
                 'value' => $element['default'],
             ),
         );

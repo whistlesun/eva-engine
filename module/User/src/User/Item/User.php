@@ -31,17 +31,43 @@ class User extends AbstractItem
                 'limit' => false,
             ),
         ),
-        'FriendsWithMe' => array(
-            'targetEntity' => 'User\Item\User',
+        'Roles' => array(
+            'targetEntity' => 'User\Item\Role',
             'relationship' => 'ManyToMany',
-            'inversedBy' => 'User\Item\Friend',
+            'mappedBy' => 'Roles',
             'joinColumns' => array(
-                'joinColumn' => 'to_user_id',
+                'joinColumn' => 'user_id',
                 'referencedColumn' => 'id',
             ),
+            'inversedBy' => 'User\Item\RoleUser',
+            'inversedMappedBy' => 'RoleUser',
             'inverseJoinColumns' => array(
-                'joinColumn' => 'from_user_id',
+                'joinColumn' => 'role_id',
                 'referencedColumn' => 'id',
+            ),
+        ),
+        'RoleUser' => array(
+            'targetEntity' => 'User\Item\RoleUser',
+            'relationship' => 'OneToMany',
+            'joinColumn' => 'user_id',
+            'referencedColumn' => 'id',
+            'joinParameters' => array(
+            ),
+        ),
+        'UserCommonFields' => array(
+            'targetEntity' => 'User\Item\Fieldvalue',
+            'relationship' => 'OneToMany',
+            'joinColumn' => 'user_id',
+            'referencedColumn' => 'id',
+            'joinParameters' => array(
+            ),
+        ),
+        'UserRoleFields' => array(
+            'targetEntity' => 'User\Item\Fieldvalue',
+            'relationship' => 'OneToMany',
+            'joinColumn' => 'user_id',
+            'referencedColumn' => 'id',
+            'joinParameters' => array(
             ),
         ),
         'MyFriends' => array(
@@ -65,13 +91,23 @@ class User extends AbstractItem
         'create' => array(
             'getSalt()',
             'getPassword()',
+            'getOnlineStatus()',
+            'getRegisterTime()',
+            'getRegisterIp()',
         ),
     );
+
+    public function getOnlineStatus()
+    {
+        if(!$this->onlineStatus){
+            return $this->onlineStatus = 'offline';
+        }
+    }
 
     public function getRegisterTime()
     {
         if(!$this->registerTime){
-            return \Eva\Date\Date::getNow();
+            return $this->registerTime = \Eva\Date\Date::getNow();
         }
     }
 

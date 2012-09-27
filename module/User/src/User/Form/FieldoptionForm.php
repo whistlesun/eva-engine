@@ -28,33 +28,41 @@ class FieldoptionForm extends \Eva\Form\Form
     protected $baseElements = array (
         'id' => array (
             'name' => 'id',
-            'attributes' => array (
-                'type' => 'hidden',
+            'type' => 'hidden',
+            'options' => array (
                 'label' => 'Id',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'label' => array (
             'name' => 'label',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Label',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'option' => array (
             'name' => 'option',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Option',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'order' => array (
             'name' => 'order',
-            'attributes' => array (
-                'type' => 'number',
+            'type' => 'number',
+            'options' => array (
                 'label' => 'Order',
+            ),
+            'attributes' => array (
                 'value' => '0',
             ),
         ),

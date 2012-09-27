@@ -75,7 +75,6 @@ class FormController extends RestfulModuleController
                 'filters' => @$postData['filters'][$columnName],
                 'default' => @$postData['defaults'][$columnName],
             );
-        
         }
 
         $generator = new \Scaffold\Model\FormClassGenerator();
@@ -86,7 +85,9 @@ class FormController extends RestfulModuleController
         $elementsCode = $generator->printCode($elements);
         $validatorsCode = $generator->printCode($validators);
         $formClassName = $generator->getFormClassName();
+        $formNamespace = $generator->getFormNamespace();
         return array(
+            'formNamespace' => $formNamespace,
             'formClassName' => $formClassName,
             'elementsCode' => $elementsCode,
             'validatorsCode' => $validatorsCode,
@@ -101,8 +102,7 @@ class FormController extends RestfulModuleController
         $mainForm = $postData->form;
 
         $form = Api::_()->getForm($mainForm);
-        $form->init()->enableFilters();
-        $elements = $form->getMergedElements();
+        $elements = $form->mergeElements();
 
         $subFormString = $postData->subform;
 
@@ -112,8 +112,7 @@ class FormController extends RestfulModuleController
             $subForms = explode(',', $subFormString);
             foreach ($subForms as $subForm) {
                 $form = Api::_()->getForm($subForm);
-                $form->init();
-                $subFormElements[$subForm] = $form->getMergedElements();
+                $subFormElements[$subForm] = $form->mergeElements();
             }
         }
         

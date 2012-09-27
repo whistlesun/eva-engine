@@ -110,6 +110,21 @@ eva.construct = function(){
 	//$('.dropdown-toggle').dropdown();
 
 	eva.ui.init();
+
+	var lang = eva.config.lang;
+	var langMap = {
+		'en' : 'en',
+		'fr' : 'fr',
+		'zh' : 'zh_CN',
+		'zh_TW' : 'zh_TW',
+		'ja' : 'ja'
+	}
+	var jsLang = langMap[lang];
+	eva.loader(eva.s('/lib/js/jquery/jquery.validationEngine/jquery.validationEngine-' + jsLang + '.js'), function(){
+		$("form").validationEngine();
+	});
+	
+
 	return false;
 };
 

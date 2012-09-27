@@ -1,11 +1,12 @@
 <?
 $title = 'Admin Login';
 $this->headTitle($title, 'SET');
+$callback = $this->callback;
 
 if($this->form){
 	$form = $this->form;
 } else {
-    $form = Eva\Api::_()->getForm('Core\Form\SuperAdminLoginForm');
+    $form = new Core\Form\SuperAdminLoginForm();
 }
 
 if($this->hasModule('User')){
@@ -13,11 +14,10 @@ if($this->hasModule('User')){
 } else {
     $url = $this->uri('/admin/core/login/');
 }
-$form->init(array(
-	'action' => $url,
-	'method' => 'put',
-	'values' => $this->user
-));
+$form->setView($this)
+     ->setMethod('put')
+     ->setAction($url)
+     ->prepare();
 ?>
 
 <style>

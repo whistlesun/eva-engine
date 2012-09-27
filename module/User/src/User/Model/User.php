@@ -3,9 +3,9 @@
 namespace User\Model;
 
 use Eva\Api,
-    Eva\Mvc\Model\AbstractModelService;
+    Eva\Mvc\Model\AbstractModel;
 
-class User extends AbstractModelService
+class User extends AbstractModel
 {
     protected $map = array(
         'small' => array(
@@ -76,6 +76,13 @@ class User extends AbstractModelService
         $this->trigger('remove.pre');
 
         $item = $this->getItem();
+
+        $subItem = $item->join('Profile');
+        $subItem->remove();
+
+        $subItem = $item->join('Account');
+        $subItem->remove();
+
         $item->remove();
 
         $this->trigger('remove');

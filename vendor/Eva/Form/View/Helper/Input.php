@@ -27,6 +27,33 @@ use Zend\Form\ElementInterface;
 class Input extends \Zend\Form\View\Helper\AbstractHelper
 {
 
+    protected function autoValidator($element, $filter)
+    {
+        $class = $element->getAttribute('class');
+
+        $validateClass = array();
+        if(isset($filter['required']) && $filter['required']){
+            $validateClass[] = 'validate[required]';
+        }
+        if($validateClass){
+            $class .= $class ? ' ' . implode(' ', $validateClass) : implode(' ', $validateClass);
+            $element->setAttribute('class', $class);
+        }
+
+        return $element;
+    }
+
+    protected function isInputElement($elementType)
+    {
+        $notElementTypes = array(
+            'label',
+            'formElementErrors',
+        );
+
+        return in_array($elementType, $notElementTypes) ? false : true;
+    }
+
+    /*
     protected function translateElement(ElementInterface $element)
     {
         if(!$this->translator){
@@ -72,6 +99,7 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
 
         return $element;
     }
+    */
 
     /**
     * Invoke helper as functor
@@ -81,54 +109,48 @@ class Input extends \Zend\Form\View\Helper\AbstractHelper
     * @param  ElementInterface $element 
     * @return string
     */
-    public function __invoke(ElementInterface $element, array $options = array())
+    public function __invoke(ElementInterface $element, array $options = array(), array $filter = array())
     {
         $defaultOptions = array(
             'type' => 'formInput',
             'args' => array(),
             'i18n' => true,
+            'validator' => true,
+            'reorder' => false,
         );
 
         $options = array_merge($defaultOptions, $options);
         $elementType = $options['type'];
-        unset($options['type']);
 
-        //Support Subform
-        if($subFormName = $element->getAttribute('data-subform-name')){
-            $name = $element->getName();
-            if($name){
-                $element->setName($subFormName . '[' . $name . ']');
-                $attributes = $element->getAttributes();
-                //Reset attributes to make sure re-name just once;
-                unset($attributes['data-subform-name']);
-                $element->clearAttributes();
-                $element->setAttributes($attributes);
-            }
-        }
+
+        $i18n = $options['i18n'];
 
         $args = array();
-        if(isset($option['args'])){
-            if($option['args'] && is_array($option['args'])){
+        if(isset($options['args'])){
+            if($options['args'] && is_array($options['args'])){
                 foreach($args as $key => $value){
                     $args[] = $value; 
                 }
             }
-            unset($option['args']);
         }
 
+        if(true === $options['validator'] && $filter && $this->isInputElement($elementType)){
+            $element = $this->autoValidator($element, $filter);
+        }
+
+        //NOTE: clone element not effect to form original element
+        $element = clone $element;
 
         if($options){
-            //NOTE: clone element not effect to form original element
-            $element = clone $element;
             foreach($options as $key => $value){
-                $element->setAttribute($key, $value);
+                //$element->setAttribute($key, $value);
             }
-            if(true === $options['i18n']){
-                $element = $this->translateElement($element);
+            if(true === $i18n){
+                //$element = $this->translateElement($element);
             }
         }
 
-        //put element clone into view helper
+        //form helper first argment is alway element self
         array_unshift($args, $element);
 
         $view = $this->getView();

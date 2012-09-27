@@ -3,11 +3,64 @@
 namespace User\Model;
 
 use Eva\Api,
-    Eva\Mvc\Model\AbstractModelService;
+    Eva\Mvc\Model\AbstractModel;
 
-class Field extends AbstractModelService
+class Field extends AbstractModel
 {
 
+    public function roleFieldsArrayToForm(array $roleArray)
+    {
+        $elements = array();
+        if(isset($roleArray['CommonFields'])){
+            $fields = $roleArray['CommonFields'];
+            foreach($fields as $field){
+                $elements[] = $this->fieldToElement($field);
+            }
+        }
+
+        if(isset($roleArray['Fields'])){
+            $fields = $roleArray['Fields'];
+            foreach($fields as $field){
+                $elements[] = $this->fieldToElement($field);
+            }
+        }
+
+        return $elements;
+    }
+
+    public function fieldToElement($field)
+    {
+        $element = array(
+            'name' => $field['id'],
+            'type' => $field['fieldType'],
+            'options' => array(
+                'label' => $field['label'],
+            ),
+            'attributes' => array(
+                'value' => $field['defaultValue'],
+            ),
+        );
+        if(isset($field['Fieldoption']) && $field['Fieldoption']){
+            $options = array();
+            foreach($field['Fieldoption'] as $key => $option){
+                $options[] = array(
+                    'label' => $option['label'],
+                    'value' => $option['option'],
+                );
+            }
+            $element['options']['value_options'] = $options;
+        }
+        return $element;
+    }
+
+    public function fieldToFilter($field)
+    {
+        $filter = array(
+            'name' => $field['id'],
+            'required' => $field['required'] ? true : false,
+        );
+        return $filter;
+    }
 
     public function createField(array $data = array())
     {
@@ -16,11 +69,9 @@ class Field extends AbstractModelService
         }
 
         $item = $this->getItem();
-        
+
         $this->trigger('create.pre');
 
-            p($item->getLoadedRelationships());
-            exit;
         $itemId = $item->create();
 
         if($item->hasLoadedRelationships()){
@@ -30,7 +81,7 @@ class Field extends AbstractModelService
         }
         $this->trigger('create');
 
-    
+
         $this->trigger('create.post');
 
         return $itemId;
@@ -43,7 +94,7 @@ class Field extends AbstractModelService
         }
 
         $item = $this->getItem();
-        
+
         $this->trigger('save.pre');
 
         $item->save();
@@ -55,7 +106,7 @@ class Field extends AbstractModelService
         }
         $this->trigger('save');
 
-    
+
         $this->trigger('save.post');
 
 
@@ -68,10 +119,14 @@ class Field extends AbstractModelService
         $this->trigger('remove.pre');
 
         $item = $this->getItem();
+
+        $subItem = $item->join('Fieldoption');
+        $subItem->remove();
+
         $item->remove();
 
         $this->trigger('remove');
-    
+
         $this->trigger('remove.post');
 
         return true;

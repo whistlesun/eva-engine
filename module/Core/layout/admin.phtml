@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="utf-8" />
+    <?=$this->headTitle()?>
+	<!--[if lt IE 9]>
+	<meta http-equiv="PRAGMA" content="NO-CACHE" />
+    <script src="<?=$this->link('/lib/js/html5shiv/html5shiv.min.js')?>"></script>
+	<![endif]-->
+    <?=$this->headMeta()?>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="<?=$this->link('/lib/css/fontawesome/css/font-awesome.css')?>" media="all" rel="stylesheet" type="text/css" />
+    <link href="<?=$this->link('/src/admin/css/admin.css')?>" media="all" rel="stylesheet" type="text/css" />
+    <?=$this->evajs()?>
+    <script src="<?=$this->link('/lib/js/labjs/labjs.min.js')?>"></script>
+    <script src="<?=$this->link('/lib/js/jquery/jquery.min.js')?>"></script>
+    <script src="<?=$this->link('/lib/js/jquery/jquery.validationEngine.js')?>"></script>
+    <script src="<?=$this->link('/eva/js/core.js')?>"></script>
+    <script src="<?=$this->link('/eva/js/ui.js')?>"></script>
+    <script src="<?=$this->link('/src/admin/js/init.js')?>"></script>
+</head>
+
+<body class="">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="span2">
+
+                <div class="main-left-col">
+
+                    <h1>Eva Engine</h1>
+
+                    <ul class="side-nav">
+                        <li data-highlight-url="/admin/core/dashboard/">
+                        <a href="<?=$this->uri('/admin/core/dashboard/')?>"><i class="icon-home"></i> <?=$this->_('Dashboard')?></a>
+                        </li>
+                        <?if($this->hasmodule('Blog')):?>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#website-dropdown" href="#"><i class="icon-sitemap"></i> <?=$this->_('Blog')?> <b class="caret"></b></a>
+                        <ul id="website-dropdown" class="collapse">
+                            <li data-highlight-url="/admin/blog/(\d+|(remove.*))*$"><a href="<?=$this->uri('/admin/blog/')?>"><?=$this->_('Pages')?></a></li>
+                            <li data-highlight-url="/admin/blog/create$"><a href="<?=$this->uri('/admin/blog/create')?>"><?=$this->_('Add New Post')?></a></li>
+                            <li data-highlight-url="/admin/blog/category/(\d+|create|remove)*$"><a href="<?=$this->uri('/admin/blog/category/')?>"><?=$this->_('Page Categories')?></a></li>
+                            <!--
+                            <li data-highlight-url="/admin/blog/comment/(\d+)*$"><a href="<?=$this->uri('/admin/blog/comment/')?>"><?=$this->_('Comments')?></a></li>
+                            <li data-highlight-url="/admin/blog/tag/(\d+)*$"><a href="<?=$this->uri('/admin/blog/tag/')?>"><?=$this->_('Page Tags')?></a></li>
+                            -->
+                        </ul>
+                        </li>
+                        <?endif?>
+                        <?if($this->hasmodule('File')):?>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#file-dropdown" href="#"><i class="icon-file"></i> <?=$this->_('File')?> <b class="caret"></b></a>
+                        <ul id="file-dropdown" class="collapse">
+                            <li data-highlight-url="/admin/file/(\d+)*$"><a href="<?=$this->uri('/admin/file/')?>"><?=$this->_('File Management')?></a></li>
+                            <li data-highlight-url="/admin/file/upload"><a href="<?=$this->uri('/admin/file/upload')?>"><?=$this->_('File Upload')?></a></li>
+                        </ul>
+                        </li>
+                        <?endif?>
+                        <?if($this->hasmodule('User')):?>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#user-dropdown" href="#"><i class="icon-user"></i> <?=$this->_('User')?> <b class="caret"></b></a>
+                        <ul id="user-dropdown" class="collapse">
+                            <li data-highlight-url="/admin/user/(\d+)*$"><a href="<?=$this->uri('/admin/user/')?>"><?=$this->_('User Management')?></a></li>
+                            <li data-highlight-url="/admin/user/create"><a href="<?=$this->uri('/admin/user/create')?>"><?=$this->_('Create User')?></a></li>
+                            <li data-highlight-url="/admin/user/(field.*)$"><a href="<?=$this->uri('/admin/user/field')?>"><?=$this->_('User Fields')?></a></li>
+                            <li data-highlight-url="/admin/user/(role.*)$"><a href="<?=$this->uri('/admin/user/role')?>"><?=$this->_('Role & Permissions')?></a></li>
+                        </ul>
+                        </li>
+                        <?endif?>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#setting-dropdown" href="#"><i class="icon-file"></i> <?=$this->_('Setting')?> <b class="caret"></b></a>
+                        <ul id="setting-dropdown" class="collapse">
+                            <li data-highlight-url="/admin/core/cache"><a href="<?=$this->uri('/admin/core/cache')?>"><?=$this->_('Cache Cleaner')?></a></li>
+                            <!--<li data-highlight-url="/admin/core/setting"><a href="<?=$this->uri('/admin/core/setting')?>"><?=$this->_('Global Setting')?></a></li>-->
+                            <li data-highlight-url="/admin/core/setting/components"><a href="<?=$this->uri('/admin/core/setting/components')?>"><?=$this->_('Page Components')?></a></li>
+                        </ul>
+                        </li>
+                        <?if($this->hasmodule('Scaffold')):?>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="collapse" data-target="#scaffold-dropdown" href="#"><i class="icon-gift"></i> Scaffold <b class="caret"></b></a>
+                        <ul id="scaffold-dropdown" class="collapse">
+                            <li data-highlight-url="/scaffold/(\w+)*((/\w+)*)$"><a href="<?=$this->uri('/scaffold/')?>">Start Db Scaffold</a></li>
+                            <li data-highlight-url="/scaffold/form/html/(\w+)*$"><a href="<?=$this->uri('/scaffold/form/html/')?>">Form Html Generator</a></li>
+                            <li data-highlight-url="/scaffold/csv/(\w+)*$"><a href="<?=$this->uri('/scaffold/csv')?>">Csv Merge</a></li>
+                            <li data-highlight-url="/scaffold/testdata/posts/(\w+)*$"><a href="<?=$this->uri('/scaffold/testdata/posts/')?>">Test Posts Generator</a></li>
+                        </ul>
+                        </li>
+                        <?endif?>
+                    </ul>
+                </div> <!-- end main-left-col -->
+
+            </div> <!-- end span2 -->
+
+            <div class="span10">
+
+                <div class="secondary-masthead">
+
+                    <ul class="nav nav-pills pull-right">
+                        <li>
+                        <a href="<?=$this->uri('/')?>"><i class="icon-home"></i> <?=$this->_('View Website')?></a>
+                        </li>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-globe"></i> <?=$this->_('Languages')?> <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="divider"></li>
+                            <li><a href="<?=$this->uri('/admin/core/language/switch/en')?>">English</a></li>
+                            <li><a href="<?=$this->uri('/admin/core/language/switch/zh')?>">中文</a></li>
+                        </ul>
+                        </li>
+                        <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i> Admin <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li class="divider"></li>
+                            <li><a href="<?=$this->uri('/admin/core/logout/')?>"><?=$this->_('Logout')?></a></li>
+                        </ul>
+                        </li>
+                    </ul>
+
+                    <ul class="breadcrumb">
+                        <li>
+                        <a href="<?=$this->uri('/admin/core/dashboard/')?>"><?=$this->_('Admin Panel')?></a> <span class="divider">/</span>
+                        </li>
+                        <li class="active"><?=$this->textDelay('breadcrumbText')?></li>
+                    </ul>
+
+                </div>
+
+                <div class="main-area dashboard">
+
+                    <div class="row">
+                        <div class="span10">
+                        <?=$this->content?>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="span10 footer">
+
+                            <p>&copy; <a href="https://github.com/AlloVince/eva-engine">EvaEngine</a> 2012</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div> <!-- end span10 -->
+
+        </div> <!-- end row -->
+
+    </div> <!-- end container -->
+
+
+
+    <script>
+        eva.init(eva_config);
+    </script>
+
+</body>
+</html>

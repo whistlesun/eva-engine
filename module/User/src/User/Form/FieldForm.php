@@ -20,6 +20,17 @@ namespace User\Form;
  */
 class FieldForm extends \Eva\Form\Form
 {
+    protected $subFormGroups = array(
+        'default' => array(
+            'FieldRole' => 'User\Form\FieldRoleForm',
+            'Fieldoption' => array(
+                'formClass' => 'User\Form\FieldoptionForm',
+                'collection' => true,
+                'skipEmpty' => true,
+            ),
+        )
+    );
+
     /**
      * Form basic elements
      *
@@ -28,42 +39,104 @@ class FieldForm extends \Eva\Form\Form
     protected $baseElements = array (
         'id' => array (
             'name' => 'id',
-            'attributes' => array (
-                'type' => 'hidden',
+            'type' => 'hidden',
+            'options' => array (
                 'label' => 'Id',
+            ),
+            'attributes' => array (
+                'value' => '',
+            ),
+        ),
+        'fieldName' => array (
+            'name' => 'fieldName',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Field Name',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'fieldKey' => array (
             'name' => 'fieldKey',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'text',
+            'options' => array (
                 'label' => 'Field Key',
+            ),
+            'attributes' => array (
                 'value' => '',
+            ),
+        ),
+        'fieldType' => array (
+            'name' => 'fieldType',
+            'type' => 'select',
+            'options' => array (
+                'label' => 'Field Type',
+                'value_options' => array (
+                    array (
+                        'label' => 'Text',
+                        'value' => 'text',
+                    ),
+                    array (
+                        'label' => 'Radio',
+                        'value' => 'radio',
+                    ),
+                    array (
+                        'label' => 'Select',
+                        'value' => 'select',
+                    ),
+                    array (
+                        'label' => 'Multi Checkbox',
+                        'value' => 'multiCheckbox',
+                    ),
+                    array (
+                        'label' => 'Number',
+                        'value' => 'number',
+                    ),
+                    array (
+                        'label' => 'Email',
+                        'value' => 'email',
+                    ),
+                    array (
+                        'label' => 'Textarea',
+                        'value' => 'textarea',
+                    ),
+                    array (
+                        'label' => 'Url',
+                        'value' => 'url',
+                    ),
+                ),
+            ),
+            'attributes' => array (
+                'value' => 'text',
             ),
         ),
         'label' => array (
             'name' => 'label',
+            'type' => 'text',
+            'options' => array (
+                'label' => 'Field Label',
+            ),
             'attributes' => array (
-                'type' => 'text',
-                'label' => 'Label',
                 'value' => '',
             ),
         ),
         'description' => array (
             'name' => 'description',
-            'attributes' => array (
-                'type' => 'text',
+            'type' => 'textarea',
+            'options' => array (
                 'label' => 'Description',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
         'applyToAll' => array (
             'name' => 'applyToAll',
-            'attributes' => array (
-                'type' => 'select',
+            'type' => 'select',
+            'options' => array (
                 'label' => 'Apply To All User',
-                'options' => array (
+                'value_options' => array(
                     array (
                         'label' => 'Yes',
                         'value' => '1',
@@ -73,15 +146,17 @@ class FieldForm extends \Eva\Form\Form
                         'value' => '0',
                     ),
                 ),
-                'value' => '1',
+            ),
+            'attributes' => array (
+                'value' => '0',
             ),
         ),
         'required' => array (
+            'type' => 'select',
             'name' => 'required',
-            'attributes' => array (
-                'type' => 'select',
-                'label' => 'Required',
-                'options' => array (
+            'options' => array (
+                'label' => 'Required Field',
+                'value_options' => array(
                     array (
                         'label' => 'Yes',
                         'value' => '1',
@@ -91,24 +166,28 @@ class FieldForm extends \Eva\Form\Form
                         'value' => '0',
                     ),
                 ),
+            ),
+            'attributes' => array (
                 'value' => '0',
             ),
         ),
         'defaultValue' => array (
             'name' => 'defaultValue',
-            'attributes' => array (
-                'type' => 'textarea',
+            'type' => 'textarea',
+            'options' => array (
                 'label' => 'Default Value',
+            ),
+            'attributes' => array (
                 'value' => '',
             ),
         ),
     );
 
     /**
-     * Form basic Validators
-     *
-     * @var array
-     */
+    * Form basic Validators
+    *
+    * @var array
+    */
     protected $baseFilters = array (
         'id' => array (
             'name' => 'id',
@@ -123,8 +202,8 @@ class FieldForm extends \Eva\Form\Form
                 ),
             ),
         ),
-        'fieldKey' => array (
-            'name' => 'fieldKey',
+        'fieldName' => array (
+            'name' => 'fieldName',
             'required' => false,
             'filters' => array (
                 'stripTags' => array (
@@ -143,14 +222,65 @@ class FieldForm extends \Eva\Form\Form
                 'stringLength' => array (
                     'name' => 'StringLength',
                     'options' => array (
-                        'max' => '24',
+                        'max' => '50',
+                    ),
+                ),
+            ),
+        ),
+        'fieldKey' => array (
+            'name' => 'fieldKey',
+            'required' => false,
+            'filters' => array (
+                'separatorToCamelCase' => array (
+                    'name' => 'WordSeparatorToCamelCase',
+                ),
+                'stripTags' => array (
+                    'name' => 'StripTags',
+                ),
+                'stringTrim' => array (
+                    'name' => 'StringTrim',
+                ),
+            ),
+            'validators' => array (
+                'notEmpty' => array (
+                    'name' => 'NotEmpty',
+                    'options' => array (
+                    ),
+                ),
+                'stringLength' => array (
+                    'name' => 'StringLength',
+                    'options' => array (
+                        'max' => '50',
+                    ),
+                ),
+            ),
+        ),
+        'fieldType' => array (
+            'name' => 'fieldType',
+            'required' => false,
+            'filters' => array (
+            ),
+            'validators' => array (
+                'inArray' => array (
+                    'name' => 'InArray',
+                    'options' => array (
+                        'haystack' => array (
+                            'text',
+                            'radio',
+                            'select',
+                            'multiCheckbox',
+                            'number',
+                            'email',
+                            'textarea',
+                            'url',
+                        ),
                     ),
                 ),
             ),
         ),
         'label' => array (
             'name' => 'label',
-            'required' => false,
+            'required' => true,
             'filters' => array (
                 'stripTags' => array (
                     'name' => 'StripTags',
@@ -168,7 +298,7 @@ class FieldForm extends \Eva\Form\Form
                 'stringLength' => array (
                     'name' => 'StringLength',
                     'options' => array (
-                        'max' => '64',
+                        'max' => '100',
                     ),
                 ),
             ),
@@ -246,4 +376,38 @@ class FieldForm extends \Eva\Form\Form
             ),
         ),
     );
+
+    public function prepareData($data)
+    {
+        if(isset($data['FieldRole']['role_id']) && is_array($data['FieldRole']['role_id'])){
+            $fieldRoleArray = array();
+            $fieldRoles = $data['FieldRole']['role_id'];
+            foreach($fieldRoles as $fieldRole){
+                if(!$fieldRole){
+                    continue;
+                }
+                $fieldRoleArray[] = array(
+                    'field_id' => null,
+                    'role_id' => $fieldRole
+                );
+            }
+            $data['FieldRole'] = $fieldRoleArray;
+        }
+
+        //Skip empty field options
+        if(isset($data['Fieldoption'])){
+            $fieldOptionsArray = array();
+            $fieldOptions = $data['Fieldoption'];
+            foreach($fieldOptions as $fieldOption){
+                if(!$fieldOption['label'] && !$fieldOption['option']){
+                    continue;
+                }
+                $fieldOptionsArray[] = $fieldOption;
+            }
+            $data['Fieldoption'] = $fieldOptionsArray;
+        }
+
+        return $data;
+    }
+
 }

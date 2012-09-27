@@ -31,7 +31,7 @@ eva.construct = function(){
 		$("body").addClass('timeline');
 		eva.loader(eva.s(['src/avnpc/timeline/js/storyjs-embed.js']), function(){
 			var minHeight = 550;
-			var height = $(window).height() > minHeight ? $(window).height() - 80 : minHeight;
+			var height = $(window).height() > minHeight ? $(window).height() - 85 : minHeight;
 			var source = $timeline.html();
 			//source = eva.d('proxy/') + '?page=' + encodeURIComponent(source.replace(/&amp;/g, '&'));
 			source = eva.d('proxy/spreadsheet');

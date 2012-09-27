@@ -24,25 +24,52 @@ class PagesController extends ActionController
     public function indexAction()
     {
         $id = $this->params('id');
-        $postModel = Api::_()->getModel('Blog\Model\Post');
-        $postinfo = $postModel->setItemParams($id)->getPost();
-        if($postinfo){
-            $postinfo['Prev'] = $postModel->getItemTable()->where(array(
-                "id < {$postinfo['id']}"
+        $itemModel = Api::_()->getModel('Blog\Model\Post');
+        $item = $itemModel->getPost($id, array(
+            'self' => array(
+                '*',
+            ),
+            'join' => array(
+                'Text' => array(
+                    'self' => array(
+                        '*',
+                        'getContentHtml()',
+                    ),
+                ),
+                'Categories' => array(
+                ),
+            ),
+            'proxy' => array(
+                'File\Item\File::PostCover' => array(
+                    'self' => array(
+                        '*',
+                        'getThumb()',
+                    )
+                )
+            ),
+        ));
+        if($item['status'] != 'published'){
+            $item = array();
+            $this->getResponse()->setStatusCode(404);
+        }
+
+        if($item){
+            $item['Prev'] = $itemModel->getItem()->getDataClass()->where(array(
+                "id < {$item['id']}"
             ))->order('id DESC')->find('one');
 
-            $postinfo['Next'] = $postModel->getItemTable()->where(array(
-                "id > {$postinfo['id']}"
+            $item['Next'] = $itemModel->getItem()->getDataClass()->where(array(
+                "id > {$item['id']}"
             ))->order('id ASC')->find('one');
         }
 
         $comments = array();
-        if($postinfo){
+        if($item){
             $commentsTable = Api::_()->getDbTable('Blog\DbTable\Comments');
-            $comments = $commentsTable->where(array("post_id = {$postinfo['id']}"))->find('all');
+            $comments = $commentsTable->where(array("post_id = {$item['id']}"))->find('all');
         }
         $view = new ViewModel(array(
-            'post' => $postinfo,
+            'item' => $item,
             'comments' => $comments,
         ));
         $view->setTemplate('avnpc/pages/get');

@@ -18,16 +18,36 @@ class FeedController extends ActionController
             $view->getEventManager()->attach($feedStrategy, 100);
         }, 100);
 
-        $request = $this->getRequest();
-        $page = $request->getQuery()->get('page', 1);
+        $query = $this->getRequest()->getQuery();
+        $form = new \Blog\Form\PostSearchForm();
+        $form->bind($query);
+        if($form->isValid()){
+            $query = $form->getData();
+        } else {
+            return array(
+                'items' => array(),
+            );
+        }
+        $query['status'] = 'published';
 
-        $postModel = Api::_()->getModel('Blog\Model\Post');
-        $posts = $postModel->setItemListParams(array('page' => $page))->getPosts();
-        $paginator = $postModel->getPaginator();
-
-
+        $itemModel = Api::_()->getModel('Blog\Model\Post');
+        $items = $itemModel->setItemList($query)->getPostList(array(
+            'self' => array(
+                '*',
+            ),
+            'join' => array(
+                'Text' => array(
+                    'self' => array(
+                        '*',
+                        'getContentHtml()',
+                    ),
+                ),
+                'Categories' => array(
+                ),
+            ),
+        ));
         $view = new FeedModel(array(
-            'entries' => $posts,
+            'entries' => $items,
         ));
         $view->setTemplate('avnpc/feed');
         return $view;

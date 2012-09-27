@@ -17,7 +17,7 @@ if($this->entries) {
         ));
         $feedEntry->setDateModified($this->datetime()->timeStamp($entry['updateTime']));
         $feedEntry->setDateCreated($this->datetime()->timeStamp($entry['createTime']));
-        $feedEntry->setDescription($entry['Text']['contentHtml']);
+        $feedEntry->setDescription($entry['Text']['ContentHtml']);
         $feed->addEntry($feedEntry);
     }
 }

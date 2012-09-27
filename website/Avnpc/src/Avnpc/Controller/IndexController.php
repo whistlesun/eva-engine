@@ -12,15 +12,24 @@ class IndexController extends ActionController
 
     public function indexAction()
     {
-        $request = $this->getRequest();
-        $page = $request->getQuery()->get('page', 1);
+        $query = $this->getRequest()->getQuery();
+        $form = new \Blog\Form\PostSearchForm();
+        $form->bind($query);
+        if($form->isValid()){
+            $query = $form->getData();
+        } else {
+            return array(
+                'items' => array(),
+            );
+        }
+        $query['status'] = 'published';
 
-        $postModel = Api::_()->getModel('Blog\Model\Post');
-        $posts = $postModel->setItemList(array('page' => $page))->getPostList();
-        $paginator = $postModel->getPaginator();
+        $itemModel = Api::_()->getModel('Blog\Model\Post');
+        $items = $itemModel->setItemList($query)->getPostList();
+        $paginator = $itemModel->getPaginator();
 
         $view = new ViewModel(array(
-            'posts' => $posts,
+            'items' => $items,
             'paginator' => $paginator,
         ));
         $view->setTemplate('avnpc/index');

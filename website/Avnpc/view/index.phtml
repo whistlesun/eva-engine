@@ -4,6 +4,12 @@ if($this->paginator && $this->paginator->getCurrentPageNumber() > 1){
 } else {
     $this->headTitle('Just Fine - Story of AlloVince', 'SET');
 }
+if($this->query['page'] == '1') {
+    $this->headLink(array(
+        'rel' => 'canonical',
+        'href' => $this->uri('/')
+    ));
+}
 ?>
 <div class="page_content">
     <?if($this->items):?>
@@ -18,8 +24,8 @@ if($this->paginator && $this->paginator->getCurrentPageNumber() > 1){
         <?endforeach;?>
     </div>
     <?if($this->paginator):?>
-    <?=$this->paginator->setPath('/')->setBaseQuery($this->query);?>
-    <?=$this->widget('Core', 'widgets/paginator', $this->vars())?>
+    <?=$this->paginator->setPath('/thinking/')->setBaseQuery(array());?>
+    <?=$this->widget('Avnpc', 'widgets/paginator', $this->vars())?>
     <?endif;?>
     <?endif;?>
 </div>

@@ -66,6 +66,20 @@ return array(
                 ),
                 'priority' => 2,
             ),
+            'thinking' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/thinking/[:page]',
+                    'constraints' => array(
+                        'page'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Avnpc\Controller\IndexController',
+                        'action' => 'index',
+                    ),
+                ),
+                'priority' => 2,
+            ),
             'proxy' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

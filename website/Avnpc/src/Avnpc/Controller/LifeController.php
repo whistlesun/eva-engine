@@ -60,6 +60,7 @@ class LifeController extends ActionController
             'nextId' => $id,
         ));
         $view->setTemplate('avnpc/life/index');
+        $this->pagecapture();
         return $view;
     }
 

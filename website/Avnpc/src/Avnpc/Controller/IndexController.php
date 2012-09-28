@@ -12,7 +12,9 @@ class IndexController extends ActionController
 
     public function indexAction()
     {
-        $query = $this->getRequest()->getQuery();
+        $query = array(
+            'page' => $this->params('page', 1)
+        );
         $form = new \Blog\Form\PostSearchForm();
         $form->bind($query);
         if($form->isValid()){
@@ -31,8 +33,14 @@ class IndexController extends ActionController
         $view = new ViewModel(array(
             'items' => $items,
             'paginator' => $paginator,
+            'query' => $query,
         ));
         $view->setTemplate('avnpc/index');
+        if($this->params('page')){
+            $this->pagecapture();
+        } else {
+            $this->pagecapture('index');
+        }
         return $view;
     }
 }

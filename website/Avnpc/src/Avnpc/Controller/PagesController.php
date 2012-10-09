@@ -48,7 +48,7 @@ class PagesController extends ActionController
                 )
             ),
         ));
-        if($item['status'] != 'published'){
+        if(!$item || $item['status'] != 'published'){
             $item = array();
             $this->getResponse()->setStatusCode(404);
         }
